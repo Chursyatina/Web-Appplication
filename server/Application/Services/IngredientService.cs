@@ -1,0 +1,74 @@
+﻿namespace Application.Services
+{
+    using System.Collections.Generic;
+    using System.Linq;
+    using Application.AutoMapper;
+    using Application.DTO.Request;
+    using Application.DTO.Response;
+    using Application.Interfaces;
+    using Domain.Repository;
+
+    public class IngredientService : IIngredientService
+    {
+        private IIngredientRepository _ingredientRepository;
+
+        public IngredientService(IIngredientRepository ingredientRepository)
+        {
+            _ingredientRepository = ingredientRepository;
+        }
+
+        public void Delete(int id)
+        {
+            _ingredientRepository.Delete(id);
+        }
+
+        public IngredientDto GetById(int id)
+        {
+            var existingIngredient = _ingredientRepository.GetById(id);
+
+            if (existingIngredient != null)
+            {
+                return existingIngredient.ToViewModel();
+            }
+
+            return null;
+        }
+
+        public IngredientDto GetByName(string name)
+        {
+            var existingIngredient = _ingredientRepository.GetByName(name);
+
+            if (existingIngredient != null)
+            {
+                return existingIngredient.ToViewModel();
+            }
+
+            return null;
+        }
+
+        public IEnumerable<IngredientDto> GetAll()
+        {
+            return _ingredientRepository.GetAll().Select(x => x.ToViewModel()).ToList();
+        }
+
+        public IEnumerable<int> GetIdentificators()
+        {
+            return _ingredientRepository.GetIdentificators();
+        }
+
+        public IngredientDto Insert(IngredientCreateRequestDto ingredient)
+        {
+            return _ingredientRepository.Insert(ingredient.ToModel()).ToViewModel();
+        }
+
+        public IngredientDto Update(int id, IngredientUpdateRequestDto ingredient)
+        {
+            return _ingredientRepository.Update(id, ingredient.ToModel()).ToViewModel();
+        }
+
+        public IngredientDto Patch(int id, IngredientPatchRequestDto ingredient)
+        {
+            return _ingredientRepository.Patch(id, ingredient.ToModel()).ToViewModel();
+        }
+    }
+}
