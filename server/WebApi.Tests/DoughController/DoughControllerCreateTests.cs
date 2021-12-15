@@ -120,7 +120,7 @@
                 Name = "TestDough",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0.1 and 7.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0,1 and 7.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.DoughsController.Insert(testDough);
@@ -141,7 +141,7 @@
                 PriceMultiplier = 8,
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0.1 and 7.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0,1 and 7.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.DoughsController.Insert(testDough);
@@ -162,7 +162,7 @@
                 PriceMultiplier = 0.01m,
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0.1 and 7.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0,1 and 7.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.DoughsController.Insert(testDough);

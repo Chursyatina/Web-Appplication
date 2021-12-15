@@ -17,6 +17,7 @@
         private readonly IPizzaService _pizzaService;
         private readonly IIngredientService _ingredientService;
         private readonly PizzaValidator _pizzaValidator;
+        private List<int> _idsForChecking = new List<int>();
 
         public PizzaController(ILogger<PizzaController> logger, IPizzaService pizzaService, IIngredientService ingredientService)
         {

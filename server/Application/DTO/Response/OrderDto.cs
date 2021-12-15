@@ -11,7 +11,7 @@
         public int Id { get; set; }
 
         [Required]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         [Required]
         public DateTime Date { get; set; }

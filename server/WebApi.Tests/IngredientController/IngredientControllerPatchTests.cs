@@ -204,7 +204,7 @@
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.IngredientsController.Patch(2, testIngredient);
@@ -226,7 +226,7 @@
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.IngredientsController.Patch(2, testIngredient);
