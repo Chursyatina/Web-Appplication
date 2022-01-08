@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using Application.Interfaces.RequestDtoInterfaces;
 
-    public class OrderUpdateRequestDto : IOrderRequestDto
+    public class OrderUpdateRequestDto : IOrderRequestDtoWithOrderLines
     {
         [Required]
         public int? OrderStatusId { get; set; }

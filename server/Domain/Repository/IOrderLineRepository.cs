@@ -7,7 +7,7 @@
     {
         public IEnumerable<int> GetIdentificators();
 
-        public OrderLine Insert(OrderLine item, int pizzaVariationId);
+        public OrderLine Insert(OrderLine item, int pizzaVariationId, int orderId);
 
         public OrderLine Patch(int id, OrderLine item, int? pizzaVariationId);
 

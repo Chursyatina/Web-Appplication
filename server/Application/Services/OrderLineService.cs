@@ -47,8 +47,9 @@
         public OrderLineDto Insert(OrderLineCreateRequestDto item)
         {
             int pizzaVariationId = (int)item.PizzaVariationId;
+            int orderId = (int)item.OrderId;
 
-            return _orderLineRepository.Insert(item.ToModel(), pizzaVariationId).ToViewModel();
+            return _orderLineRepository.Insert(item.ToModel(), pizzaVariationId, orderId).ToViewModel();
         }
 
         public OrderLineDto Patch(int id, OrderLinePatchRequestDto item)

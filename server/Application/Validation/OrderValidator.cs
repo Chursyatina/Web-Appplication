@@ -14,7 +14,7 @@
             _orderService = orderService;
         }
 
-        public ValidationResult Validate(IOrderRequestDto entity)
+        public ValidationResult Validate(IOrderRequestDtoWithOrderLines entity)
         {
             ValidationResult annotationsValidationResult = ValidateAnnotations(entity);
             if (!annotationsValidationResult.IsValid)
@@ -25,7 +25,7 @@
             return new ValidationResult(true);
         }
 
-        public ValidationResult Validate(IOrderRequestDto entity, IEnumerable<int> ordersLinesIds, IEnumerable<int> orderStatusesIds)
+        public ValidationResult Validate(IOrderRequestDtoWithOrderLines entity, IEnumerable<int> ordersLinesIds, IEnumerable<int> orderStatusesIds)
         {
             ValidationResult annotationsValidationResult = ValidateAnnotations(entity);
             if (!annotationsValidationResult.IsValid)

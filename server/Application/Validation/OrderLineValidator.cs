@@ -14,7 +14,7 @@
             _orderLineService = orderLineService;
         }
 
-        public ValidationResult Validate(IRequestDtoWithPizzaVariation entity, IEnumerable<int> pizzasVariationsIds = null)
+        public ValidationResult Validate(IOrderLineWithPizzaVariationAndOrder entity, IEnumerable<int> pizzasVariationsIds = null, IEnumerable<int> ordersIds = null)
         {
             ValidationResult annotationsValidationResult = ValidateAnnotations(entity);
             if (!annotationsValidationResult.IsValid)
@@ -31,6 +31,15 @@
                 }
             }
 
+            if (entity.OrderId != null)
+            {
+                ValidationResult orderCoexistenceResult = OrderCoexistenceValidation((int)entity.OrderId, ordersIds);
+                if (!orderCoexistenceResult.IsValid)
+                {
+                    return orderCoexistenceResult;
+                }
+            }
+
             return new ValidationResult(true);
         }
 
@@ -39,6 +48,16 @@
             if (!pizzasVariationsIds.Contains(pizzaVariationId))
             {
                 return new ValidationResult(false, "There are no variation of pizza with identificator: " + pizzaVariationId);
+            }
+
+            return new ValidationResult(true);
+        }
+
+        public ValidationResult OrderCoexistenceValidation(int orderId, IEnumerable<int> ordersIds)
+        {
+            if (!ordersIds.Contains(orderId))
+            {
+                return new ValidationResult(false, "There are no order with identificator: " + orderId);
             }
 
             return new ValidationResult(true);

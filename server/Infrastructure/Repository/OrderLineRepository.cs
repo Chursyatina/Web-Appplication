@@ -25,14 +25,28 @@
 
         public OrderLine GetById(int id)
         {
-            OrderLine existingOrderLine = _context.OrderLines.AsNoTracking().FirstOrDefault(l => l.Id == id && l.IsDeleted == false);
+            OrderLine existingOrderLine = _context.OrderLines
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.Pizza)
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.Ingredients)
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.Dough)
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.Size)
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.Ingredients)
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.AdditionalIngredients)
+                .AsNoTracking().FirstOrDefault(l => l.Id == id && l.IsDeleted == false);
 
             return existingOrderLine;
         }
 
         public IEnumerable<OrderLine> GetAll()
         {
-            return _context.OrderLines.AsNoTracking();
+            return _context.OrderLines
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.Pizza)
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.Ingredients)
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.Dough)
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.Size)
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.Ingredients)
+                .Include(p => p.PizzaVariation).ThenInclude(o => o.AdditionalIngredients)
+                .AsNoTracking();
         }
 
         public OrderLine Update(int id, OrderLine item, int pizzaVariationId)
@@ -75,7 +89,7 @@
             return entity.Entity;
         }
 
-        public OrderLine Insert(OrderLine item, int pizzaVariationId)
+        public OrderLine Insert(OrderLine item, int pizzaVariationId, int orderId)
         {
             item.PizzaVariation = _context.PizzasVariations
                 .Include(i => i.Ingredients)
@@ -85,6 +99,10 @@
                 .Include(p => p.Pizza)
                 .ThenInclude(i => i.Ingredients)
                 .FirstOrDefault(pv => pv.Id == pizzaVariationId && !pv.IsDeleted);
+
+            item.Order = _context.Orders
+                .Include(p => p.OrderStatus)
+                .FirstOrDefault(or => or.Id == orderId && !or.IsDeleted);
             item.Quantity = 1;
             item.Price = PriceCountingService.GetPriceForOrderLine(item);
 

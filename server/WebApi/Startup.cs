@@ -2,6 +2,7 @@ namespace WebApi
 {
     using Application.AutoMapper;
     using Application.Interfaces;
+    using Application.Interfaces.ServicesInterfaces;
     using Application.Services;
     using Domain.Repository;
     using Infrastructure.EF;
@@ -51,6 +52,15 @@ namespace WebApi
 
             services.AddScoped<IAdditionalIngredientService, AdditionalIngredientService>();
             services.AddScoped<IAdditionalIngredientRepository, AdditionalIngredientRepository>();
+
+            services.AddScoped<IOrderLineService, OrderLineService>();
+            services.AddScoped<IOrderLineRepository, OrderLineRepository>();
+
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+
+            services.AddScoped<IOrderStatusService, OrderStatusService>();
+            services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

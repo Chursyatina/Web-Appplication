@@ -39,9 +39,14 @@
             return null;
         }
 
+        public IEnumerable<int> GetIdentificators()
+        {
+            return _orderRepository.GetIdentificators();
+        }
+
         public OrderDto Insert(OrderCreateRequestDto item)
         {
-            return _orderRepository.Insert(item.ToModel(), item.OrderLinesIds).ToViewModel();
+            return _orderRepository.Insert(item.ToModel()).ToViewModel();
         }
 
         public OrderDto Patch(int id, OrderPatchRequestDto item)

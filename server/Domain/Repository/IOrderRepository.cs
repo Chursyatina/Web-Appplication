@@ -5,7 +5,9 @@
 
     public interface IOrderRepository : IRepository<Order>
     {
-        public Order Insert(Order item, IEnumerable<int> orderLinesIds);
+        public IEnumerable<int> GetIdentificators();
+
+        public Order Insert(Order item);
 
         public Order Patch(int id, Order item, IEnumerable<int> orderLinesIds);
 

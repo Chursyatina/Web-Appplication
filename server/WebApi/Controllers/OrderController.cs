@@ -62,15 +62,6 @@
         [SwaggerResponse(400, "Bad request with message of an error.")]
         public ActionResult<OrderDto> Insert([FromBody] OrderCreateRequestDto order)
         {
-            IEnumerable<int> ordersLinesIds = _orderLinesService.GetIdentificators();
-            IEnumerable<int> orderStatusesIds = _orderStatusService.GetIdentificators();
-
-            ValidationResult validationResult = _orderValidator.Validate(order, ordersLinesIds, orderStatusesIds);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(new JsonResult(validationResult.ErrorMessage) { StatusCode = 400, });
-            }
-
             OrderDto returnedDto = _orderService.Insert(order);
             return Created("api/pizzasVariations/" + returnedDto.Id.ToString(), returnedDto);
         }

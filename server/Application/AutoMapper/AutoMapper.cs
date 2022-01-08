@@ -406,7 +406,7 @@
         public static OrderLineDto ToViewModel(this OrderLine orderLine)
         {
             OrderLineDto orderLineDto = new Mapper(getOrderLineDto).Map<OrderLineDto>(orderLine);
-            orderLineDto.PizzaVariation = new PizzaVariationDto();
+            orderLineDto.PizzaVariation = orderLine.PizzaVariation.ToViewModel();
 
             return orderLineDto;
         }
