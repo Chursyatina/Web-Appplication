@@ -66,6 +66,7 @@
             item.Size = _context.Sizes.FirstOrDefault(p => p.Id == sizeId && !p.IsDeleted);
             item.Dough = _context.Doughs.FirstOrDefault(p => p.Id == doughId && !p.IsDeleted);
             item.Ingredients.AddRange(item.Pizza.Ingredients);
+            item.Price = PriceCountingService.GetPriceForPizzaVariation(item);
 
             var entity = _context.Add(item);
             _context.SaveChanges();
@@ -105,6 +106,8 @@
             {
                 pizzaVariation = ChangeAdditionalIngredients(pizzaVariation, additionalIngredientsIds.ToList());
             }
+
+            pizzaVariation.Price = PriceCountingService.GetPriceForPizzaVariation(pizzaVariation);
 
             var entity = _context.Update(pizzaVariation);
             _context.SaveChanges();
@@ -150,15 +153,15 @@
         {
             List<int> existingItemIngredients = existingItem.Ingredients.Select(ing => ing.Id).ToList();
 
-            IEnumerable<int> remains = existingItemIngredients.Intersect(ingredientsIds);
+            List<int> remains = existingItemIngredients.Intersect(ingredientsIds).ToList();
 
-            IEnumerable<int> toRemove = existingItemIngredients.Except(remains);
+            List<int> toRemove = existingItemIngredients.Except(remains).ToList();
 
-            IEnumerable<int> toAdd = ingredientsIds.Except(remains);
+            List<int> toAdd = ingredientsIds.Except(remains).ToList();
 
             existingItem.Ingredients = existingItem.Ingredients.Where(i => !toRemove.Contains(i.Id)).ToList();
 
-            existingItem.Ingredients.AddRange((ICollection<Ingredient>)_context.Ingredients.Select(ing => toAdd.Contains(ing.Id)));
+            existingItem.Ingredients.AddRange(_context.Ingredients.Where(ing => toAdd.Contains(ing.Id)));
 
             return existingItem;
         }
@@ -167,15 +170,15 @@
         {
             List<int> existingItemIngredients = existingItem.AdditionalIngredients.Select(ing => ing.Id).ToList();
 
-            IEnumerable<int> remains = existingItemIngredients.Intersect(ingredientsIds);
+            List<int> remains = existingItemIngredients.Intersect(ingredientsIds).ToList();
 
-            IEnumerable<int> toRemove = existingItemIngredients.Except(remains);
+            List<int> toRemove = existingItemIngredients.Except(remains).ToList();
 
-            IEnumerable<int> toAdd = ingredientsIds.Except(remains);
+            List<int> toAdd = ingredientsIds.Except(remains).ToList();
 
             existingItem.AdditionalIngredients = existingItem.AdditionalIngredients.Where(i => !toRemove.Contains(i.Id)).ToList();
 
-            existingItem.Ingredients.AddRange((ICollection<Ingredient>)_context.Ingredients.Select(ing => toAdd.Contains(ing.Id)));
+            existingItem.AdditionalIngredients.AddRange(_context.AdditionalIngredients.Where(ing => toAdd.Contains(ing.Id)));
 
             return existingItem;
         }

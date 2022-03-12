@@ -6,6 +6,7 @@
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
+    using Infrastructure.ExtensionMethods;
     using Microsoft.EntityFrameworkCore;
 
     public class OrderRepository : IOrderRepository
@@ -79,10 +80,15 @@
         {
             var existingItem = _context.Orders
                 .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(ai => ai.AdditionalIngredients)
+                .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(i => i.Ingredients)
+                .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(p => p.Pizza).ThenInclude(ing => ing.Ingredients)
                 .Include(o => o.OrderStatus)
                 .FirstOrDefault(o => o.Id == id && o.IsDeleted == false);
 
-            if (item.OrderStatus != null && item.OrderStatus != existingItem.OrderStatus)
+            if (item.OrderStatus.Name != null && item.OrderStatus != existingItem.OrderStatus)
             {
                 existingItem.OrderStatus = item.OrderStatus;
             }
@@ -92,6 +98,8 @@
                 ChangeOrderLines(existingItem, orderLinesIds);
                 existingItem.Price = PriceCountingService.GetPriceForOrder(existingItem);
             }
+
+            existingItem.Price = PriceCountingService.GetPriceForOrder(existingItem);
 
             var entity = _context.Update(existingItem);
             _context.SaveChanges();
@@ -103,6 +111,11 @@
         {
             var existingItem = _context.Orders
                 .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(ai => ai.AdditionalIngredients)
+                .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(i => i.Ingredients)
+                .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(p => p.Pizza).ThenInclude(ing => ing.Ingredients)
                 .Include(o => o.OrderStatus)
                 .FirstOrDefault(p => p.Id == id && p.IsDeleted == false);
 
@@ -119,6 +132,8 @@
                 existingItem.OrderLines = new List<OrderLine>();
             }
 
+            existingItem.Price = PriceCountingService.GetPriceForOrder(existingItem);
+
             var entity = _context.Update(existingItem);
             _context.SaveChanges();
 
@@ -132,20 +147,17 @@
 
         private Order ChangeOrderLines(Order existingItem, IEnumerable<int> orderLinesIds)
         {
-            IEnumerable<int> existingItemOrderLines = existingItem.OrderLines.Select(line => line.Id);
+            List<int> existingItemOrderLines = existingItem.OrderLines.Select(line => line.Id).ToList();
 
-            IEnumerable<int> remains = existingItemOrderLines.Intersect(orderLinesIds);
+            List<int> remains = existingItemOrderLines.Intersect(orderLinesIds).ToList();
 
-            IEnumerable<int> toRemove = existingItemOrderLines.Except(remains);
+            List<int> toRemove = existingItemOrderLines.Except(remains).ToList();
 
-            IEnumerable<int> toAdd = existingItemOrderLines.Except(remains);
+            List<int> toAdd = orderLinesIds.Except(remains).ToList();
 
             existingItem.OrderLines = existingItem.OrderLines.Where(l => !toRemove.Contains(l.Id)).ToList();
 
-            foreach (int id in toAdd)
-            {
-                existingItem.OrderLines.Add(_context.OrderLines.FirstOrDefault(line => line.Id == id));
-            }
+            existingItem.OrderLines.AddRange(_context.OrderLines.Where(line => toAdd.Contains(line.Id)));
 
             return existingItem;
         }

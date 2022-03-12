@@ -52,12 +52,19 @@
         public OrderLine Update(int id, OrderLine item, int pizzaVariationId)
         {
             var existingItem = _context.OrderLines
-                .Include(pv => pv.PizzaVariation)
+                .Include(o => o.Order)
+                .Include(pv => pv.PizzaVariation).ThenInclude(ai => ai.AdditionalIngredients)
+                .Include(pv => pv.PizzaVariation).ThenInclude(i => i.Ingredients)
+                .Include(pv => pv.PizzaVariation).ThenInclude(p => p.Pizza).ThenInclude(ing => ing.Ingredients)
                 .FirstOrDefault(o => o.Id == id && o.IsDeleted == false);
 
             existingItem.Quantity = item.Quantity;
             existingItem.PizzaVariation = _context.PizzasVariations.Find(pizzaVariationId);
-            item.Price = PriceCountingService.GetPriceForOrderLine(item);
+            existingItem.Price = PriceCountingService.GetPriceForOrderLine(existingItem);
+            existingItem.Order.Price = PriceCountingService.GetPriceForOrder(_context.Orders
+                .Include(p => p.OrderStatus)
+                .Include(l => l.OrderLines)
+                .FirstOrDefault(or => or.Id == existingItem.Order.Id));
 
             var entity = _context.Update(existingItem);
             _context.SaveChanges();
@@ -68,7 +75,10 @@
         public OrderLine Patch(int id, OrderLine item, int? pizzaVariationId)
         {
             var existingItem = _context.OrderLines
-                .Include(pv => pv.PizzaVariation)
+                .Include(o => o.Order)
+                .Include(pv => pv.PizzaVariation).ThenInclude(ai => ai.AdditionalIngredients)
+                .Include(pv => pv.PizzaVariation).ThenInclude(i => i.Ingredients)
+                .Include(pv => pv.PizzaVariation).ThenInclude(p => p.Pizza).ThenInclude(ing => ing.Ingredients)
                 .FirstOrDefault(o => o.Id == id && o.IsDeleted == false);
 
             if (item.Quantity > 0 && existingItem.Quantity != item.Quantity)
@@ -81,7 +91,11 @@
                 existingItem.PizzaVariation = _context.PizzasVariations.Find(pizzaVariationId);
             }
 
-            item.Price = PriceCountingService.GetPriceForOrderLine(item);
+            existingItem.Price = PriceCountingService.GetPriceForOrderLine(existingItem);
+            existingItem.Order.Price = PriceCountingService.GetPriceForOrder(_context.Orders
+                .Include(p => p.OrderStatus)
+                .Include(l => l.OrderLines)
+                .FirstOrDefault(or => or.Id == existingItem.Order.Id));
 
             var entity = _context.Update(existingItem);
             _context.SaveChanges();
@@ -105,6 +119,8 @@
                 .FirstOrDefault(or => or.Id == orderId && !or.IsDeleted);
             item.Quantity = 1;
             item.Price = PriceCountingService.GetPriceForOrderLine(item);
+
+            item.Order.Price = PriceCountingService.GetPriceForOrder(item.Order);
 
             var entity = _context.Add(item);
             _context.SaveChanges();
