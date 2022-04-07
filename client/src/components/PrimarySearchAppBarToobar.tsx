@@ -1,6 +1,6 @@
 import React from 'react';
 import { Toolbar, IconButton, Typography, InputBase } from '@material-ui/core';
-import { Menu, Search } from '@material-ui/icons';
+import { Menu, Search, ShoppingBasket } from '@material-ui/icons';
 
 import { primaryAppBarStyles } from 'src/componentsStyles/primaryAppBarStyles';
 
@@ -13,9 +13,22 @@ export const PrimarySearchAppBarToolBar = () => {
         <Menu />
       </IconButton>
       <Typography className={title} variant="h6" noWrap>
-        YoYo Pizza
+        <IconButton edge="start" color="inherit" aria-label="open drawer" href="/">
+          YoYo Pizza
+        </IconButton>
       </Typography>
-      <div className={search}>
+      <div>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          color="inherit"
+          href="/Basket"
+        >
+          <ShoppingBasket />
+        </IconButton>
+      </div>
+      {/* <div className={search}>
         <div className={searchIcon}>
           <Search />
         </div>
@@ -27,7 +40,7 @@ export const PrimarySearchAppBarToolBar = () => {
           }}
           inputProps={{ 'aria-label': 'search' }}
         />
-      </div>
+      </div> */}
     </Toolbar>
   );
 };

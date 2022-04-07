@@ -1,12 +1,11 @@
 ﻿namespace Domain.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Order : EntityBase
+    public class Basket : EntityBase
     {
-        public Order()
+        public Basket()
         {
             OrderLines = new List<OrderLine>();
         }
@@ -18,12 +17,6 @@
         public decimal Price { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
-
-        [Required]
         public User User { get; set; }
-
-        [Required]
-        public OrderStatus OrderStatus { get; set; }
     }
 }

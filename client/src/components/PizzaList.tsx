@@ -11,6 +11,7 @@ export const PizzaList = () => {
   const { root } = pizzaListStyles();
 
   const [pizzas, setPizzas] = useState<IPizza[]>([]);
+
   useEffect(() => {
     const getPizzasList = async () => {
       const result = await getPizzas();

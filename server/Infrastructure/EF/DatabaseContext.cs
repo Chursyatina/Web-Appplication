@@ -28,6 +28,10 @@
 
         public DbSet<AdditionalIngredient> AdditionalIngredients { get; set; }
 
+        public DbSet<Basket> Baskets { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

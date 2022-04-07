@@ -1,31 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
+import { observer } from 'mobx-react-lite';
 
 import { IPizzaVariation } from 'src/interfaces/pizzaVariation';
 import { pizzaListStyles } from 'src/componentsStyles/pizzaListStyles';
-import { getPizzasVariations } from 'src/api/pizzaVariationApi';
+import { getOrder } from 'src/api/ordersApi';
+import { basketStore } from 'src/store/currentBasket';
+import { IOrder } from 'src/interfaces/order';
 
 import { PizzaInBasket } from './PizzaInBasket';
 
-export const PizzaInBasketList = () => {
+export const PizzaInBasketList = observer(() => {
   const { root } = pizzaListStyles();
 
-  const [pizzasVariations, setPizzasVariaitons] = useState<IPizzaVariation[]>([]);
+  const [order, setOrder] = useState<IOrder>({} as IOrder);
+
   useEffect(() => {
-    const getPizzasVariationsList = async () => {
-      const result = await getPizzasVariations();
-      setPizzasVariaitons(result);
-    };
-    getPizzasVariationsList();
+    basketStore.loadData(1);
+
+    // const getSpecificOrder = async (id: number) => {
+    //   const result = await getOrder(id);
+    //   setOrder(result);
+    //   console.log(result);
+    //   basketStore.setBasket(result);
+    //   console.log(basketStore.orderLines);
+    // };
+    // getSpecificOrder(1);
   }, []);
 
   return (
     <Grid container justify="center" className={root}>
-      <Grid item>
-        {pizzasVariations.map(pizzaVariation => (
-          <PizzaInBasket key={pizzaVariation.id} pizzaVariation={pizzaVariation} />
-        ))}
-      </Grid>
+      {basketStore.order.orderLines.map(orderLine => (
+        <Grid item key={orderLine.id}>
+          <PizzaInBasket orderLine={orderLine} />
+        </Grid>
+      ))}
     </Grid>
   );
-};
+});
