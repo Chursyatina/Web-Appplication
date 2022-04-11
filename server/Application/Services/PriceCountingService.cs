@@ -55,5 +55,17 @@
 
             return price;
         }
+
+        public static decimal GetPriceForBasket(Basket basket)
+        {
+            decimal price = 0;
+
+            foreach (OrderLine basketLine in basket.OrderLines)
+            {
+                price += basketLine.Price;
+            }
+
+            return price;
+        }
     }
 }

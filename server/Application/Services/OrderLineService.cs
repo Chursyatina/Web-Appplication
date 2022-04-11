@@ -6,6 +6,7 @@
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.Interfaces;
+    using Domain.Models;
     using Domain.Repository;
 
     public class OrderLineService : IOrderLineService
@@ -39,6 +40,18 @@
             return null;
         }
 
+        public OrderLine GetModelById(int id)
+        {
+            var existingOrderLine = _orderLineRepository.GetById(id);
+
+            if (existingOrderLine != null)
+            {
+                return existingOrderLine;
+            }
+
+            return null;
+        }
+
         public IEnumerable<int> GetIdentificators()
         {
             return _orderLineRepository.GetIdentificators();
@@ -50,6 +63,14 @@
             int orderId = (int)item.OrderId;
 
             return _orderLineRepository.Insert(item.ToModel(), pizzaVariationId, orderId).ToViewModel();
+        }
+
+        public OrderLineDto InsertToBasket(OrderLineCreateRequestDto item)
+        {
+            int pizzaVariationId = (int)item.PizzaVariationId;
+            int basketId = (int)item.OrderId;
+
+            return _orderLineRepository.InsertToBasket(item.ToModel(), pizzaVariationId, basketId).ToViewModel();
         }
 
         public OrderLineDto Patch(int id, OrderLinePatchRequestDto item)

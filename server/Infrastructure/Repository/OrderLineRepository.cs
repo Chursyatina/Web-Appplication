@@ -127,6 +127,29 @@
             return entity.Entity;
         }
 
+        public OrderLine InsertToBasket(OrderLine item, int pizzaVariationId, int basketId)
+        {
+            item.PizzaVariation = _context.PizzasVariations
+                .Include(i => i.Ingredients)
+                .Include(a => a.AdditionalIngredients)
+                .Include(s => s.Size)
+                .Include(d => d.Dough)
+                .Include(p => p.Pizza)
+                .ThenInclude(i => i.Ingredients)
+                .FirstOrDefault(pv => pv.Id == pizzaVariationId && !pv.IsDeleted);
+
+            item.Basket = _context.Baskets
+                .FirstOrDefault(or => or.Id == basketId && !or.IsDeleted);
+            item.Quantity = 1;
+            item.Price = PriceCountingService.GetPriceForOrderLine(item);
+
+            item.Basket.Price = PriceCountingService.GetPriceForBasket(item.Basket);
+
+            var entity = _context.Add(item);
+            _context.SaveChanges();
+            return entity.Entity;
+        }
+
         public IEnumerable<int> GetIdentificators()
         {
             return _context.OrderLines.AsNoTracking().Select(l => l.Id);

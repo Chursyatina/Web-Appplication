@@ -9,6 +9,7 @@
         public User()
         {
             Orders = new List<Order>();
+            Basket = new Basket();
         }
 
         [Required]

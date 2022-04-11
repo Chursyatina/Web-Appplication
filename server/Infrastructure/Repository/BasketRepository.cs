@@ -31,5 +31,16 @@
         {
             return _context.Baskets.AsNoTracking().FirstOrDefault(d => d.Id == id && d.IsDeleted == false);
         }
+
+        public Basket UpdateByModel(Basket basket)
+        {
+            var existingItem = _context.Baskets.Find(basket.Id);
+
+            existingItem.OrderLines = basket.OrderLines;
+
+            var entity = _context.Update(existingItem);
+            _context.SaveChanges();
+            return entity.Entity;
+        }
     }
 }

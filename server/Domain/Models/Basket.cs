@@ -11,12 +11,12 @@
         }
 
         [Required]
+        public User User { get; set; }
+
+        [Required]
         public ICollection<OrderLine> OrderLines { get; set; }
 
         [Required]
         public decimal Price { get; set; }
-
-        [Required]
-        public User User { get; set; }
     }
 }

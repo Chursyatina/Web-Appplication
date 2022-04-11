@@ -1,9 +1,10 @@
 ﻿namespace Infrastructure.EF
 {
     using Domain.Models;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<User>
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
                  : base(options)
@@ -30,11 +31,15 @@
 
         public DbSet<Basket> Baskets { get; set; }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>()
+                .HasOne(b => b.Basket)
+                .WithOne(u => u.User)
+                .HasForeignKey<User>(p => p.Id);
         }
     }
 }

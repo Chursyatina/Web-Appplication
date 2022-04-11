@@ -75,5 +75,18 @@
         {
             return _pizzaVariationRepository.GetIdentificators();
         }
+
+        public PizzaVariationDto FullInsert(PizzaVariationUpdateRequestDto item)
+        {
+            int pizzaId = (int)item.PizzaId;
+            int doughId = (int)item.DoughId;
+            int sizeId = (int)item.SizeId;
+            IEnumerable<int> ingredientsIds = item.Ingredients;
+            IEnumerable<int> additionalIds = item.AdditionalIngredients;
+
+            PizzaVariation pizzaVariationModel = item.ToModel();
+
+            return _pizzaVariationRepository.Insert(pizzaVariationModel, pizzaId, doughId, sizeId, ingredientsIds.ToList(), additionalIds.ToList()).ToViewModel();
+        }
     }
 }

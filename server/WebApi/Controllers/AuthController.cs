@@ -1,9 +1,13 @@
 ﻿namespace WebApi.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Application.DTO.Request;
     using Application.DTO.Request.AuthRequestDtos;
+    using Application.DTO.Response;
+    using Application.Interfaces;
     using Application.Interfaces.ServicesInterfaces;
     using Domain.Models;
     using Microsoft.AspNetCore.Identity;
@@ -14,17 +18,51 @@
     [Produces("application/json")]
     public class AuthController : Controller
     {
-        private readonly ILogger<PizzaController> _logger;
+        private readonly ILogger<AuthController> _logger;
         private readonly IBasketService _basketService;
+        private readonly IPizzaVariationService _pizzaVariationService;
+        private readonly IPizzaService _pizzaService;
+        private readonly ISizeService _sizeService;
+        private readonly IDoughService _doughService;
+        private readonly IIngredientService _ingredientService;
+        private readonly IAdditionalIngredientService _additionalIngredientService;
+        private readonly IOrderLineService _orderLineService;
+        private readonly IUserService _userService;
+
+        // private readonly PizzaVariationValidator _pizzaVariationValidator;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
-        public AuthController(ILogger<PizzaController> logger, UserManager<User> userManager, SignInManager<User> signInManager, IBasketService basketService)
+        public AuthController(
+            ILogger<AuthController> logger,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IBasketService basketService,
+            IPizzaVariationService pizzaVariationService,
+            IPizzaService pizzaService,
+            ISizeService sizeService,
+            IDoughService doughService,
+            IIngredientService ingredientService,
+            IAdditionalIngredientService additionalIngredientService,
+            IOrderLineService orderLineService,
+            IUserService userService)
+
+            // PizzaVariationValidator pizzaVariationValidator
         {
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
             _basketService = basketService;
+            _pizzaVariationService = pizzaVariationService;
+            _pizzaService = pizzaService;
+            _sizeService = sizeService;
+            _doughService = doughService;
+            _ingredientService = ingredientService;
+            _additionalIngredientService = additionalIngredientService;
+
+            // _pizzaVariationValidator = pizzaVariationValidator;
+            _orderLineService = orderLineService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -33,7 +71,7 @@
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Phone = model.Phone, Basket = new Basket() };
+                User user = new User { UserName = model.Phone, Phone = model.Phone, Password = model.Password, Basket = new Basket() };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -41,6 +79,8 @@
                 {
                     await _userManager.AddToRoleAsync(user, "user");
                     await _signInManager.SignInAsync(user, false);
+
+                    // User fullUser = _userService.InitializaBasketByPhone(model.Phone);
                     var msg = new
                     {
                         message = $"Добавлен новый пользователь: {user.UserName}",
@@ -74,6 +114,7 @@
         }
 
         [Route("api/signin")]
+        [HttpPost]
         public async Task<IActionResult> Login([FromBody] SigninRequestDto model)
         {
             if (ModelState.IsValid)
@@ -95,6 +136,7 @@
                         message = "Вход не выполнен.",
                         error = ModelState.Values.SelectMany(e => e.Errors.Select(er => er.ErrorMessage)),
                     };
+                    _logger.LogError(errorMsg.message);
                     return BadRequest(errorMsg);
                 }
             }
@@ -109,7 +151,7 @@
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/signout")]
         public async Task<IActionResult> Signout()
         {
@@ -121,7 +163,7 @@
             return Ok(msg);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/authinfo")]
         public async Task<IActionResult> AuthInfo()
         {
@@ -133,55 +175,139 @@
             return Ok(msg);
         }
 
-        // [HttpPost]
-        // [Route("api/basket/add")]
-        // public async Task<ActionResult<User>> AddOrderLineToBasket(Game game)
-        // {
-        //    if (!ModelState.IsValid)
-        //    {
-        //        logger.LogError($"BadRequest: {ModelState}");
-        //        return BadRequest(ModelState);
-        //    }
+        [HttpPost]
+        [Route("api/basket/add")]
+        public async Task<ActionResult<User>> AddPizzaToBasket([FromBody] PizzaVariationUpdateRequestDto pizzaVariation)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        // var user = await GetCurrentUserAsync();
+            var user = await GetCurrentUserAsync();
 
-        // if (user != null)
-        //    {
-        //        user.Basket.BasketGames.Add(new BasketGame() { Game = await baseContext.Game.GetItemByID(game.Id) });
+            if (user != null)
+            {
+                IEnumerable<int> pizzasIds = _pizzaService.GetIdentificators();
+                IEnumerable<int> sizesIds = _sizeService.GetIdentificators();
+                IEnumerable<int> doughsIds = _doughService.GetIdentificators();
+                IEnumerable<int> ingredientsIds = _ingredientService.GetIdentificators();
+                IEnumerable<int> additionalIngredientsIds = _additionalIngredientService.GetIdentificators();
 
-        // try
-        //        {
-        //            baseContext.Basket.UpdateItem(user.Basket);
-        //            baseContext.Save();
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            logger.LogError(e.Message, e);
-        //        }
+                // ValidationResult validationResult = _pizzaVariationValidator.Validate(pizzaVariation, pizzasIds, sizesIds, doughsIds, ingredientsIds, additionalIngredientsIds);
+                // if (!validationResult.IsValid)
+                // {
+                //    return BadRequest(new JsonResult(validationResult.ErrorMessage) { StatusCode = 400, });
+                // }
+                PizzaVariationDto pizzaToInsert = _pizzaVariationService.FullInsert(pizzaVariation);
 
-        // logger.LogInformation($"Игра {game.Name} была добавлена в корзину пользователя {user.UserName}");
-        //        return user;
-        //    }
-        //    else
-        //    {
-        //        var errorMsg = new
-        //        {
-        //            message = "Вход не выполнен.",
-        //        };
-        //        logger.LogError(errorMsg.message);
-        //        return BadRequest(errorMsg);
-        //    }
-        // }
+                OrderLineCreateRequestDto orderLineCreateRequestDto = new OrderLineCreateRequestDto();
+                orderLineCreateRequestDto.OrderId = user.Basket.Id;
+                orderLineCreateRequestDto.PizzaVariationId = pizzaToInsert.Id;
+
+                OrderLineDto returnedDto = _orderLineService.InsertToBasket(orderLineCreateRequestDto);
+
+                return user;
+            }
+            else
+            {
+                var errorMsg = new
+                {
+                    message = "Вход не выполнен.",
+                };
+                return BadRequest(errorMsg);
+            }
+        }
+
+        [HttpDelete]
+        [Route("api/basket/{id}")]
+        public async Task<ActionResult<User>> DeletePizzaFromBasket(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await GetCurrentUserAsync();
+
+            if (user != null)
+            {
+                var temp = user.Basket.OrderLines.FirstOrDefault(bg => bg.PizzaVariation.Id == id);
+                if (temp != null)
+                {
+                    user.Basket.OrderLines.Remove(temp);
+                }
+
+                try
+                {
+                    _basketService.UpdateByModel(user.Basket);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message, e);
+                }
+
+                return user;
+            }
+            else
+            {
+                var errorMsg = new
+                {
+                    message = "Вход не выполнен.",
+                };
+                _logger.LogError(errorMsg.message);
+                return BadRequest(errorMsg);
+            }
+        }
+
+        [HttpDelete]
+        [Route("api/basket/clear")]
+        public async Task<ActionResult<User>> ClearBasket()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await GetCurrentUserAsync();
+
+            if (user != null)
+            {
+                user.Basket.OrderLines.Clear();
+
+                try
+                {
+                    _basketService.UpdateByModel(user.Basket);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.Message, e);
+                }
+
+                _logger.LogInformation($"Корзина пользователя {user.UserName} успешно очищена");
+                return user;
+            }
+            else
+            {
+                var errorMsg = new
+                {
+                    message = "Вход не выполнен.",
+                };
+                _logger.LogError(errorMsg.message);
+                return BadRequest(errorMsg);
+            }
+        }
+
+        [HttpGet]
         private async Task<User> GetCurrentUserAsync()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
             if (user != null)
             {
-                var baskets = _basketService.GetModels();
-                var basket = baskets.FirstOrDefault(b => b.User.Id == user.Id) ?? new Basket();
+                User existingUser = _userService.GetModelById(user.Id);
 
-                basket.OrderLines = basket.OrderLines ?? new List<OrderLine>();
+                return existingUser;
             }
 
             return user;

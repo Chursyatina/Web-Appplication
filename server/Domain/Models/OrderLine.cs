@@ -7,8 +7,9 @@
         [Required]
         public PizzaVariation PizzaVariation { get; set; }
 
-        [Required]
         public Order Order { get; set; }
+
+        public Basket Basket { get; set; }
 
         [Required]
         [Range(0.1, 100000)]

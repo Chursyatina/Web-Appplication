@@ -11,6 +11,11 @@
     {
         private IBasketRepository _basketRepository;
 
+        public BasketService(IBasketRepository basketRepository)
+        {
+            _basketRepository = basketRepository;
+        }
+
         public void Delete(int id)
         {
             _basketRepository.Delete(id);
@@ -44,6 +49,11 @@
         public BasketDto Update(int id, BasketUpdateRequestDto item)
         {
             throw new System.NotImplementedException();
+        }
+
+        public Basket UpdateByModel(Basket basket)
+        {
+            return _basketRepository.UpdateByModel(basket);
         }
     }
 }

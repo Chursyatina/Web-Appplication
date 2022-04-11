@@ -8,5 +8,7 @@
     public interface IBasketService : IService<BasketDto, BasketCreateRequestDto, BasketUpdateRequestDto, BasketPatchRequestDto>
     {
         public IEnumerable<Basket> GetModels();
+
+        public Basket UpdateByModel(Basket basket);
     }
 }

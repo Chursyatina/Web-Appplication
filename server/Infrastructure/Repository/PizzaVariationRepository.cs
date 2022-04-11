@@ -144,6 +144,29 @@
             return entity.Entity;
         }
 
+        public PizzaVariation Insert(PizzaVariation item, int pizzaId, int sizeId, int doughId, List<int> ingredientsIds, List<int> additionalIngredientsIds)
+        {
+            item.Pizza = _context.Pizzas
+                .Include(pi => pi.Ingredients)
+                .FirstOrDefault(p => p.Id == pizzaId && !p.IsDeleted);
+            item.Size = _context.Sizes.FirstOrDefault(p => p.Id == sizeId && !p.IsDeleted);
+            item.Dough = _context.Doughs.FirstOrDefault(p => p.Id == doughId && !p.IsDeleted);
+            item.Ingredients.AddRange(item.Pizza.Ingredients);
+
+            if (ingredientsIds.Count != 0)
+            {
+                item = ChangeIngredients(item, ingredientsIds);
+            }
+
+            item = ChangeAdditionalIngredients(item, additionalIngredientsIds);
+
+            item.Price = PriceCountingService.GetPriceForPizzaVariation(item);
+
+            var entity = _context.Add(item);
+            _context.SaveChanges();
+            return entity.Entity;
+        }
+
         public IEnumerable<int> GetIdentificators()
         {
             return _context.PizzasVariations.AsNoTracking().Select(pv => pv.Id);

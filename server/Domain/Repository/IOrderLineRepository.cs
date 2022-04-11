@@ -9,6 +9,8 @@
 
         public OrderLine Insert(OrderLine item, int pizzaVariationId, int orderId);
 
+        public OrderLine InsertToBasket(OrderLine item, int pizzaVariationId, int basketId);
+
         public OrderLine Patch(int id, OrderLine item, int? pizzaVariationId);
 
         public OrderLine Update(int id, OrderLine item, int pizzaVariationId);
