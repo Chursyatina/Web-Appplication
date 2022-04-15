@@ -7,7 +7,7 @@
     public class PizzaDto : IResponseDto
     {
         [Required]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 1)]

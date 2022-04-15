@@ -14,7 +14,7 @@
             _orderLineService = orderLineService;
         }
 
-        public ValidationResult Validate(IOrderLineWithPizzaVariationAndOrder entity, IEnumerable<int> pizzasVariationsIds = null, IEnumerable<int> ordersIds = null)
+        public ValidationResult Validate(IOrderLineWithPizzaVariationAndOrder entity, IEnumerable<string> pizzasVariationsIds = null, IEnumerable<string> ordersIds = null)
         {
             ValidationResult annotationsValidationResult = ValidateAnnotations(entity);
             if (!annotationsValidationResult.IsValid)
@@ -24,7 +24,7 @@
 
             if (entity.PizzaVariationId != null)
             {
-                ValidationResult pizzaVariationsCoexistenceResult = PizzaVariationCoexistenceValidation((int)entity.PizzaVariationId, pizzasVariationsIds);
+                ValidationResult pizzaVariationsCoexistenceResult = PizzaVariationCoexistenceValidation(entity.PizzaVariationId, pizzasVariationsIds);
                 if (!pizzaVariationsCoexistenceResult.IsValid)
                 {
                     return pizzaVariationsCoexistenceResult;
@@ -33,7 +33,7 @@
 
             if (entity.OrderId != null)
             {
-                ValidationResult orderCoexistenceResult = OrderCoexistenceValidation((int)entity.OrderId, ordersIds);
+                ValidationResult orderCoexistenceResult = OrderCoexistenceValidation(entity.OrderId, ordersIds);
                 if (!orderCoexistenceResult.IsValid)
                 {
                     return orderCoexistenceResult;
@@ -43,7 +43,7 @@
             return new ValidationResult(true);
         }
 
-        public ValidationResult PizzaVariationCoexistenceValidation(int pizzaVariationId, IEnumerable<int> pizzasVariationsIds)
+        public ValidationResult PizzaVariationCoexistenceValidation(string pizzaVariationId, IEnumerable<string> pizzasVariationsIds)
         {
             if (!pizzasVariationsIds.Contains(pizzaVariationId))
             {
@@ -53,7 +53,7 @@
             return new ValidationResult(true);
         }
 
-        public ValidationResult OrderCoexistenceValidation(int orderId, IEnumerable<int> ordersIds)
+        public ValidationResult OrderCoexistenceValidation(string orderId, IEnumerable<string> ordersIds)
         {
             if (!ordersIds.Contains(orderId))
             {

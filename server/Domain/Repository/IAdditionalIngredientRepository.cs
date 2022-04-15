@@ -7,12 +7,12 @@
     {
         public AdditionalIngredient GetByName(string name);
 
-        public AdditionalIngredient Patch(int id, AdditionalIngredient item);
+        public AdditionalIngredient Patch(string id, AdditionalIngredient item);
 
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
 
         public AdditionalIngredient Insert(AdditionalIngredient item);
 
-        public AdditionalIngredient Update(int id, AdditionalIngredient item);
+        public AdditionalIngredient Update(string id, AdditionalIngredient item);
     }
 }

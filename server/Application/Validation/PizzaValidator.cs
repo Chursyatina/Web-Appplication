@@ -13,7 +13,7 @@
             _pizzaService = pizzaService;
         }
 
-        public ValidationResult Validate(INamedPizzaWithIngredients entity, int id, IEnumerable<int> ingredientsIndentificators = null)
+        public ValidationResult Validate(INamedPizzaWithIngredients entity, string id, IEnumerable<string> ingredientsIndentificators = null)
         {
             ValidationResult annotationsValidationResult = ValidateAnnotations(entity);
             if (!annotationsValidationResult.IsValid)
@@ -38,7 +38,7 @@
                     return ingredientUniquenessValidationResult;
                 }
 
-                foreach (int ingId in entity.Ingredients)
+                foreach (string ingId in entity.Ingredients)
                 {
                     if (!ingredientsIndentificators.Contains(ingId))
                     {
@@ -67,11 +67,11 @@
             return new ValidationResult(true);
         }
 
-        private ValidationResult IngredientUniquenessValidation(List<int> ingredientsIds)
+        private ValidationResult IngredientUniquenessValidation(List<string> ingredientsIds)
         {
             ingredientsIds.Sort();
-            int? current = null;
-            foreach (int id in ingredientsIds)
+            string current = null;
+            foreach (string id in ingredientsIds)
             {
                 if (current == id)
                 {

@@ -6,12 +6,12 @@
     public class OrderLineUpdateRequestDto : IOrderLineWithPizzaVariationAndOrder
     {
         [Required]
-        public int Quantity { get; set; }
+        public string Quantity { get; set; }
 
         [Required]
-        public int? PizzaVariationId { get; set; }
+        public string PizzaVariationId { get; set; }
 
         [Required]
-        public int? OrderId { get; set; }
+        public string OrderId { get; set; }
     }
 }

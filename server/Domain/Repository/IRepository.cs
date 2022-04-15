@@ -6,8 +6,8 @@
     {
         IEnumerable<TItem> GetAll();
 
-        TItem GetById(int id);
+        TItem GetById(string id);
 
-        void Delete(int id);
+        void Delete(string id);
     }
 }

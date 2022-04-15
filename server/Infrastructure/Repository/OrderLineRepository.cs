@@ -17,13 +17,13 @@
             _context = context;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _context.OrderLines.Find(id).IsDeleted = true;
             _context.SaveChanges();
         }
 
-        public OrderLine GetById(int id)
+        public OrderLine GetById(string id)
         {
             OrderLine existingOrderLine = _context.OrderLines
                 .Include(p => p.PizzaVariation).ThenInclude(o => o.Pizza)
@@ -49,7 +49,7 @@
                 .AsNoTracking();
         }
 
-        public OrderLine Update(int id, OrderLine item, int pizzaVariationId)
+        public OrderLine Update(string id, OrderLine item, string pizzaVariationId)
         {
             var existingItem = _context.OrderLines
                 .Include(o => o.Order)
@@ -72,7 +72,7 @@
             return entity.Entity;
         }
 
-        public OrderLine Patch(int id, OrderLine item, int? pizzaVariationId)
+        public OrderLine Patch(string id, OrderLine item, string pizzaVariationId)
         {
             var existingItem = _context.OrderLines
                 .Include(o => o.Order)
@@ -103,7 +103,7 @@
             return entity.Entity;
         }
 
-        public OrderLine Insert(OrderLine item, int pizzaVariationId, int orderId)
+        public OrderLine Insert(OrderLine item, string pizzaVariationId, string orderId)
         {
             item.PizzaVariation = _context.PizzasVariations
                 .Include(i => i.Ingredients)
@@ -127,7 +127,7 @@
             return entity.Entity;
         }
 
-        public OrderLine InsertToBasket(OrderLine item, int pizzaVariationId, int basketId)
+        public OrderLine InsertToBasket(OrderLine item, string pizzaVariationId, string basketId)
         {
             item.PizzaVariation = _context.PizzasVariations
                 .Include(i => i.Ingredients)
@@ -150,7 +150,7 @@
             return entity.Entity;
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _context.OrderLines.AsNoTracking().Select(l => l.Id);
         }

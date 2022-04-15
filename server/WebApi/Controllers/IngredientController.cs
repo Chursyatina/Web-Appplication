@@ -36,7 +36,7 @@
         [SwaggerResponse(200, "Returns ingredient by input id")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<IngredientDto> Get(int id)
+        public ActionResult<IngredientDto> Get(string id)
         {
             if (!ModelState.IsValid)
             {
@@ -71,7 +71,7 @@
         [SwaggerResponse(200, "Updates existing ingredient in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<IngredientDto> Update([FromRoute] int id, [FromBody] IngredientUpdateRequestDto ingredient)
+        public ActionResult<IngredientDto> Update([FromRoute] string id, [FromBody] IngredientUpdateRequestDto ingredient)
         {
             var existingIngredient = _ingredientService.GetById(id);
             if (existingIngredient == null)
@@ -92,7 +92,7 @@
         [SwaggerResponse(200, "Updates existing ingredient in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<IngredientDto> Patch([FromRoute] int id, [FromBody] IngredientPatchRequestDto ingredient)
+        public ActionResult<IngredientDto> Patch([FromRoute] string id, [FromBody] IngredientPatchRequestDto ingredient)
         {
             var existingIngredient = _ingredientService.GetById(id);
             if (existingIngredient == null)
@@ -113,7 +113,7 @@
         [SwaggerResponse(204, "Deletes existing ingredient from database(by changing flag IsDeleted)")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] string id)
         {
             var existingIngredient = _ingredientService.GetById(id);
             if (existingIngredient == null)

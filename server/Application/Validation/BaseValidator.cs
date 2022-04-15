@@ -22,7 +22,7 @@
             return new ValidationResult(true);
         }
 
-        protected ValidationResult UniqueNameValidation<TIResponseDto>(INamedRequestDto entity, INamedEntityService<TIResponseDto> service, int? updatingEntityId = null)
+        protected ValidationResult UniqueNameValidation<TIResponseDto>(INamedRequestDto entity, INamedEntityService<TIResponseDto> service, string updatingEntityId = null)
             where TIResponseDto : IResponseDto
         {
             IResponseDto existingEntity = service.GetByName(entity.Name);

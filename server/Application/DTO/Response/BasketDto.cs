@@ -4,6 +4,6 @@
 
     public class BasketDto : IResponseDto
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 }

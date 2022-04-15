@@ -40,7 +40,7 @@
             var successResult = result.Result as CreatedResult;
             var resultAdditionalIngredient = successResult.Value as AdditionalIngredientDto;
 
-            var resultOfGettingNewAdditionalIngredient = _fixture.AdditionalIngredientsController.Get(4);
+            var resultOfGettingNewAdditionalIngredient = _fixture.AdditionalIngredientsController.Get(resultAdditionalIngredient.Id);
             var successResultOfGettingNewAdditionalIngredient = resultOfGettingNewAdditionalIngredient.Result as OkObjectResult;
             var existingAdditionalIngredient = successResultOfGettingNewAdditionalIngredient.Value as AdditionalIngredientDto;
 
@@ -48,7 +48,7 @@
             Assert.True(AdditionalIngredientEqualityChecker.IsDtoEqualsDto(resultAdditionalIngredient, expectedAdditionalIngredient) && AdditionalIngredientEqualityChecker.IsDtoEqualsDto(expectedAdditionalIngredient, existingAdditionalIngredient));
 
             // Clear changes
-            _fixture.AdditionalIngredientsController.Delete(4);
+            _fixture.AdditionalIngredientsController.Delete(resultAdditionalIngredient.Id);
         }
 
         [Fact]

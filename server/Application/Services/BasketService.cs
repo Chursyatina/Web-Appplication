@@ -16,7 +16,7 @@
             _basketRepository = basketRepository;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _basketRepository.Delete(id);
         }
@@ -26,7 +26,7 @@
             throw new System.NotImplementedException();
         }
 
-        public BasketDto GetById(int id)
+        public BasketDto GetById(string id)
         {
             throw new System.NotImplementedException();
         }
@@ -41,12 +41,12 @@
             throw new System.NotImplementedException();
         }
 
-        public BasketDto Patch(int id, BasketPatchRequestDto item)
+        public BasketDto Patch(string id, BasketPatchRequestDto item)
         {
             throw new System.NotImplementedException();
         }
 
-        public BasketDto Update(int id, BasketUpdateRequestDto item)
+        public BasketDto Update(string id, BasketUpdateRequestDto item)
         {
             throw new System.NotImplementedException();
         }

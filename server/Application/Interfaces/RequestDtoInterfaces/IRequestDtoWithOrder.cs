@@ -2,6 +2,6 @@
 {
     public interface IRequestDtoWithOrder : IRequestDto
     {
-        public int? OrderId { get; set; }
+        public string OrderId { get; set; }
     }
 }

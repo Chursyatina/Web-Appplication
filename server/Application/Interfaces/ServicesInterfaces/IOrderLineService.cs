@@ -7,10 +7,10 @@
 
     public interface IOrderLineService : IService<OrderLineDto, OrderLineCreateRequestDto, OrderLineUpdateRequestDto, OrderLinePatchRequestDto>
     {
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
 
         public OrderLineDto InsertToBasket(OrderLineCreateRequestDto item);
 
-        public OrderLine GetModelById(int id);
+        public OrderLine GetModelById(string id);
     }
 }

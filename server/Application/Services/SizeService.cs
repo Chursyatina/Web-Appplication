@@ -17,7 +17,7 @@
             _sizeRepository = sizeRepository;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _sizeRepository.Delete(id);
         }
@@ -34,7 +34,7 @@
             return null;
         }
 
-        public SizeDto GetById(int id)
+        public SizeDto GetById(string id)
         {
             var existingSize = _sizeRepository.GetById(id);
 
@@ -56,17 +56,17 @@
             return _sizeRepository.Insert(item.ToModel()).ToViewModel();
         }
 
-        public SizeDto Update(int id, SizeUpdateRequestDto item)
+        public SizeDto Update(string id, SizeUpdateRequestDto item)
         {
             return _sizeRepository.Update(id, item.ToModel()).ToViewModel();
         }
 
-        public SizeDto Patch(int id, SizePatchRequestDto size)
+        public SizeDto Patch(string id, SizePatchRequestDto size)
         {
             return _sizeRepository.Patch(id, size.ToModel()).ToViewModel();
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _sizeRepository.GetIdentificators();
         }

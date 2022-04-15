@@ -5,5 +5,14 @@ export const pizzaListStyles = makeStyles(() =>
     root: {
       flexGrow: 1,
     },
+    summary: {
+      width: '80%',
+      height: '100%',
+      padding: 10,
+    },
+    button: {
+      marginTop: 7,
+      padding: 7,
+    },
   }),
 );

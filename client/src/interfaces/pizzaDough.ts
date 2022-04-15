@@ -1,5 +1,5 @@
 export interface IPizzaDough {
-  id: number;
+  id: string;
   name: string;
   priceMultiplier: number;
   image: string;

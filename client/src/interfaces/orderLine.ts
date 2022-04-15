@@ -1,7 +1,7 @@
 import { IPizzaVariation } from './pizzaVariation';
 
 export interface IOrderLine {
-  id: number;
+  id: string;
   pizzaVariation: IPizzaVariation;
   price: number;
   quantity: number;

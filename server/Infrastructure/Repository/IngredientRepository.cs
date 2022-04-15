@@ -16,13 +16,13 @@
             _context = context;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _context.Ingredients.Find(id).IsDeleted = true;
             _context.SaveChanges();
         }
 
-        public Ingredient GetById(int id)
+        public Ingredient GetById(string id)
         {
             return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Id == id && p.IsDeleted == false);
         }
@@ -37,12 +37,12 @@
             return _context.Ingredients.AsNoTracking().Where(p => p.IsDeleted == false);
         }
 
-        public IQueryable<Ingredient> GetIngredientsById(List<int> identificators)
+        public IQueryable<Ingredient> GetIngredientsById(List<string> identificators)
         {
             return _context.Ingredients.AsNoTracking().Where(ing => identificators.Contains(ing.Id));
         }
 
-        public List<int> GetIdentificators()
+        public List<string> GetIdentificators()
         {
             return _context.Ingredients.AsNoTracking().Select(ing => ing.Id).ToList();
         }
@@ -54,7 +54,7 @@
             return entity.Entity;
         }
 
-        public Ingredient Update(int id, Ingredient item)
+        public Ingredient Update(string id, Ingredient item)
         {
             var existingItem = _context.Ingredients.Find(id);
 
@@ -67,7 +67,7 @@
             return entity.Entity;
         }
 
-        public Ingredient Patch(int id, Ingredient item)
+        public Ingredient Patch(string id, Ingredient item)
         {
             var existingItem = _context.Ingredients.Find(id);
 

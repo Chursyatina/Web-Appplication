@@ -17,7 +17,7 @@
             _orderRepository = orderRepository;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _orderRepository.Delete(id);
         }
@@ -27,7 +27,7 @@
             return _orderRepository.GetAll().Select(x => x.ToViewModel()).ToList();
         }
 
-        public OrderDto GetById(int id)
+        public OrderDto GetById(string id)
         {
             var existingOrder = _orderRepository.GetById(id);
 
@@ -39,7 +39,7 @@
             return null;
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _orderRepository.GetIdentificators();
         }
@@ -49,12 +49,12 @@
             return _orderRepository.Insert(item.ToModel()).ToViewModel();
         }
 
-        public OrderDto Patch(int id, OrderPatchRequestDto item)
+        public OrderDto Patch(string id, OrderPatchRequestDto item)
         {
             return _orderRepository.Patch(id, item.ToModel(), item.OrderLinesIds).ToViewModel();
         }
 
-        public OrderDto Update(int id, OrderUpdateRequestDto item)
+        public OrderDto Update(string id, OrderUpdateRequestDto item)
         {
             return _orderRepository.Update(id, item.ToModel(), item.OrderLinesIds.ToList()).ToViewModel();
         }

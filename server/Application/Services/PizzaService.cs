@@ -23,7 +23,7 @@
             return _pizzaRepository.GetAll().Select(x => x.ToViewModel());
         }
 
-        public PizzaDto GetById(int id)
+        public PizzaDto GetById(string id)
         {
             var existingPizza = _pizzaRepository.GetById(id);
 
@@ -47,17 +47,17 @@
             return null;
         }
 
-        public PizzaDto Update(int id, PizzaUpdateRequestDto pizza)
+        public PizzaDto Update(string id, PizzaUpdateRequestDto pizza)
         {
-            IEnumerable<int> ingredientsIds = pizza.Ingredients;
+            IEnumerable<string> ingredientsIds = pizza.Ingredients;
             Pizza pizzaModel = pizza.ToModel();
 
             return _pizzaRepository.Update(id, pizzaModel, ingredientsIds.ToList()).ToViewModel();
         }
 
-        public PizzaDto Patch(int id, PizzaPatchRequestDto pizza)
+        public PizzaDto Patch(string id, PizzaPatchRequestDto pizza)
         {
-            IEnumerable<int> ingredientsIds = pizza.Ingredients;
+            IEnumerable<string> ingredientsIds = pizza.Ingredients;
             Pizza pizzaModel = pizza.ToModel();
 
             if (pizza.Ingredients == null)
@@ -78,12 +78,12 @@
             return _pizzaRepository.Insert(pizza.ToModel()).ToViewModel();
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _pizzaRepository.Delete(id);
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _pizzaRepository.GetIdentificators();
         }

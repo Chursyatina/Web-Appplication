@@ -36,7 +36,7 @@
         [SwaggerResponse(200, "Returns dough by input id")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<DoughDto> Get(int id)
+        public ActionResult<DoughDto> Get(string id)
         {
             if (!ModelState.IsValid)
             {
@@ -71,7 +71,7 @@
         [SwaggerResponse(200, "Updates existing dough in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<DoughDto> Update([FromRoute] int id, [FromBody] DoughUpdateRequestDto dough)
+        public ActionResult<DoughDto> Update([FromRoute] string id, [FromBody] DoughUpdateRequestDto dough)
         {
             var existingDough = _doughService.GetById(id);
             if (existingDough == null)
@@ -92,7 +92,7 @@
         [SwaggerResponse(200, "Updates existing dough in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<DoughDto> Patch([FromRoute] int id, [FromBody] DoughPatchRequestDto dough)
+        public ActionResult<DoughDto> Patch([FromRoute] string id, [FromBody] DoughPatchRequestDto dough)
         {
             var existingDough = _doughService.GetById(id);
             if (existingDough == null)
@@ -113,7 +113,7 @@
         [SwaggerResponse(204, "Deletes existing dough from database(by changing flag IsDeleted)")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] string id)
         {
             var existingDough = _doughService.GetById(id);
             if (existingDough == null)

@@ -48,7 +48,7 @@
             NotFoundResult expected = new NotFoundResult();
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Delete(12);
+            var result = _fixture.AdditionalIngredientsController.Delete("12");
             var notFoundResult = result as NotFoundResult;
 
             // Assert

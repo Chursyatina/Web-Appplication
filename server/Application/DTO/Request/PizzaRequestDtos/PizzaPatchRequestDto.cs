@@ -16,6 +16,6 @@
 
         public string SingleItemImageLink { get; set; }
 
-        public IEnumerable<int> Ingredients { get; set; }
+        public IEnumerable<string> Ingredients { get; set; }
     }
 }

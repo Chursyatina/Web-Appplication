@@ -10,7 +10,7 @@ class PizzaStore {
   basicPizzaPrice = 200;
 
   pizza: IPizza = {
-    id: -1,
+    id: '-1',
     imageLink: ' ',
     singleItemImageLink: ' ',
     name: ' ',
@@ -18,8 +18,8 @@ class PizzaStore {
     price: 0,
     ingredients: [],
   };
-  size: IPizzaSize = { id: -1, name: ' ', priceMultiplier: -1, image: ' ' };
-  dough: IPizzaDough = { id: -1, name: ' ', priceMultiplier: -1, image: ' ' };
+  size: IPizzaSize = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ' };
+  dough: IPizzaDough = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ' };
   ingredients: IIngredient[] = [];
   additionalIngredients: IAdditionalIngredient[] = [];
   price = 0;
@@ -77,7 +77,7 @@ class PizzaStore {
 
     this.price *= this.dough.priceMultiplier;
 
-    if (this.pizza.id !== -1 && this.size.id !== -1 && this.dough.id !== -1) {
+    if (this.pizza.id !== '-1' && this.size.id !== '-1' && this.dough.id !== '-1') {
       this.ingredients.forEach(ingredient => {
         this.price += ingredient.price;
       });

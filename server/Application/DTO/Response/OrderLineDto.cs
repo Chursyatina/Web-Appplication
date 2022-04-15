@@ -6,7 +6,7 @@
     public class OrderLineDto : IResponseDto
     {
         [Required]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         public PizzaVariationDto PizzaVariation { get; set; }

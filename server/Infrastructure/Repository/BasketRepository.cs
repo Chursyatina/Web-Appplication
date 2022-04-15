@@ -16,7 +16,7 @@
             _context = context;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _context.Baskets.Find(id).IsDeleted = true;
             _context.SaveChanges();
@@ -27,7 +27,7 @@
             return _context.Baskets.AsNoTracking().Where(p => p.IsDeleted == false);
         }
 
-        public Basket GetById(int id)
+        public Basket GetById(string id)
         {
             return _context.Baskets.AsNoTracking().FirstOrDefault(d => d.Id == id && d.IsDeleted == false);
         }

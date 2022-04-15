@@ -36,7 +36,7 @@
         [SwaggerResponse(200, "Returns size by input id")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<SizeDto> Get(int id)
+        public ActionResult<SizeDto> Get(string id)
         {
             if (!ModelState.IsValid)
             {
@@ -71,7 +71,7 @@
         [SwaggerResponse(200, "Updates existing size in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<SizeDto> Update([FromRoute] int id, [FromBody] SizeUpdateRequestDto size)
+        public ActionResult<SizeDto> Update([FromRoute] string id, [FromBody] SizeUpdateRequestDto size)
         {
             var existingSize = _sizeService.GetById(id);
             if (existingSize == null)
@@ -92,7 +92,7 @@
         [SwaggerResponse(200, "Updates existing size in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<SizeDto> Patch([FromRoute] int id, [FromBody] SizePatchRequestDto size)
+        public ActionResult<SizeDto> Patch([FromRoute] string id, [FromBody] SizePatchRequestDto size)
         {
             var existingSize = _sizeService.GetById(id);
             if (existingSize == null)
@@ -113,7 +113,7 @@
         [SwaggerResponse(204, "Deletes existing size from database(by changing flag IsDeleted)")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] string id)
         {
             var existingSize = _sizeService.GetById(id);
             if (existingSize == null)

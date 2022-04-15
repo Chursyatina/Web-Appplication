@@ -4,6 +4,6 @@
 
     public interface IRequestDtoWithOrderLines : IRequestDto
     {
-        public IEnumerable<int> OrderLinesIds { get; set; }
+        public IEnumerable<string> OrderLinesIds { get; set; }
     }
 }

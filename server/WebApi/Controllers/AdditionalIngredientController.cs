@@ -36,7 +36,7 @@
         [SwaggerResponse(200, "Returns additional ingredient by input id")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<AdditionalIngredientDto> Get(int id)
+        public ActionResult<AdditionalIngredientDto> Get(string id)
         {
             if (!ModelState.IsValid)
             {
@@ -71,7 +71,7 @@
         [SwaggerResponse(200, "Updates existing additional ingredient in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<AdditionalIngredientDto> Update([FromRoute] int id, [FromBody] AdditionalIngredientUpdateRequestDto additionalIngredient)
+        public ActionResult<AdditionalIngredientDto> Update([FromRoute] string id, [FromBody] AdditionalIngredientUpdateRequestDto additionalIngredient)
         {
             var existingAdditionalIngredient = _additionalIngredientService.GetById(id);
             if (existingAdditionalIngredient == null)
@@ -92,7 +92,7 @@
         [SwaggerResponse(200, "Updates existing additional ingredient in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<AdditionalIngredientDto> Patch([FromRoute] int id, [FromBody] AdditionalIngredientPatchRequestDto additionalIngredient)
+        public ActionResult<AdditionalIngredientDto> Patch([FromRoute] string id, [FromBody] AdditionalIngredientPatchRequestDto additionalIngredient)
         {
             var existingAdditionalIngredient = _additionalIngredientService.GetById(id);
             if (existingAdditionalIngredient == null)
@@ -113,7 +113,7 @@
         [SwaggerResponse(204, "Deletes existing additional ingredient from database(by changing flag IsDeleted)")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] string id)
         {
             var existingAdditionalIngredient = _additionalIngredientService.GetById(id);
             if (existingAdditionalIngredient == null)

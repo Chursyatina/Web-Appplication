@@ -9,3 +9,5 @@ export const INGREDIENTS_URL = 'api/ingredients';
 export const PIZZAS_VARIATIONS_URL = 'api/pizzasVariations';
 
 export const ORDERS_URL = 'api/orders';
+
+export const USERS_URL = 'api';

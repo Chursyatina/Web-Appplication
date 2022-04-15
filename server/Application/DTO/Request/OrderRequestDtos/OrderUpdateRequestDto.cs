@@ -7,9 +7,9 @@
     public class OrderUpdateRequestDto : IOrderRequestDtoWithOrderLines
     {
         [Required]
-        public int? OrderStatusId { get; set; }
+        public string OrderStatusId { get; set; }
 
         [Required]
-        public IEnumerable<int> OrderLinesIds { get; set; }
+        public IEnumerable<string> OrderLinesIds { get; set; }
     }
 }

@@ -18,7 +18,7 @@
             _context = context;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _context.Orders.Find(id).IsDeleted = true;
             _context.SaveChanges();
@@ -47,7 +47,7 @@
                 .AsNoTracking();
         }
 
-        public Order GetById(int id)
+        public Order GetById(string id)
         {
             Order existingOrder = _context.Orders
                 .Include(s => s.OrderStatus)
@@ -76,7 +76,7 @@
             return entity.Entity;
         }
 
-        public Order Patch(int id, Order item, IEnumerable<int> orderLinesIds)
+        public Order Patch(string id, Order item, IEnumerable<string> orderLinesIds)
         {
             var existingItem = _context.Orders
                 .Include(o => o.OrderLines)
@@ -107,7 +107,7 @@
             return entity.Entity;
         }
 
-        public Order Update(int id, Order item, List<int> orderLinesIds)
+        public Order Update(string id, Order item, List<string> orderLinesIds)
         {
             var existingItem = _context.Orders
                 .Include(o => o.OrderLines)
@@ -140,20 +140,20 @@
             return entity.Entity;
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _context.Orders.AsNoTracking().Select(l => l.Id);
         }
 
-        private Order ChangeOrderLines(Order existingItem, IEnumerable<int> orderLinesIds)
+        private Order ChangeOrderLines(Order existingItem, IEnumerable<string> orderLinesIds)
         {
-            List<int> existingItemOrderLines = existingItem.OrderLines.Select(line => line.Id).ToList();
+            List<string> existingItemOrderLines = existingItem.OrderLines.Select(line => line.Id).ToList();
 
-            List<int> remains = existingItemOrderLines.Intersect(orderLinesIds).ToList();
+            List<string> remains = existingItemOrderLines.Intersect(orderLinesIds).ToList();
 
-            List<int> toRemove = existingItemOrderLines.Except(remains).ToList();
+            List<string> toRemove = existingItemOrderLines.Except(remains).ToList();
 
-            List<int> toAdd = orderLinesIds.Except(remains).ToList();
+            List<string> toAdd = orderLinesIds.Except(remains).ToList();
 
             existingItem.OrderLines = existingItem.OrderLines.Where(l => !toRemove.Contains(l.Id)).ToList();
 

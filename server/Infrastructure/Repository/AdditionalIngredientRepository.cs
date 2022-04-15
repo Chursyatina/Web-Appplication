@@ -16,13 +16,13 @@
             _context = context;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _context.AdditionalIngredients.Find(id).IsDeleted = true;
             _context.SaveChanges();
         }
 
-        public AdditionalIngredient GetById(int id)
+        public AdditionalIngredient GetById(string id)
         {
             return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Id == id && p.IsDeleted == false);
         }
@@ -37,7 +37,7 @@
             return _context.AdditionalIngredients.AsNoTracking().Where(p => p.IsDeleted == false);
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _context.AdditionalIngredients.AsNoTracking().Select(ing => ing.Id);
         }
@@ -49,7 +49,7 @@
             return entity.Entity;
         }
 
-        public AdditionalIngredient Update(int id, AdditionalIngredient item)
+        public AdditionalIngredient Update(string id, AdditionalIngredient item)
         {
             var existingItem = _context.AdditionalIngredients.Find(id);
 
@@ -62,7 +62,7 @@
             return entity.Entity;
         }
 
-        public AdditionalIngredient Patch(int id, AdditionalIngredient item)
+        public AdditionalIngredient Patch(string id, AdditionalIngredient item)
         {
             var existingItem = _context.AdditionalIngredients.Find(id);
 

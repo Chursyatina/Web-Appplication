@@ -46,7 +46,7 @@
             return pizzas;
         }
 
-        public Pizza GetById(int id)
+        public Pizza GetById(string id)
         {
             Pizza pizza = _context.Pizzas
                 .Include(pi => pi.Ingredients)
@@ -66,7 +66,7 @@
             return pizza;
         }
 
-        public Pizza Update(int id, Pizza item, List<int> ingredientsIds)
+        public Pizza Update(string id, Pizza item, List<string> ingredientsIds)
         {
             var existingItem = _context.Pizzas
                .Include(pi => pi.Ingredients)
@@ -93,7 +93,7 @@
             return entity.Entity;
         }
 
-        public Pizza Patch(int id, Pizza item, List<int> ingredientsIds)
+        public Pizza Patch(string id, Pizza item, List<string> ingredientsIds)
         {
             var existingItem = _context.Pizzas
                .Include(pi => pi.Ingredients)
@@ -133,30 +133,30 @@
             return entity.Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _context.Pizzas.Find(id).IsDeleted = true;
             _context.SaveChanges();
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _context.Pizzas.AsNoTracking().Select(p => p.Id);
         }
 
-        private Pizza ChangeIngredients(Pizza existingItem, List<int> ingredientsIds)
+        private Pizza ChangeIngredients(Pizza existingItem, List<string> ingredientsIds)
         {
-            List<int> existingItemIngredients = existingItem.Ingredients.Select(ing => ing.Id).ToList();
+            List<string> existingItemIngredients = existingItem.Ingredients.Select(ing => ing.Id).ToList();
 
-            IEnumerable<int> remains = existingItemIngredients.Intersect(ingredientsIds);
+            IEnumerable<string> remains = existingItemIngredients.Intersect(ingredientsIds);
 
-            IEnumerable<int> toRemove = existingItemIngredients.Except(remains);
+            IEnumerable<string> toRemove = existingItemIngredients.Except(remains);
 
-            IEnumerable<int> toAdd = ingredientsIds.Except(remains);
+            IEnumerable<string> toAdd = ingredientsIds.Except(remains);
 
             existingItem.Ingredients = existingItem.Ingredients.Where(i => !toRemove.Contains(i.Id)).ToList();
 
-            foreach (int id in toAdd)
+            foreach (string id in toAdd)
             {
                 existingItem.Ingredients.Add(_context.Ingredients.FirstOrDefault(ing => ing.Id == id));
             }

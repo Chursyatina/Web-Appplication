@@ -6,12 +6,12 @@
     public class PizzaVariationCreateRequestDto : IPizzaVariationRequestDto
     {
         [Required]
-        public int? PizzaId { get; set; }
+        public string PizzaId { get; set; }
 
         [Required]
-        public int? SizeId { get; set; }
+        public string SizeId { get; set; }
 
         [Required]
-        public int? DoughId { get; set; }
+        public string DoughId { get; set; }
     }
 }

@@ -7,6 +7,6 @@
 
     public interface IDoughService : IService<DoughDto, DoughCreateRequestDto, DoughUpdateRequestDto, DoughPatchRequestDto>, INamedEntityService<DoughDto>
     {
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
     }
 }

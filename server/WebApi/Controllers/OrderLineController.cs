@@ -41,7 +41,7 @@
         [SwaggerResponse(200, "Returns order line by input id")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<OrderLineDto> Get(int id)
+        public ActionResult<OrderLineDto> Get(string id)
         {
             if (!ModelState.IsValid)
             {
@@ -62,8 +62,8 @@
         [SwaggerResponse(400, "Bad request with message of an error.")]
         public ActionResult<OrderLineDto> Insert([FromBody] OrderLineCreateRequestDto orderLine)
         {
-            IEnumerable<int> pizzasVariationsIds = _pizzaVariationsService.GetIdentificators();
-            IEnumerable<int> ordersIds = _orderService.GetIdentificators();
+            IEnumerable<string> pizzasVariationsIds = _pizzaVariationsService.GetIdentificators();
+            IEnumerable<string> ordersIds = _orderService.GetIdentificators();
 
             ValidationResult validationResult = _orderLineValidator.Validate(orderLine, pizzasVariationsIds, ordersIds);
             if (!validationResult.IsValid)
@@ -79,7 +79,7 @@
         [SwaggerResponse(200, "Updates existing order line in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<OrderLineDto> Update([FromRoute] int id, [FromBody] OrderLineUpdateRequestDto orderLine)
+        public ActionResult<OrderLineDto> Update([FromRoute] string id, [FromBody] OrderLineUpdateRequestDto orderLine)
         {
             var existingOrderLine = _orderLineService.GetById(id);
             if (existingOrderLine == null)
@@ -87,7 +87,7 @@
                 return NotFound();
             }
 
-            IEnumerable<int> pizzasVariationsIdentificators = _pizzaVariationsService.GetIdentificators();
+            IEnumerable<string> pizzasVariationsIdentificators = _pizzaVariationsService.GetIdentificators();
 
             ValidationResult validationResult = _orderLineValidator.Validate(orderLine, pizzasVariationsIdentificators);
             if (!validationResult.IsValid)
@@ -102,7 +102,7 @@
         [SwaggerResponse(200, "Updates existing order line in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<OrderLineDto> Patch([FromRoute] int id, [FromBody] OrderLinePatchRequestDto orderLine)
+        public ActionResult<OrderLineDto> Patch([FromRoute] string id, [FromBody] OrderLinePatchRequestDto orderLine)
         {
             var existingOrderLine = _orderLineService.GetById(id);
             if (existingOrderLine == null)
@@ -118,7 +118,7 @@
             }
             else
             {
-                IEnumerable<int> pizzasVariationsIdentificators = _pizzaVariationsService.GetIdentificators();
+                IEnumerable<string> pizzasVariationsIdentificators = _pizzaVariationsService.GetIdentificators();
                 validationResult = _orderLineValidator.Validate(orderLine, pizzasVariationsIdentificators);
             }
 
@@ -134,7 +134,7 @@
         [SwaggerResponse(204, "Deletes existing order line from database(by changing flag IsDeleted)")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] string id)
         {
             var existingOrderLine = _orderLineService.GetById(id);
             if (existingOrderLine == null)

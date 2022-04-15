@@ -9,14 +9,14 @@
     {
         IEnumerable<TEntity> GetAll();
 
-        TEntity GetById(int id);
+        TEntity GetById(string id);
 
-        TEntity Update(int id, TUpdateRequest item);
+        TEntity Update(string id, TUpdateRequest item);
 
-        TEntity Patch(int id, TPatchRequest item);
+        TEntity Patch(string id, TPatchRequest item);
 
         TEntity Insert(TCreateRequest item);
 
-        void Delete(int id);
+        void Delete(string id);
     }
 }

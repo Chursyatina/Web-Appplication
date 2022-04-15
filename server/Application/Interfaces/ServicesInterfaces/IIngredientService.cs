@@ -7,6 +7,6 @@
 
     public interface IIngredientService : IService<IngredientDto, IngredientCreateRequestDto, IngredientUpdateRequestDto, IngredientPatchRequestDto>, INamedEntityService<IngredientDto>
     {
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
     }
 }

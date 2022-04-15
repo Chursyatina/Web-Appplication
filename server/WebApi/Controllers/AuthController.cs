@@ -188,11 +188,11 @@
 
             if (user != null)
             {
-                IEnumerable<int> pizzasIds = _pizzaService.GetIdentificators();
-                IEnumerable<int> sizesIds = _sizeService.GetIdentificators();
-                IEnumerable<int> doughsIds = _doughService.GetIdentificators();
-                IEnumerable<int> ingredientsIds = _ingredientService.GetIdentificators();
-                IEnumerable<int> additionalIngredientsIds = _additionalIngredientService.GetIdentificators();
+                IEnumerable<string> pizzasIds = _pizzaService.GetIdentificators();
+                IEnumerable<string> sizesIds = _sizeService.GetIdentificators();
+                IEnumerable<string> doughsIds = _doughService.GetIdentificators();
+                IEnumerable<string> ingredientsIds = _ingredientService.GetIdentificators();
+                IEnumerable<string> additionalIngredientsIds = _additionalIngredientService.GetIdentificators();
 
                 // ValidationResult validationResult = _pizzaVariationValidator.Validate(pizzaVariation, pizzasIds, sizesIds, doughsIds, ingredientsIds, additionalIngredientsIds);
                 // if (!validationResult.IsValid)
@@ -221,7 +221,7 @@
 
         [HttpDelete]
         [Route("api/basket/{id}")]
-        public async Task<ActionResult<User>> DeletePizzaFromBasket(int id)
+        public async Task<ActionResult<User>> DeletePizzaFromBasket(string id)
         {
             if (!ModelState.IsValid)
             {

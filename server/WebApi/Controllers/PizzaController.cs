@@ -39,7 +39,7 @@
         [SwaggerResponse(200, "Returns pizza by input id")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<PizzaDto> Get(int id)
+        public ActionResult<PizzaDto> Get(string id)
         {
             if (!ModelState.IsValid)
             {
@@ -74,7 +74,7 @@
         [SwaggerResponse(200, "Updates existing pizza in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<PizzaDto> Update([FromRoute] int id, [FromBody] PizzaUpdateRequestDto pizza)
+        public ActionResult<PizzaDto> Update([FromRoute] string id, [FromBody] PizzaUpdateRequestDto pizza)
         {
             var existingPizza = _pizzaService.GetById(id);
             if (existingPizza == null)
@@ -82,7 +82,7 @@
                 return NotFound();
             }
 
-            IEnumerable<int> ingredientsIdentificators = _ingredientService.GetIdentificators();
+            IEnumerable<string> ingredientsIdentificators = _ingredientService.GetIdentificators();
 
             ValidationResult validationResult = _pizzaValidator.Validate(pizza, id, ingredientsIdentificators);
             if (!validationResult.IsValid)
@@ -97,7 +97,7 @@
         [SwaggerResponse(200, "Updates existing pizza in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<PizzaDto> Patch([FromRoute] int id, [FromBody] PizzaPatchRequestDto pizza)
+        public ActionResult<PizzaDto> Patch([FromRoute] string id, [FromBody] PizzaPatchRequestDto pizza)
         {
             var existingPizza = _pizzaService.GetById(id);
             if (existingPizza == null)
@@ -113,7 +113,7 @@
             }
             else
             {
-                IEnumerable<int> identificators = _ingredientService.GetIdentificators();
+                IEnumerable<string> identificators = _ingredientService.GetIdentificators();
                 validationResult = _pizzaValidator.Validate(pizza, id, identificators);
             }
 
@@ -129,7 +129,7 @@
         [SwaggerResponse(204, "Deletes existing pizza from database(by changing flag IsDeleted)")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] string id)
         {
             var existingPizza = _pizzaService.GetById(id);
             if (existingPizza == null)

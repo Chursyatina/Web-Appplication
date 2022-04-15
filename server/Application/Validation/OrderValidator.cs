@@ -25,7 +25,7 @@
             return new ValidationResult(true);
         }
 
-        public ValidationResult Validate(IOrderRequestDtoWithOrderLines entity, IEnumerable<int> ordersLinesIds, IEnumerable<int> orderStatusesIds)
+        public ValidationResult Validate(IOrderRequestDtoWithOrderLines entity, IEnumerable<string> ordersLinesIds, IEnumerable<string> orderStatusesIds)
         {
             ValidationResult annotationsValidationResult = ValidateAnnotations(entity);
             if (!annotationsValidationResult.IsValid)
@@ -41,7 +41,7 @@
                     return orderLinesUniquenessValidation;
                 }
 
-                foreach (int lineId in entity.OrderLinesIds)
+                foreach (string lineId in entity.OrderLinesIds)
                 {
                     if (!ordersLinesIds.Contains(lineId))
                     {
@@ -52,7 +52,7 @@
 
             if (entity.OrderStatusId != null)
             {
-                ValidationResult orderStatusCoexistenceValidationResult = OrderStatusCoexistenceValidation((int)entity.OrderStatusId, orderStatusesIds);
+                ValidationResult orderStatusCoexistenceValidationResult = OrderStatusCoexistenceValidation(entity.OrderStatusId, orderStatusesIds);
                 if (!orderStatusCoexistenceValidationResult.IsValid)
                 {
                     return orderStatusCoexistenceValidationResult;
@@ -62,11 +62,11 @@
             return new ValidationResult(true);
         }
 
-        private ValidationResult OrderLinesUniquenessValidation(List<int> orderLinesIds)
+        private ValidationResult OrderLinesUniquenessValidation(List<string> orderLinesIds)
         {
             orderLinesIds.Sort();
-            int? current = null;
-            foreach (int id in orderLinesIds)
+            string current = null;
+            foreach (string id in orderLinesIds)
             {
                 if (current == id)
                 {
@@ -79,7 +79,7 @@
             return new ValidationResult(true);
         }
 
-        private ValidationResult OrderStatusCoexistenceValidation(int orderStatudId, IEnumerable<int> ordersStatuses)
+        private ValidationResult OrderStatusCoexistenceValidation(string orderStatudId, IEnumerable<string> ordersStatuses)
         {
             if (!ordersStatuses.Contains(orderStatudId))
             {

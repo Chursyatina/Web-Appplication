@@ -41,7 +41,7 @@
         [SwaggerResponse(200, "Returns order by input id")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<OrderDto> Get(int id)
+        public ActionResult<OrderDto> Get(string id)
         {
             if (!ModelState.IsValid)
             {
@@ -70,7 +70,7 @@
         [SwaggerResponse(200, "Updates existing order in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<OrderDto> Update([FromRoute] int id, [FromBody] OrderUpdateRequestDto order)
+        public ActionResult<OrderDto> Update([FromRoute] string id, [FromBody] OrderUpdateRequestDto order)
         {
             var existingOrder = _orderService.GetById(id);
             if (existingOrder == null)
@@ -78,8 +78,8 @@
                 return NotFound();
             }
 
-            IEnumerable<int> ordersLinesIds = _orderLinesService.GetIdentificators();
-            IEnumerable<int> orderStatusesIds = _orderStatusService.GetIdentificators();
+            IEnumerable<string> ordersLinesIds = _orderLinesService.GetIdentificators();
+            IEnumerable<string> orderStatusesIds = _orderStatusService.GetIdentificators();
 
             ValidationResult validationResult = _orderValidator.Validate(order, ordersLinesIds, orderStatusesIds);
             if (!validationResult.IsValid)
@@ -94,7 +94,7 @@
         [SwaggerResponse(200, "Updates existing order in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult<OrderDto> Patch([FromRoute] int id, [FromBody] OrderPatchRequestDto order)
+        public ActionResult<OrderDto> Patch([FromRoute] string id, [FromBody] OrderPatchRequestDto order)
         {
             var existingOrder = _orderService.GetById(id);
             if (existingOrder == null)
@@ -110,18 +110,18 @@
             }
             else if (order.OrderLinesIds != null && order.OrderStatusId == null)
             {
-                IEnumerable<int> ordersLinesIds = _orderLinesService.GetIdentificators();
+                IEnumerable<string> ordersLinesIds = _orderLinesService.GetIdentificators();
                 validationResult = _orderValidator.Validate(order, ordersLinesIds, null);
             }
             else if (order.OrderLinesIds == null && order.OrderStatusId != null)
             {
-                IEnumerable<int> orderStatusesIds = _orderStatusService.GetIdentificators();
+                IEnumerable<string> orderStatusesIds = _orderStatusService.GetIdentificators();
                 validationResult = _orderValidator.Validate(order, null, orderStatusesIds);
             }
             else
             {
-                IEnumerable<int> ordersLinesIds = _orderLinesService.GetIdentificators();
-                IEnumerable<int> orderStatusesIds = _orderStatusService.GetIdentificators();
+                IEnumerable<string> ordersLinesIds = _orderLinesService.GetIdentificators();
+                IEnumerable<string> orderStatusesIds = _orderStatusService.GetIdentificators();
                 validationResult = _orderValidator.Validate(order, ordersLinesIds, orderStatusesIds);
             }
 
@@ -137,7 +137,7 @@
         [SwaggerResponse(204, "Deletes existing order from database(by changing flag IsDeleted)")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
         [SwaggerResponse(404, "Not found")]
-        public ActionResult Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] string id)
         {
             var existingOrder = _orderService.GetById(id);
             if (existingOrder == null)

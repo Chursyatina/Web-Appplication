@@ -13,7 +13,7 @@
             _pizzaVariationService = pizzaVariationService;
         }
 
-        public ValidationResult Validate(IPizzaVariationRequestDto entity, IEnumerable<int> pizzasIds, IEnumerable<int> sizesIds, IEnumerable<int> doughsIds)
+        public ValidationResult Validate(IPizzaVariationRequestDto entity, IEnumerable<string> pizzasIds, IEnumerable<string> sizesIds, IEnumerable<string> doughsIds)
         {
             ValidationResult annotationsValidationResult = ValidateAnnotations(entity);
             if (!annotationsValidationResult.IsValid)
@@ -23,7 +23,7 @@
 
             if (entity.PizzaId != null)
             {
-                ValidationResult pizzaСoexistenceValidationResult = PizzaСoexistenceValidation((int)entity.PizzaId, pizzasIds);
+                ValidationResult pizzaСoexistenceValidationResult = PizzaСoexistenceValidation(entity.PizzaId, pizzasIds);
                 if (!pizzaСoexistenceValidationResult.IsValid)
                 {
                     return pizzaСoexistenceValidationResult;
@@ -32,7 +32,7 @@
 
             if (entity.SizeId != null)
             {
-                ValidationResult sizeСoexistenceValidationResult = SizeСoexistenceValidation((int)entity.SizeId, sizesIds);
+                ValidationResult sizeСoexistenceValidationResult = SizeСoexistenceValidation(entity.SizeId, sizesIds);
                 if (!sizeСoexistenceValidationResult.IsValid)
                 {
                     return sizeСoexistenceValidationResult;
@@ -41,7 +41,7 @@
 
             if (entity.DoughId != null)
             {
-                ValidationResult doughСoexistenceValidationResult = DoughСoexistenceValidation((int)entity.DoughId, doughsIds);
+                ValidationResult doughСoexistenceValidationResult = DoughСoexistenceValidation(entity.DoughId, doughsIds);
                 if (!doughСoexistenceValidationResult.IsValid)
                 {
                     return doughСoexistenceValidationResult;
@@ -53,11 +53,11 @@
 
         public ValidationResult Validate(
             IPizzaVariationWithBothIngredientsTypes entity,
-            IEnumerable<int> pizzasIds,
-            IEnumerable<int> sizesIds,
-            IEnumerable<int> doughsIds,
-            IEnumerable<int> ingredientsIds,
-            IEnumerable<int> additionalIngredientsIds)
+            IEnumerable<string> pizzasIds,
+            IEnumerable<string> sizesIds,
+            IEnumerable<string> doughsIds,
+            IEnumerable<string> ingredientsIds,
+            IEnumerable<string> additionalIngredientsIds)
         {
             ValidationResult annotationsValidationResult = ValidateAnnotations(entity);
             if (!annotationsValidationResult.IsValid)
@@ -67,7 +67,7 @@
 
             if (entity.PizzaId != null)
             {
-                ValidationResult pizzaСoexistenceValidationResult = PizzaСoexistenceValidation((int)entity.PizzaId, pizzasIds);
+                ValidationResult pizzaСoexistenceValidationResult = PizzaСoexistenceValidation(entity.PizzaId, pizzasIds);
                 if (!pizzaСoexistenceValidationResult.IsValid)
                 {
                     return pizzaСoexistenceValidationResult;
@@ -76,7 +76,7 @@
 
             if (entity.SizeId != null)
             {
-                ValidationResult sizeСoexistenceValidationResult = SizeСoexistenceValidation((int)entity.SizeId, sizesIds);
+                ValidationResult sizeСoexistenceValidationResult = SizeСoexistenceValidation(entity.SizeId, sizesIds);
                 if (!sizeСoexistenceValidationResult.IsValid)
                 {
                     return sizeСoexistenceValidationResult;
@@ -85,7 +85,7 @@
 
             if (entity.DoughId != null)
             {
-                ValidationResult doughСoexistenceValidationResult = DoughСoexistenceValidation((int)entity.DoughId, doughsIds);
+                ValidationResult doughСoexistenceValidationResult = DoughСoexistenceValidation(entity.DoughId, doughsIds);
                 if (!doughСoexistenceValidationResult.IsValid)
                 {
                     return doughСoexistenceValidationResult;
@@ -100,7 +100,7 @@
                     return ingredientUniquenessValidationResult;
                 }
 
-                foreach (int ingId in entity.Ingredients)
+                foreach (string ingId in entity.Ingredients)
                 {
                     if (!ingredientsIds.Contains(ingId))
                     {
@@ -117,7 +117,7 @@
                     return ingredientUniquenessValidationResult;
                 }
 
-                foreach (int ingId in entity.AdditionalIngredients)
+                foreach (string ingId in entity.AdditionalIngredients)
                 {
                     if (!additionalIngredientsIds.Contains(ingId))
                     {
@@ -129,7 +129,7 @@
             return new ValidationResult(true);
         }
 
-        public ValidationResult PizzaСoexistenceValidation(int pizzaId, IEnumerable<int> pizzasIds)
+        public ValidationResult PizzaСoexistenceValidation(string pizzaId, IEnumerable<string> pizzasIds)
         {
             if (!pizzasIds.Contains(pizzaId))
             {
@@ -139,7 +139,7 @@
             return new ValidationResult(true);
         }
 
-        public ValidationResult SizeСoexistenceValidation(int sizeId, IEnumerable<int> sizesIds)
+        public ValidationResult SizeСoexistenceValidation(string sizeId, IEnumerable<string> sizesIds)
         {
             if (!sizesIds.Contains(sizeId))
             {
@@ -149,7 +149,7 @@
             return new ValidationResult(true);
         }
 
-        public ValidationResult DoughСoexistenceValidation(int doughId, IEnumerable<int> doughsIds)
+        public ValidationResult DoughСoexistenceValidation(string doughId, IEnumerable<string> doughsIds)
         {
             if (!doughsIds.Contains(doughId))
             {
@@ -159,9 +159,9 @@
             return new ValidationResult(true);
         }
 
-        private ValidationResult IngredientUniquenessValidation(List<int> ingredientsIds)
+        private ValidationResult IngredientUniquenessValidation(List<string> ingredientsIds)
         {
-            foreach (int id in ingredientsIds)
+            foreach (string id in ingredientsIds)
             {
                 if (ingredientsIds.LastIndexOf(id) != ingredientsIds.IndexOf(id))
                 {
