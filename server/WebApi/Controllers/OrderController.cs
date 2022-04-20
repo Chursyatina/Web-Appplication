@@ -1,11 +1,14 @@
 ﻿namespace WebApi.Controllers
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Application.DTO.Request.OrderRequestDtos;
     using Application.DTO.Response;
     using Application.Interfaces;
     using Application.Interfaces.ServicesInterfaces;
     using Application.Validation;
+    using Domain.Models;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Swashbuckle.AspNetCore.Annotations;
@@ -19,14 +22,20 @@
         private readonly IOrderLineService _orderLinesService;
         private readonly IOrderStatusService _orderStatusService;
         private readonly OrderValidator _orderValidator;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly IUserService _userService;
 
-        public OrderController(ILogger<OrderController> logger, IOrderService orderService, IOrderLineService orderLinesService, IOrderStatusService orderStatusService)
+        public OrderController(ILogger<OrderController> logger, IOrderService orderService, IOrderLineService orderLinesService, IOrderStatusService orderStatusService, UserManager<User> userManager, SignInManager<User> signInManager, IUserService userService)
         {
             _logger = logger;
             _orderService = orderService;
             _orderLinesService = orderLinesService;
             _orderStatusService = orderStatusService;
             _orderValidator = new OrderValidator(_orderService);
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -60,9 +69,10 @@
         [HttpPost]
         [SwaggerResponse(201, "Inserts new order in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]
-        public ActionResult<OrderDto> Insert([FromBody] OrderCreateRequestDto order)
+        public async Task<ActionResult<OrderDto>> InsertAsync([FromBody] OrderCreateRequestDto order)
         {
-            OrderDto returnedDto = _orderService.Insert(order);
+            User user = await GetCurrentUserAsync();
+            OrderDto returnedDto = _orderService.Insert(order, user);
             return Created("api/pizzasVariations/" + returnedDto.Id.ToString(), returnedDto);
         }
 
@@ -147,6 +157,21 @@
 
             _orderService.Delete(id);
             return NoContent();
+        }
+
+        [HttpGet]
+        private async Task<User> GetCurrentUserAsync()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (user != null)
+            {
+                User existingUser = _userService.GetModelById(user.Id);
+
+                return existingUser;
+            }
+
+            return user;
         }
     }
 }

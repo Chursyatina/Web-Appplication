@@ -7,10 +7,12 @@
     {
         public IEnumerable<string> GetIdentificators();
 
-        public Order Insert(Order item);
+        public Order Insert(Order item, List<string> orderLinesIds);
 
         public Order Patch(string id, Order item, IEnumerable<string> orderLinesIds);
 
         public Order Update(string id, Order item, List<string> orderLinesIds);
+
+        public Order Insert(Order item, List<string> orderLinesIds, User user);
     }
 }

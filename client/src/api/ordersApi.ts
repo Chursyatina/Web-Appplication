@@ -1,5 +1,6 @@
 import { ORDERS_URL } from 'src/consts/urls';
 import { IOrder } from 'src/interfaces/order';
+import { ICreateOrder } from 'src/interfaces/DTOs/OrderCreate';
 
 export const getOrders = async (): Promise<IOrder[]> => {
   const response = await fetch(ORDERS_URL);
@@ -9,4 +10,15 @@ export const getOrders = async (): Promise<IOrder[]> => {
 export const getOrder = async (id: number): Promise<IOrder> => {
   const response = await fetch(`${ORDERS_URL}/${id}`);
   return response.json();
+};
+
+export const insertOrder = async (order: ICreateOrder) => {
+  const response = await fetch(ORDERS_URL, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(order),
+  });
+  return response;
 };

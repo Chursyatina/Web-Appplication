@@ -63,11 +63,45 @@
             return existingOrder;
         }
 
-        public Order Insert(Order item)
+        public Order Insert(Order item, List<string> orderLinesIds)
         {
             item.OrderStatus = _context.OrderStatuses.FirstOrDefault(s => s.Name == "Готовится");
             item.OrderLines = new List<OrderLine>();
 
+            if (orderLinesIds.Count != 0)
+            {
+                item = ChangeOrderLines(item, orderLinesIds);
+                item.Price = PriceCountingService.GetPriceForOrder(item);
+            }
+            else
+            {
+                item.OrderLines = new List<OrderLine>();
+            }
+
+            item.Date = System.DateTime.Now;
+            item.Price = PriceCountingService.GetPriceForOrder(item);
+
+            var entity = _context.Add(item);
+            _context.SaveChanges();
+            return entity.Entity;
+        }
+
+        public Order Insert(Order item, List<string> orderLinesIds, User user)
+        {
+            item.OrderStatus = _context.OrderStatuses.FirstOrDefault(s => s.Name == "Готовится");
+            item.OrderLines = new List<OrderLine>();
+
+            if (orderLinesIds.Count != 0)
+            {
+                item = ChangeOrderLines(item, orderLinesIds);
+                item.Price = PriceCountingService.GetPriceForOrder(item);
+            }
+            else
+            {
+                item.OrderLines = new List<OrderLine>();
+            }
+
+            item.User = user;
             item.Date = System.DateTime.Now;
             item.Price = PriceCountingService.GetPriceForOrder(item);
 
@@ -157,7 +191,7 @@
 
             existingItem.OrderLines = existingItem.OrderLines.Where(l => !toRemove.Contains(l.Id)).ToList();
 
-            existingItem.OrderLines.AddRange(_context.OrderLines.Where(line => toAdd.Contains(line.Id)));
+            existingItem.OrderLines.AddRange(_context.OrderLines.Include(p => p.PizzaVariation).Where(line => toAdd.Contains(line.Id)));
 
             return existingItem;
         }

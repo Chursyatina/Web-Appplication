@@ -1,8 +1,10 @@
 import { makeAutoObservable } from 'mobx';
 
 import { IOrderLine } from 'src/interfaces/orderLine';
+import { ICreateOrder } from 'src/interfaces/DTOs/OrderCreate';
 import { getCurrentuser } from 'src/api/usersApi';
 import { IBasket } from 'src/interfaces/basket';
+import { insertOrder } from 'src/api/ordersApi';
 
 class UserStore {
   isAuthenticated = false;
@@ -22,6 +24,19 @@ class UserStore {
     this.isAuthenticated = (await authinfo).isAuth;
     this.basket = (await authinfo).user.basket;
     this.recalculatePrice();
+  }
+
+  async createOrder() {
+    const order: ICreateOrder = {
+      orderLines: [],
+      orderStatus: 'some',
+    };
+
+    this.basket.orderLines.forEach(element => {
+      order.orderLines.push(element.id);
+    });
+
+    return await insertOrder(order);
   }
 
   editOrderLine(id: string, orderLine: IOrderLine) {

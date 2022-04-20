@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Divider, Typography, Button } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 
-import { IPizzaVariation } from 'src/interfaces/pizzaVariation';
 import { pizzaListStyles } from 'src/componentsStyles/pizzaListStyles';
-import { getOrder } from 'src/api/ordersApi';
 import { userStore } from 'src/store/currentUser';
 import { IOrder } from 'src/interfaces/order';
 
@@ -37,7 +35,12 @@ export const PizzaInBasketList = observer(() => {
           <Typography variant="h5" component="h5">
             {`Сумма заказа: `} {userStore.basket.price} {` ₽`}
           </Typography>
-          <Button className={button} variant="contained" color="primary" fullWidth>{`Оформить заказ`}</Button>
+          <Button
+            className={button}
+            variant="contained"
+            color="primary"
+            fullWidth
+          >{`Оформить заказ`}</Button>
         </Grid>
       </Grid>
     </div>

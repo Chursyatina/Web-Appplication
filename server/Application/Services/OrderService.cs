@@ -6,6 +6,7 @@
     using Application.DTO.Request.OrderRequestDtos;
     using Application.DTO.Response;
     using Application.Interfaces.ServicesInterfaces;
+    using Domain.Models;
     using Domain.Repository;
 
     public class OrderService : IOrderService
@@ -46,7 +47,12 @@
 
         public OrderDto Insert(OrderCreateRequestDto item)
         {
-            return _orderRepository.Insert(item.ToModel()).ToViewModel();
+            return _orderRepository.Insert(item.ToModel(), item.OrderLinesIds.ToList()).ToViewModel();
+        }
+
+        public OrderDto Insert(OrderCreateRequestDto item, User user)
+        {
+            return _orderRepository.Insert(item.ToModel(), item.OrderLinesIds.ToList(), user).ToViewModel();
         }
 
         public OrderDto Patch(string id, OrderPatchRequestDto item)
