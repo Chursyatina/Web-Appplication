@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { makeAutoObservable } from 'mobx';
 
 import { IIngredient } from 'src/interfaces/ingredient';
@@ -18,8 +20,8 @@ class PizzaStore {
     price: 0,
     ingredients: [],
   };
-  size: IPizzaSize = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ' };
-  dough: IPizzaDough = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ' };
+  size: IPizzaSize = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ', isDeleted: false };
+  dough: IPizzaDough = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ', isDeleted: false };
   ingredients: IIngredient[] = [];
   additionalIngredients: IAdditionalIngredient[] = [];
   price = 0;

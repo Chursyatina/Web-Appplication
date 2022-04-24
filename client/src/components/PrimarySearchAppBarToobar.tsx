@@ -1,11 +1,13 @@
 import React from 'react';
-import { Toolbar, IconButton, Typography, InputBase } from '@material-ui/core';
-import { Menu, Search, ShoppingBasket } from '@material-ui/icons';
+import { Toolbar, IconButton, Typography, InputBase, Badge } from '@material-ui/core';
+import { Menu, Search, ShoppingBasket, Edit } from '@material-ui/icons';
 import { useHistory } from 'react-router';
+import { observer } from 'mobx-react-lite';
 
 import { primaryAppBarStyles } from 'src/componentsStyles/primaryAppBarStyles';
+import { userStore } from 'src/store/currentUser';
 
-export const PrimarySearchAppBarToolBar = () => {
+export const PrimarySearchAppBarToolBar = observer(() => {
   const { menuButton, title, search, searchIcon, inputRoot, inputInput } = primaryAppBarStyles();
 
   const history = useHistory();
@@ -27,32 +29,37 @@ export const PrimarySearchAppBarToolBar = () => {
           YoYo Pizza
         </IconButton>
       </Typography>
-      <div>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          color="inherit"
-          onClick={() => {
-            history.push('/Basket');
-          }}
-        >
-          <ShoppingBasket />
-        </IconButton>
-      </div>
-      {/* <div className={search}>
-        <div className={searchIcon}>
-          <Search />
+      {userStore.role !== 'admin' ? (
+        <div>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+            onClick={() => {
+              history.push('/Basket');
+            }}
+          >
+            <Badge badgeContent={userStore.basket.orderLines.length} color="secondary">
+              <ShoppingBasket />
+            </Badge>
+          </IconButton>
         </div>
-        <InputBase
-          placeholder="Search…"
-          classes={{
-            root: inputRoot,
-            input: inputInput,
-          }}
-          inputProps={{ 'aria-label': 'search' }}
-        />
-      </div> */}
+      ) : (
+        <div>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+            onClick={() => {
+              history.push('/Catalogs');
+            }}
+          >
+            <Edit />
+          </IconButton>
+        </div>
+      )}
     </Toolbar>
   );
-};
+});

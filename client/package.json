@@ -6,6 +6,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
+    "@mui/icons-material": "^5.6.2",
     "chokidar": "^3.5.2",
     "clsx": "^1.1.1",
     "mobx": "^6.3.2",
@@ -31,7 +32,9 @@
       "react-app/jest"
     ]
   },
-  "eslintIgnore": ["*Api.ts"],
+  "eslintIgnore": [
+    "*Api.ts"
+  ],
   "browserslist": {
     "production": [
       ">0.2%",

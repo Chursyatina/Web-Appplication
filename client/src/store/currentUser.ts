@@ -19,6 +19,7 @@ import { IOrderLineCreate } from 'src/interfaces/DTOs/OrderLineCreate';
 
 class UserStore {
   isAuthenticated = false;
+  role = "";
 
   basket: IBasket = {
     id: '-1',
@@ -33,6 +34,7 @@ class UserStore {
   async loadData() {
     const authinfo = getCurrentuser();
     this.isAuthenticated = (await authinfo).isAuth;
+    this.role = (await authinfo).role;
     this.basket = (await authinfo).user.basket;
     this.recalculatePrice();
   }

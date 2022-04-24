@@ -9,6 +9,7 @@ import { PrimaryAppBar } from './components/PrimaryAppBar';
 import { MainMenu } from './components/MainMenu';
 import { Footer } from './components/Footer';
 import { Basket } from './components/Basket';
+import { Catalogs } from './components/CatalogsEditting';
 import { menuStore } from './store/currentMenu';
 
 export const App: React.FC = () => {
@@ -35,6 +36,7 @@ export const App: React.FC = () => {
           <Switch>
             <Route exact path="/" component={MainMenu} />
             <Route exact path="/Basket" component={Basket} />
+            <Route exact path="/Catalogs" component={Catalogs} />
           </Switch>
         </Container>
         <div className={'footerSpace'} />

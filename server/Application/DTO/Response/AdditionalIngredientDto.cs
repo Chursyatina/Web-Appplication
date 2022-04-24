@@ -16,6 +16,9 @@
         public string ImageLink { get; set; }
 
         [Required]
+        public bool IsDeleted { get; set; }
+
+        [Required]
         [Range(0.1, 100)]
         public decimal Price { get; set; }
     }

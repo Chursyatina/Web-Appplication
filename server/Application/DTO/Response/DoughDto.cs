@@ -13,6 +13,9 @@
         public string Name { get; set; }
 
         [Required]
+        public bool IsDeleted { get; set; }
+
+        [Required]
         [Range(0.1, 7)]
         public decimal PriceMultiplier { get; set; }
     }
