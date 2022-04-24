@@ -8,7 +8,9 @@
         [Required]
         public string PizzaVariationId { get; set; }
 
-        [Required]
         public string OrderId { get; set; }
+
+        [Required]
+        public int Quantity { get; set; }
     }
 }

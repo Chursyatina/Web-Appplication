@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Application.Services;
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
@@ -37,6 +38,7 @@
             var existingItem = _context.Baskets.Find(basket.Id);
 
             existingItem.OrderLines = basket.OrderLines;
+            existingItem.Price = PriceCountingService.GetPriceForBasket(existingItem);
 
             var entity = _context.Update(existingItem);
             _context.SaveChanges();

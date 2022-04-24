@@ -1,6 +1,9 @@
+/* eslint-disable */
+
+import { IOrderLineCreate } from "src/interfaces/DTOs/OrderLineCreate";
+
 export interface ICreateOrder {
-  orderLines: string[];
-  orderStatus: string;
+  OrderLines: IOrderLineCreate[];
 }
 
 export interface ICreateOrderProps {

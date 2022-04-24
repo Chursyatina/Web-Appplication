@@ -31,6 +31,7 @@ class PizzaStore {
   setPizza(pizza: IPizza) {
     this.pizza = pizza;
     this.setIngredients(pizza.ingredients);
+    this.clearAdditionalIngredients();
   }
 
   setSize(size: IPizzaSize) {
@@ -44,7 +45,7 @@ class PizzaStore {
   }
 
   setIngredients(ingredients: IIngredient[]) {
-    this.ingredients = ingredients;
+    this.ingredients = [...ingredients];
     this.recalculatePrice();
   }
 
@@ -70,6 +71,10 @@ class PizzaStore {
       this.additionalIngredients.push(additionalIngredient);
     }
     this.recalculatePrice();
+  }
+
+  clearAdditionalIngredients() {
+    this.additionalIngredients = [];
   }
 
   recalculatePrice() {

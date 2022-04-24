@@ -119,7 +119,9 @@
                 getPizzaVariationFromCreateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaVariationCreateRequestDto, PizzaVariation>()
                 .ForMember(dest => dest.Pizza, opts => opts.Ignore())
                 .ForMember(dest => dest.Size, opts => opts.Ignore())
-                .ForMember(dest => dest.Dough, opts => opts.Ignore()));
+                .ForMember(dest => dest.Dough, opts => opts.Ignore())
+                .ForMember(dest => dest.Ingredients, opts => opts.Ignore())
+                .ForMember(dest => dest.AdditionalIngredients, opts => opts.Ignore()));
                 getPizzaVariationFromUpdateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaVariationUpdateRequestDto, PizzaVariation>()
                 .ForMember(dest => dest.Pizza, opts => opts.Ignore())
                 .ForMember(dest => dest.Size, opts => opts.Ignore())

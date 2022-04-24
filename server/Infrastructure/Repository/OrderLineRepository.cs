@@ -114,13 +114,24 @@
                 .ThenInclude(i => i.Ingredients)
                 .FirstOrDefault(pv => pv.Id == pizzaVariationId && !pv.IsDeleted);
 
-            item.Order = _context.Orders
-                .Include(p => p.OrderStatus)
-                .FirstOrDefault(or => or.Id == orderId && !or.IsDeleted);
-            item.Quantity = 1;
+            if (orderId != null)
+            {
+                item.Order = _context.Orders
+                    .Include(p => p.OrderStatus)
+                    .FirstOrDefault(or => or.Id == orderId && !or.IsDeleted);
+            }
+
+            if (item.Quantity == 0)
+            {
+                item.Quantity = 1;
+            }
+
             item.Price = PriceCountingService.GetPriceForOrderLine(item);
 
-            item.Order.Price = PriceCountingService.GetPriceForOrder(item.Order);
+            if (orderId != null)
+            {
+                item.Order.Price = PriceCountingService.GetPriceForOrder(item.Order);
+            }
 
             var entity = _context.Add(item);
             _context.SaveChanges();

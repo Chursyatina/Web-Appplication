@@ -52,7 +52,7 @@ export const PizzaInBasket = observer((props: IOrderLineProps) => {
                 <IconButton
                   onClick={e => {
                     if (orderLine.quantity > 0) {
-                      userStore.reduceQuantity(id);
+                      userStore.reduceQuantity(orderLine);
                       console.log(props.orderLine.quantity);
                     }
                     e.stopPropagation();
@@ -70,7 +70,7 @@ export const PizzaInBasket = observer((props: IOrderLineProps) => {
                 <IconButton
                   onClick={e => {
                     if (orderLine.quantity < 4) {
-                      userStore.increaseQuantity(id);
+                      userStore.increaseQuantity(orderLine);
                       console.log(props.orderLine.quantity);
                     }
                     e.stopPropagation();
@@ -93,7 +93,7 @@ export const PizzaInBasket = observer((props: IOrderLineProps) => {
                 <IconButton
                   onClick={e => {
                     console.log(userStore.basket.orderLines);
-                    userStore.deleteOrderLine(id);
+                    userStore.deleteOrderLine(orderLine);
                     console.log(userStore.basket.orderLines);
                     e.stopPropagation();
                   }}

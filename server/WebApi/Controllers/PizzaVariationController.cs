@@ -77,8 +77,10 @@
             IEnumerable<string> pizzasIds = _pizzaService.GetIdentificators();
             IEnumerable<string> sizesIds = _sizeService.GetIdentificators();
             IEnumerable<string> doughsIds = _doughService.GetIdentificators();
+            IEnumerable<string> ingredientsIds = _ingredientService.GetIdentificators();
+            IEnumerable<string> additionalIngredientsIds = _additionalIngredientService.GetIdentificators();
 
-            ValidationResult validationResult = _pizzaVariationValidator.Validate(pizzaVariation, pizzasIds, sizesIds, doughsIds);
+            ValidationResult validationResult = _pizzaVariationValidator.Validate(pizzaVariation, pizzasIds, sizesIds, doughsIds, ingredientsIds, additionalIngredientsIds);
             if (!validationResult.IsValid)
             {
                 return BadRequest(new JsonResult(validationResult.ErrorMessage) { StatusCode = 400, });

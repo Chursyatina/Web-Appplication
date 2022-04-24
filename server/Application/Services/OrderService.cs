@@ -47,12 +47,13 @@
 
         public OrderDto Insert(OrderCreateRequestDto item)
         {
-            return _orderRepository.Insert(item.ToModel(), item.OrderLinesIds.ToList()).ToViewModel();
+            // return _orderRepository.Insert(item.ToModel(), item.OrderLinesIds.ToList()).ToViewModel();
+            return null;
         }
 
-        public OrderDto Insert(OrderCreateRequestDto item, User user)
+        public OrderDto Insert(OrderCreateRequestDto item, User user, List<string> orderLinesIds)
         {
-            return _orderRepository.Insert(item.ToModel(), item.OrderLinesIds.ToList(), user).ToViewModel();
+            return _orderRepository.Insert(item.ToModel(), orderLinesIds, user).ToViewModel();
         }
 
         public OrderDto Patch(string id, OrderPatchRequestDto item)

@@ -9,6 +9,6 @@
     {
         public IEnumerable<string> GetIdentificators();
 
-        public OrderDto Insert(OrderCreateRequestDto item, User user);
+        public OrderDto Insert(OrderCreateRequestDto item, User user, List<string> orderLinesIds);
     }
 }

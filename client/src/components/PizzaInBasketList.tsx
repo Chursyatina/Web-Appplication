@@ -13,10 +13,6 @@ export const PizzaInBasketList = observer(() => {
 
   const [order, setOrder] = useState<IOrder>({} as IOrder);
 
-  useEffect(() => {
-    userStore.loadData();
-  }, []);
-
   return (
     <div className={root}>
       <Grid container justify="center">
@@ -37,6 +33,9 @@ export const PizzaInBasketList = observer(() => {
           </Typography>
           <Button
             className={button}
+            onClick={() => {
+              userStore.createOrder(), userStore.clearBasket();
+            }}
             variant="contained"
             color="primary"
             fullWidth

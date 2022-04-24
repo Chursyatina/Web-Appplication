@@ -8,6 +8,7 @@ import { DoughTabs } from 'src/components/DoughTabs';
 import { AdditionalIngredientsList } from 'src/components/AdditionalIngredientsList';
 import { pizzaDialogStyles } from 'src/componentsStyles/pizzaDialogStyles';
 import { pizzaStore } from 'src/store/currentPizza';
+import { userStore } from 'src/store/currentUser';
 
 import { IngredientListWithDeleteButton } from './IngredientListWithDeleteButton';
 
@@ -58,7 +59,15 @@ export const ButtonForEditting = (props: IPizzaProps) => {
           <Grid container justify="flex-end">
             <Observer>
               {() => (
-                <Button variant="contained" color="primary" className={buyButton}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={buyButton}
+                  onClick={() => {
+                    userStore.addCurrentPizzaToBasket();
+                    setOpen(!open);
+                  }}
+                >
                   {`Buy for ${pizzaStore.price} $`}
                 </Button>
               )}

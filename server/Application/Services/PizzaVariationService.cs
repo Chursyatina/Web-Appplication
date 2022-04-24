@@ -63,7 +63,9 @@
 
         public PizzaVariationDto Insert(PizzaVariationCreateRequestDto pizzaVariation)
         {
-            return _pizzaVariationRepository.Insert(pizzaVariation.ToModel(), pizzaVariation.PizzaId, pizzaVariation.SizeId, pizzaVariation.DoughId).ToViewModel();
+            IEnumerable<string> ingredientsIds = pizzaVariation.Ingredients;
+            IEnumerable<string> additionalIds = pizzaVariation.AdditionalIngredients;
+            return _pizzaVariationRepository.Insert(pizzaVariation.ToModel(), pizzaVariation.PizzaId, pizzaVariation.SizeId, pizzaVariation.DoughId, ingredientsIds.ToList(), additionalIds.ToList()).ToViewModel();
         }
 
         public void Delete(string id)

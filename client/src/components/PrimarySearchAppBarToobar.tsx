@@ -1,11 +1,14 @@
 import React from 'react';
 import { Toolbar, IconButton, Typography, InputBase } from '@material-ui/core';
 import { Menu, Search, ShoppingBasket } from '@material-ui/icons';
+import { useHistory } from 'react-router';
 
 import { primaryAppBarStyles } from 'src/componentsStyles/primaryAppBarStyles';
 
 export const PrimarySearchAppBarToolBar = () => {
   const { menuButton, title, search, searchIcon, inputRoot, inputInput } = primaryAppBarStyles();
+
+  const history = useHistory();
 
   return (
     <Toolbar>
@@ -13,7 +16,14 @@ export const PrimarySearchAppBarToolBar = () => {
         <Menu />
       </IconButton>
       <Typography className={title} variant="h6" noWrap>
-        <IconButton edge="start" color="inherit" aria-label="open drawer" href="/">
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={() => {
+            history.push('/');
+          }}
+        >
           YoYo Pizza
         </IconButton>
       </Typography>
@@ -23,7 +33,9 @@ export const PrimarySearchAppBarToolBar = () => {
           aria-controls="menu-appbar"
           aria-haspopup="true"
           color="inherit"
-          href="/Basket"
+          onClick={() => {
+            history.push('/Basket');
+          }}
         >
           <ShoppingBasket />
         </IconButton>

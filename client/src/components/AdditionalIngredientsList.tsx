@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 
 import { IIngredient } from 'src/interfaces/ingredient';
-import { getIngredients } from 'src/api/ingredientsApi';
+import { getAdditionalIngredients } from 'src/api/additionalIngredientsApi';
 import { additionalIngredientsListStyles } from 'src/componentsStyles/additionalIngredientsListStyles';
 
 import { AdditionalIngredient } from './AdditionalIngredient';
@@ -13,7 +13,7 @@ export const AdditionalIngredientsList = () => {
   const [ingredients, setIngredients] = useState<IIngredient[]>([]);
   useEffect(() => {
     const getIngredientsList = async () => {
-      const result = await getIngredients();
+      const result = await getAdditionalIngredients();
       setIngredients(result);
     };
     getIngredientsList();

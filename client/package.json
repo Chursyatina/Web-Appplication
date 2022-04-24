@@ -31,7 +31,7 @@
       "react-app/jest"
     ]
   },
-  "eslintIgnore": ["ordersApi.ts"],
+  "eslintIgnore": ["*Api.ts"],
   "browserslist": {
     "production": [
       ">0.2%",

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Application.DTO.Request;
     using Application.DTO.Request.OrderRequestDtos;
     using Application.DTO.Response;
     using Application.Interfaces;
@@ -72,7 +73,15 @@
         public async Task<ActionResult<OrderDto>> InsertAsync([FromBody] OrderCreateRequestDto order)
         {
             User user = await GetCurrentUserAsync();
-            OrderDto returnedDto = _orderService.Insert(order, user);
+
+            List<string> linesIds = new List<string>();
+
+            foreach (OrderLineCreateRequestDto line in order.OrderLines)
+            {
+                linesIds.Add(_orderLinesService.Insert(line).Id);
+            }
+
+            OrderDto returnedDto = _orderService.Insert(order, user, linesIds);
             return Created("api/pizzasVariations/" + returnedDto.Id.ToString(), returnedDto);
         }
 

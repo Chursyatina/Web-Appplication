@@ -8,5 +8,7 @@
         public string OrderStatusId { get; set; }
 
         public IEnumerable<string> OrderLinesIds { get; set; }
+
+        public IEnumerable<OrderLineCreateRequestDto> OrderLines { get; set; }
     }
 }
