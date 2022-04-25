@@ -1,6 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 
-export const catalogsEdittingButtonsStyles = makeStyles(() =>
+export const catalogsEdittingButtonsStyles = makeStyles(theme =>
   createStyles({
     root: {
       maxWidth: 370,
@@ -11,6 +11,13 @@ export const catalogsEdittingButtonsStyles = makeStyles(() =>
     },
     center: {
       textAlign: 'center',
+    },
+    iconcenter: {
+      '& .MuiIconButton-root': {
+        padding: 0,
+      },
+      textAlign: 'center',
+      padding: 6,
     },
   }),
 );

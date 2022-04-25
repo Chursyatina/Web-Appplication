@@ -5,9 +5,11 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  IconButton,
   LinearProgress,
   TextField,
 } from '@material-ui/core';
+import { Delete } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 
 import { catalogsEdittingButtonsStyles } from 'src/componentsStyles/catalogsEdittingButtonsStyles';
@@ -117,41 +119,23 @@ export const ButtonForEditting = (props: IIngredientProps) => {
 };
 
 export const DelButtonForEditting = (props: IIngredientProps) => {
-  const { root, button, center } = catalogsEdittingButtonsStyles();
+  const { root, button, center, iconcenter } = catalogsEdittingButtonsStyles();
 
   const deleteIng = async () => {
     menuStore.removeIngredient(props.ingredient.id);
   };
 
-  if (props.ingredient.isDeleted === false) {
-    return (
-      <div className={center}>
-        <Button
-          onClick={() => {
-            deleteIng();
-          }}
-          color="primary"
-          className={button}
-        >
-          {' '}
-          Удалить{' '}
-        </Button>
-      </div>
-    );
-  } else {
-    return (
-      <div className={center}>
-        <Button
-          onClick={() => {
-            deleteIng();
-          }}
-          color="primary"
-          className={button}
-        >
-          {' '}
-          Вернуть{' '}
-        </Button>
-      </div>
-    );
-  }
+  return (
+    <div className={iconcenter}>
+      <IconButton
+        onClick={() => {
+          deleteIng();
+        }}
+        color="primary"
+        className={button}
+      >
+        <Delete />
+      </IconButton>
+    </div>
+  );
 };

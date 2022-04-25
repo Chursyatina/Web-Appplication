@@ -4,7 +4,6 @@ export const catalogsEdittingStyles = makeStyles(() =>
   createStyles({
     root: {
       flexGrow: 1,
-      fontFamily: 'Roboto',
       textAlign: 'center',
     },
 
