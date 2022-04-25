@@ -20,7 +20,9 @@
 
         public void Delete(string id)
         {
-            _context.Orders.Find(id).IsDeleted = true;
+            Order existingItem = _context.Orders.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 

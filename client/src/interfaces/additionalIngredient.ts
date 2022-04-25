@@ -5,3 +5,7 @@ export interface IAdditionalIngredient {
   isDeleted: boolean;
   imageLink: string;
 }
+
+export interface IAdditionalIngredientProps {
+  additionalIngredient: IAdditionalIngredient;
+}

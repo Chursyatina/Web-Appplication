@@ -11,9 +11,11 @@ import { getPizzas } from 'src/api/pizzasApi';
 import { getDoughs } from 'src/api/doughsApi';
 import { getSizes } from 'src/api/sizesApi';
 import { deleteIngredient, getIngredients, insertIngredient, updateIngredient } from 'src/api/ingredientsApi';
-import { getAdditionalIngredients } from 'src/api/additionalIngredientsApi';
+import { deleteAdditionalIngredient, getAdditionalIngredients, insertAdditionalIngredient, updateAdditionalIngredient } from 'src/api/additionalIngredientsApi';
 import { IIngredientCreate } from 'src/interfaces/DTOs/IngredientCreate';
 import { IIngredientUpdate, IIngredientUpdateProps } from 'src/interfaces/DTOs/IngredientUpdate';
+import { IAdditionalIngredientUpdate, IAdditionalIngredientUpdateProps } from 'src/interfaces/DTOs/AdditionalIngredientUpdate';
+import { IAdditionalIngredientCreate } from 'src/interfaces/DTOs/AdditionalIngredientCreate';
 
 class MenuStore {
   pizzas: IPizza[] = [];
@@ -47,26 +49,37 @@ class MenuStore {
 
     const newIngredient: IIngredient = await insertIngredient(ingredientCreate);
     this.ingredients.push(newIngredient);
+    this.loadData();
+  }
+
+  async createAdditionalIngredient(name: string, price: number, image: string) {
+    const ingredientCreate: IAdditionalIngredientCreate = {
+      Name: name,
+      Price: price,
+      ImageLink: image,
+    };
+
+    const newIngredient: IAdditionalIngredient = await insertAdditionalIngredient(ingredientCreate);
+    this.additionalIngredients.push(newIngredient);
+    this.loadData();
   }
 
   async removeIngredient(id: string) {
-    console.log('было');
-    console.log(this.ingredients.length);
-    console.log('ищем');
-    console.log(id);
-    console.log('в массиве')
-    this.ingredients.forEach(element => {
-      console.log(element.id);
-    })
-    console.log('индекс')
-    console.log(this.ingredients.findIndex(element => element.id === id));
     await deleteIngredient(id);
     this.ingredients.splice(
       this.ingredients.findIndex(element => element.id === id),
       1,
     );
-    console.log('стало');
-    console.log(this.ingredients.length);
+    this.loadData();
+  }
+
+  async removeAdditionalIngredient(id: string) {
+    await deleteAdditionalIngredient(id);
+    this.additionalIngredients.splice(
+      this.additionalIngredients.findIndex(element => element.id === id),
+      1,
+    );
+    this.loadData();
   }
 
   async updateIngredient(id: string, name: string, image: string, price: number) {
@@ -84,6 +97,25 @@ class MenuStore {
     const returnedIngredient = await updateIngredient(ingredientUpdateProps);
 
     this.ingredients[this.ingredients.findIndex(element => element.id === returnedIngredient.id)] = returnedIngredient;
+    this.loadData();
+  }
+
+  async updateAdditionalIngredient(id: string, name: string, image: string, price: number) {
+    const newIngredient: IAdditionalIngredientUpdate = {
+      Name: name,
+      ImageLink: image,
+      Price: price,
+    };
+
+    const ingredientUpdateProps: IAdditionalIngredientUpdateProps = {
+      id: id,
+      ingredient: newIngredient,
+    };
+
+    const returnedIngredient = await updateAdditionalIngredient(ingredientUpdateProps);
+
+    this.additionalIngredients[this.additionalIngredients.findIndex(element => element.id === returnedIngredient.id)] = returnedIngredient;
+    this.loadData();
   }
 }
 

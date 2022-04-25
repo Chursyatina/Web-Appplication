@@ -31,7 +31,9 @@
 
         public void Delete(string id)
         {
-            _context.PizzasVariations.Find(id).IsDeleted = true;
+            PizzaVariation existingItem = _context.PizzasVariations.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 

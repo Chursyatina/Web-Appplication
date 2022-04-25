@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Application.Services;
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
@@ -18,23 +19,29 @@
 
         public void Delete(string id)
         {
-            _context.Ingredients.Find(id).IsDeleted = true;
+            Ingredient existingItem = _context.Ingredients.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+            foreach (Pizza pizza in _context.Pizzas.Include(i => i.Ingredients))
+            {
+                pizza.Price = PriceCountingService.GetStartingPriceForPizza(pizza);
+            }
+
             _context.SaveChanges();
         }
 
         public Ingredient GetById(string id)
         {
-            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Id == id && p.IsDeleted == false);
+            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Id == id);
         }
 
         public Ingredient GetByName(string name)
         {
-            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Name == name && p.IsDeleted == false);
+            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Name == name);
         }
 
         public IEnumerable<Ingredient> GetAll()
         {
-            return _context.Ingredients.AsNoTracking().Where(p => p.IsDeleted == false);
+            return _context.Ingredients.AsNoTracking();
         }
 
         public IQueryable<Ingredient> GetIngredientsById(List<string> identificators)
@@ -61,8 +68,18 @@
             existingItem.Name = item.Name;
             existingItem.ImageLink = item.ImageLink;
             existingItem.Price = item.Price;
+            existingItem.IsDeleted = item.IsDeleted;
 
             var entity = _context.Update(existingItem);
+
+            foreach (Pizza pizza in _context.Pizzas.Include(i => i.Ingredients))
+            {
+                if (pizza.Ingredients.Contains(existingItem))
+                {
+                    pizza.Price = PriceCountingService.GetStartingPriceForPizza(pizza);
+                }
+            }
+
             _context.SaveChanges();
             return entity.Entity;
         }
@@ -87,6 +104,14 @@
             }
 
             var entity = _context.Update(existingItem);
+            foreach (Pizza pizza in _context.Pizzas.Include(i => i.Ingredients))
+            {
+                if (pizza.Ingredients.Contains(existingItem))
+                {
+                    pizza.Price = PriceCountingService.GetStartingPriceForPizza(pizza);
+                }
+            }
+
             _context.SaveChanges();
             return entity.Entity;
         }

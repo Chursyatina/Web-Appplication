@@ -34,9 +34,12 @@ class UserStore {
   async loadData() {
     const authinfo = getCurrentuser();
     this.isAuthenticated = (await authinfo).isAuth;
+    if (this.isAuthenticated)
+    {
     this.role = (await authinfo).role;
     this.basket = (await authinfo).user.basket;
     this.recalculatePrice();
+    }
   }
 
   async createOrder() {

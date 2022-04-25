@@ -135,7 +135,9 @@
 
         public void Delete(string id)
         {
-            _context.Pizzas.Find(id).IsDeleted = true;
+            Pizza existingItem = _context.Pizzas.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 

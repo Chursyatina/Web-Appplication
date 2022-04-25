@@ -12,9 +12,10 @@ export const IngredientListWithDeleteButton = (props: IPizzaProps) => {
   return (
     <List className={withNoMarginsAndPaddings}>
       <div className={withNoMarginsAndPaddings}>
-        {props.pizza.ingredients.map(ingredient => (
-          <IngredientWithDeleteButton key={ingredient.id} ingredient={ingredient} />
-        ))}
+        {props.pizza.ingredients.map(
+          ingredient =>
+            !ingredient.isDeleted && <IngredientWithDeleteButton key={ingredient.id} ingredient={ingredient} />,
+        )}
       </div>
     </List>
   );

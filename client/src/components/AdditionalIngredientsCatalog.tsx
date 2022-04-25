@@ -10,17 +10,17 @@ import {
   DelButtonForEditting,
   NameForEditting,
   PriceForEditting,
-} from 'src/components/CatalogsEdittingButtons';
+} from 'src/components/AdditionalIngredientsCatalogEditting';
 
 import { PizzaList } from './PizzaList';
 
-export const Catalogs = observer(() => {
+export const AdditionalIngredientsCatalog = observer(() => {
   const { root, addButton, center, fieldwidth, button, loadLine1 } = catalogsEdittingStyles();
 
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
 
-  if (menuStore.ingredients === null) {
+  if (menuStore.additionalIngredients === null) {
     return (
       <>
         {' '}
@@ -32,15 +32,15 @@ export const Catalogs = observer(() => {
   }
   return (
     <div>
-      <h2 className={root}>Ингредиенты </h2>
+      <h2 className={root}>Добавки</h2>
 
       <Grid container>
         <Grid item xs={3}>
-          <h3 className={center}> Название ингредиента </h3>
+          <h3 className={center}> Название добавки </h3>
 
-          {menuStore.ingredients.map(ing => (
-            <NameForEditting key={ing.id} ingredient={ing} />
-          ))}
+          {menuStore.additionalIngredients.map(
+            ing => !ing.isDeleted && <NameForEditting key={ing.id} additionalIngredient={ing} />,
+          )}
 
           <TextField
             id="name"
@@ -52,11 +52,11 @@ export const Catalogs = observer(() => {
           />
         </Grid>
         <Grid item xs={3}>
-          <h3 className={center}> Цена ингредиента </h3>
+          <h3 className={center}> Цена добавки </h3>
 
-          {menuStore.ingredients.map(ing => (
-            <PriceForEditting key={ing.id} ingredient={ing} />
-          ))}
+          {menuStore.additionalIngredients.map(
+            ing => !ing.isDeleted && <PriceForEditting key={ing.id} additionalIngredient={ing} />,
+          )}
           <TextField
             id="name"
             color="secondary"
@@ -69,26 +69,26 @@ export const Catalogs = observer(() => {
         <Grid item xs={3}>
           <h3 className={center}> Редактирование </h3>
 
-          {menuStore.ingredients.map(ing => (
-            <ButtonForEditting key={ing.id} ingredient={ing} />
-          ))}
+          {menuStore.additionalIngredients.map(
+            ing => !ing.isDeleted && <ButtonForEditting key={ing.id} additionalIngredient={ing} />,
+          )}
 
           <Button
             variant="contained"
             color="primary"
             className={button}
-            onClick={() => menuStore.createIngredient(name, price, 'some')}
+            onClick={() => menuStore.createAdditionalIngredient(name, price, 'some')}
           >
             {' '}
-            Добавить новый ингредиент{' '}
+            Добавить новую доюавку{' '}
           </Button>
         </Grid>
         <Grid item xs={3}>
           <h3 className={center}> Удаление </h3>
 
-          {menuStore.ingredients.map(ing => (
-            <DelButtonForEditting key={ing.id} ingredient={ing} />
-          ))}
+          {menuStore.additionalIngredients.map(
+            ing => !ing.isDeleted && <DelButtonForEditting key={ing.id} additionalIngredient={ing} />,
+          )}
         </Grid>
       </Grid>
     </div>

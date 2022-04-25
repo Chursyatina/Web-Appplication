@@ -4,13 +4,13 @@ import { Route, Switch } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 
 import { userStore } from 'src/store/currentUser';
-
-import { PrimaryAppBar } from './components/PrimaryAppBar';
-import { MainMenu } from './components/MainMenu';
-import { Footer } from './components/Footer';
-import { Basket } from './components/Basket';
-import { Catalogs } from './components/CatalogsEditting';
-import { menuStore } from './store/currentMenu';
+import { PrimaryAppBar } from 'src/components/PrimaryAppBar';
+import { MainMenu } from 'src/components/MainMenu';
+import { Footer } from 'src/components/Footer';
+import { Basket } from 'src/components/Basket';
+import { IngredientsCatalog } from 'src/components/IngredientCatalog';
+import { menuStore } from 'src/store/currentMenu';
+import { AdditionalIngredientsCatalog } from 'src/components/AdditionalIngredientsCatalog';
 
 export const App: React.FC = () => {
   useEffect(() => {
@@ -36,7 +36,8 @@ export const App: React.FC = () => {
           <Switch>
             <Route exact path="/" component={MainMenu} />
             <Route exact path="/Basket" component={Basket} />
-            <Route exact path="/Catalogs" component={Catalogs} />
+            <Route exact path="/IngredientsCatalog" component={IngredientsCatalog} />
+            <Route exact path="/AdditionalIngredientsCatalog" component={AdditionalIngredientsCatalog} />
           </Switch>
         </Container>
         <div className={'footerSpace'} />

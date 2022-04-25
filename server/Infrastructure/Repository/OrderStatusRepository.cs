@@ -18,7 +18,9 @@
 
         public void Delete(string id)
         {
-            _context.OrderStatuses.Find(id).IsDeleted = true;
+            OrderStatus existingItem = _context.OrderStatuses.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 

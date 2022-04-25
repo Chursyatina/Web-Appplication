@@ -18,23 +18,25 @@
 
         public void Delete(string id)
         {
-            _context.AdditionalIngredients.Find(id).IsDeleted = true;
+            AdditionalIngredient existingItem = _context.AdditionalIngredients.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 
         public AdditionalIngredient GetById(string id)
         {
-            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Id == id && p.IsDeleted == false);
+            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Id == id);
         }
 
         public AdditionalIngredient GetByName(string name)
         {
-            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Name == name && p.IsDeleted == false);
+            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Name == name);
         }
 
         public IEnumerable<AdditionalIngredient> GetAll()
         {
-            return _context.AdditionalIngredients.AsNoTracking().Where(p => p.IsDeleted == false);
+            return _context.AdditionalIngredients.AsNoTracking();
         }
 
         public IEnumerable<string> GetIdentificators()

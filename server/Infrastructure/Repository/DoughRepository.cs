@@ -18,7 +18,9 @@
 
         public void Delete(string id)
         {
-            _context.Doughs.Find(id).IsDeleted = true;
+            Dough existingItem = _context.Doughs.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 

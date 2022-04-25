@@ -19,7 +19,9 @@
 
         public void Delete(string id)
         {
-            _context.OrderLines.Find(id).IsDeleted = true;
+            OrderLine existingItem = _context.OrderLines.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 

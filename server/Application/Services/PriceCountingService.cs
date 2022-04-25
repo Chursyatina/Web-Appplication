@@ -12,7 +12,10 @@
 
             foreach (Ingredient ingredient in pizza.Ingredients)
             {
-                price += ingredient.Price;
+                if (!ingredient.IsDeleted)
+                {
+                    price += ingredient.Price;
+                }
             }
 
             return price;
@@ -26,12 +29,18 @@
 
             foreach (Ingredient ingredient in pizzaVariation.Ingredients)
             {
-                price += ingredient.Price;
+                if (!ingredient.IsDeleted)
+                {
+                    price += ingredient.Price;
+                }
             }
 
             foreach (AdditionalIngredient additionalIngredient in pizzaVariation.AdditionalIngredients)
             {
-                price += additionalIngredient.Price;
+                if (!additionalIngredient.IsDeleted)
+                {
+                    price += additionalIngredient.Price;
+                }
             }
 
             price *= pizzaVariation.Size.PriceMultiplier;
@@ -50,7 +59,10 @@
 
             foreach (OrderLine orderLine in order.OrderLines)
             {
-                price += orderLine.Price;
+                if (!orderLine.IsDeleted)
+                {
+                    price += orderLine.Price;
+                }
             }
 
             return price;
@@ -62,7 +74,10 @@
 
             foreach (OrderLine basketLine in basket.OrderLines)
             {
-                price += basketLine.Price;
+                if (basketLine.IsDeleted)
+                {
+                    price += basketLine.Price;
+                }
             }
 
             return price;

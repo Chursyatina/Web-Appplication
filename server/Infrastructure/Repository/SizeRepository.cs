@@ -47,7 +47,9 @@
 
         public void Delete(string id)
         {
-            _context.Sizes.Find(id).IsDeleted = true;
+            Size existingItem = _context.Sizes.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 

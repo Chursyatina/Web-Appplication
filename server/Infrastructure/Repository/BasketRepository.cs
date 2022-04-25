@@ -19,7 +19,9 @@
 
         public void Delete(string id)
         {
-            _context.Baskets.Find(id).IsDeleted = true;
+            Basket existingItem = _context.Baskets.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 
