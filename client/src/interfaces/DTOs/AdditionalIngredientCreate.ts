@@ -7,6 +7,6 @@ export interface IAdditionalIngredientCreate {
   }
   
   export interface IAdditionalIngredientCreateProps {
-    order: IAdditionalIngredientCreate;
+    additionalIngredient: IAdditionalIngredientCreate;
   }
   

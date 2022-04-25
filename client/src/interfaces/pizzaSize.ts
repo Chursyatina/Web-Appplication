@@ -5,3 +5,7 @@ export interface IPizzaSize {
   priceMultiplier: number;
   image: string;
 }
+
+export interface IPizzaSizeProps {
+  size: IPizzaSize;
+}

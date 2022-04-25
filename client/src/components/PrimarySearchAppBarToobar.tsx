@@ -53,6 +53,28 @@ export const PrimarySearchAppBarToolBar = observer(() => {
             aria-haspopup="true"
             color="inherit"
             onClick={() => {
+              history.push('/DoughsCatalog');
+            }}
+          >
+            <Edit />
+          </IconButton>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+            onClick={() => {
+              history.push('/SizesCatalog');
+            }}
+          >
+            <Edit />
+          </IconButton>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+            onClick={() => {
               history.push('/AdditionalIngredientsCatalog');
             }}
           >

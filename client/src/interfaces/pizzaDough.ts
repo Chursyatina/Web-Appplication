@@ -5,3 +5,7 @@ export interface IPizzaDough {
   priceMultiplier: number;
   image: string;
 }
+
+export interface IPizzaDoughProps {
+  dough: IPizzaDough;
+}

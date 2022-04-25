@@ -11,6 +11,8 @@ import { Basket } from 'src/components/Basket';
 import { IngredientsCatalog } from 'src/components/IngredientCatalog';
 import { menuStore } from 'src/store/currentMenu';
 import { AdditionalIngredientsCatalog } from 'src/components/AdditionalIngredientsCatalog';
+import { SizesCatalog } from 'src/components/SizesCatalog';
+import { DoughsCatalog } from 'src/components/DoughsCatalog';
 
 export const App: React.FC = () => {
   useEffect(() => {
@@ -38,6 +40,8 @@ export const App: React.FC = () => {
             <Route exact path="/Basket" component={Basket} />
             <Route exact path="/IngredientsCatalog" component={IngredientsCatalog} />
             <Route exact path="/AdditionalIngredientsCatalog" component={AdditionalIngredientsCatalog} />
+            <Route exact path="/SizesCatalog" component={SizesCatalog} />
+            <Route exact path="/DoughsCatalog" component={DoughsCatalog} />
           </Switch>
         </Container>
         <div className={'footerSpace'} />

@@ -26,7 +26,7 @@ export const updateAdditionalIngredient = async (ingredient: IAdditionalIngredie
       headers: {
           "Content-Type": "application/json",
       },
-      body: JSON.stringify(ingredient.ingredient),
+      body: JSON.stringify(ingredient.additionalIngredient),
   });
   return (await response.json()) as IIngredient;
 };

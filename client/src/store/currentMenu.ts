@@ -8,14 +8,18 @@ import { IPizzaDough } from 'src/interfaces/pizzaDough';
 import { IPizzaSize } from 'src/interfaces/pizzaSize';
 import { IAdditionalIngredient } from 'src/interfaces/additionalIngredient';
 import { getPizzas } from 'src/api/pizzasApi';
-import { getDoughs } from 'src/api/doughsApi';
-import { getSizes } from 'src/api/sizesApi';
+import { deleteDough, getDoughs, insertDough, updateDough } from 'src/api/doughsApi';
+import { deleteSize, getSizes, insertSize, updateSize } from 'src/api/sizesApi';
 import { deleteIngredient, getIngredients, insertIngredient, updateIngredient } from 'src/api/ingredientsApi';
 import { deleteAdditionalIngredient, getAdditionalIngredients, insertAdditionalIngredient, updateAdditionalIngredient } from 'src/api/additionalIngredientsApi';
 import { IIngredientCreate } from 'src/interfaces/DTOs/IngredientCreate';
 import { IIngredientUpdate, IIngredientUpdateProps } from 'src/interfaces/DTOs/IngredientUpdate';
 import { IAdditionalIngredientUpdate, IAdditionalIngredientUpdateProps } from 'src/interfaces/DTOs/AdditionalIngredientUpdate';
 import { IAdditionalIngredientCreate } from 'src/interfaces/DTOs/AdditionalIngredientCreate';
+import { IDoughCreate } from 'src/interfaces/DTOs/DoughCreate';
+import { ISizeCreate } from 'src/interfaces/DTOs/SizeCreate';
+import { IDoughUpdate, IDoughUpdateProps } from 'src/interfaces/DTOs/DoughUpdate';
+import { ISizeUpdate, ISizeUpdateProps } from 'src/interfaces/DTOs/SizeUpdate';
 
 class MenuStore {
   pizzas: IPizza[] = [];
@@ -64,6 +68,28 @@ class MenuStore {
     this.loadData();
   }
 
+  async createDough(name: string, priceMultiplier: number) {
+    const doughCreate: IDoughCreate = {
+      Name: name,
+      PriceMultiplier: priceMultiplier,
+    };
+
+    const newDough: IPizzaDough = await insertDough(doughCreate);
+    this.doughs.push(newDough);
+    this.loadData();
+  }
+
+  async createSize(name: string, priceMultiplier: number) {
+    const sizeCreate: ISizeCreate = {
+      Name: name,
+      PriceMultiplier: priceMultiplier,
+    };
+
+    const newSize: IPizzaSize = await insertSize(sizeCreate);
+    this.sizes.push(newSize);
+    this.loadData();
+  }
+
   async removeIngredient(id: string) {
     await deleteIngredient(id);
     this.ingredients.splice(
@@ -77,6 +103,24 @@ class MenuStore {
     await deleteAdditionalIngredient(id);
     this.additionalIngredients.splice(
       this.additionalIngredients.findIndex(element => element.id === id),
+      1,
+    );
+    this.loadData();
+  }
+
+  async removeDough(id: string) {
+    await deleteDough(id);
+    this.doughs.splice(
+      this.doughs.findIndex(element => element.id === id),
+      1,
+    );
+    this.loadData();
+  }
+
+  async removeSize(id: string) {
+    await deleteSize(id);
+    this.sizes.splice(
+      this.sizes.findIndex(element => element.id === id),
       1,
     );
     this.loadData();
@@ -109,7 +153,7 @@ class MenuStore {
 
     const ingredientUpdateProps: IAdditionalIngredientUpdateProps = {
       id: id,
-      ingredient: newIngredient,
+      additionalIngredient: newIngredient,
     };
 
     const returnedIngredient = await updateAdditionalIngredient(ingredientUpdateProps);
@@ -117,6 +161,42 @@ class MenuStore {
     this.additionalIngredients[this.additionalIngredients.findIndex(element => element.id === returnedIngredient.id)] = returnedIngredient;
     this.loadData();
   }
+
+  async updateDough(id: string, name: string, priceMultiplier: number) {
+    const newDough: IDoughUpdate = {
+      Name: name,
+      PriceMultiplier: priceMultiplier,
+    };
+
+    const doughUpdateProps: IDoughUpdateProps = {
+      id: id,
+      dough: newDough,
+    };
+
+    const returnedDough = await updateDough(doughUpdateProps);
+
+    this.doughs[this.doughs.findIndex(element => element.id === returnedDough.id)] = returnedDough;
+    this.loadData();
+  }
+
+  async updateSize(id: string, name: string, priceMultiplier: number) {
+    const newSize: ISizeUpdate = {
+      Name: name,
+      PriceMultiplier: priceMultiplier,
+    };
+
+    const sizeUpdateProps: ISizeUpdateProps = {
+      id: id,
+      size: newSize,
+    };
+
+    const returnedSize = await updateSize(sizeUpdateProps);
+
+    this.sizes[this.sizes.findIndex(element => element.id === returnedSize.id)] = returnedSize;
+    this.loadData();
+  }
 }
+
+
 
 export const menuStore = new MenuStore();

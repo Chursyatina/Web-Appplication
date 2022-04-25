@@ -8,7 +8,7 @@ export interface IAdditionalIngredientUpdate {
   
 export interface IAdditionalIngredientUpdateProps {
   id: string;
-  ingredient: IAdditionalIngredientUpdate;
+  additionalIngredient: IAdditionalIngredientUpdate;
 }
 
   
