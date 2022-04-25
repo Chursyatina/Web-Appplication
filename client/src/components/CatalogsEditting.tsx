@@ -1,5 +1,6 @@
 import { Button, Grid, LinearProgress, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 
 import { catalogsEdittingStyles } from 'src/componentsStyles/catalogsEdittingStyles';
 import { menuStore } from 'src/store/currentMenu';
@@ -13,7 +14,7 @@ import {
 
 import { PizzaList } from './PizzaList';
 
-export const Catalogs = () => {
+export const Catalogs = observer(() => {
   const { root, addButton, center, fieldwidth, button, loadLine1 } = catalogsEdittingStyles();
 
   const [name, setName] = useState('');
@@ -92,4 +93,4 @@ export const Catalogs = () => {
       </Grid>
     </div>
   );
-};
+});

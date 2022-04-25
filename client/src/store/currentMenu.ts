@@ -50,11 +50,23 @@ class MenuStore {
   }
 
   async removeIngredient(id: string) {
+    console.log('было');
+    console.log(this.ingredients.length);
+    console.log('ищем');
+    console.log(id);
+    console.log('в массиве')
+    this.ingredients.forEach(element => {
+      console.log(element.id);
+    })
+    console.log('индекс')
+    console.log(this.ingredients.findIndex(element => element.id === id));
     await deleteIngredient(id);
-    this.ingredients.slice(
+    this.ingredients.splice(
       this.ingredients.findIndex(element => element.id === id),
       1,
     );
+    console.log('стало');
+    console.log(this.ingredients.length);
   }
 
   async updateIngredient(id: string, name: string, image: string, price: number) {
@@ -71,7 +83,7 @@ class MenuStore {
 
     const returnedIngredient = await updateIngredient(ingredientUpdateProps);
 
-    this.ingredients[this.ingredients.findIndex(element => element.id === returnedIngredient)] = returnedIngredient;
+    this.ingredients[this.ingredients.findIndex(element => element.id === returnedIngredient.id)] = returnedIngredient;
   }
 }
 

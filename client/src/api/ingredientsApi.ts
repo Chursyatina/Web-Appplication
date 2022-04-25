@@ -16,18 +16,18 @@ export const insertIngredient = async (ingredient: IIngredientCreate) => {
     },
     body: JSON.stringify(ingredient),
   });
-  return response.json();
+  return (await response.json()) as IIngredient;
 };
 
 export const updateIngredient = async (ingredient: IIngredientUpdateProps) => {
-  const response = await fetch(INGREDIENTS_URL, {
+  const response = await fetch(`${INGREDIENTS_URL}/${ingredient.id}`, {
       method: "PUT",
       headers: {
           "Content-Type": "application/json",
       },
-      body: JSON.stringify(ingredient),
+      body: JSON.stringify(ingredient.ingredient),
   });
-  return response.json();
+  return (await response.json()) as IIngredient;
 };
 
 export const deleteIngredient = async (id: string) => {
