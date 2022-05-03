@@ -24,10 +24,22 @@ class PizzaStore {
   dough: IPizzaDough = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ', isDeleted: false };
   ingredients: IIngredient[] = [];
   additionalIngredients: IAdditionalIngredient[] = [];
-  price = 0;
+  price = this.basicPizzaPrice;
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  removePizza(){
+    this.pizza = {
+      id: '-1',
+    imageLink: ' ',
+    singleItemImageLink: ' ',
+    name: ' ',
+    description: ' ',
+    price: 0,
+    ingredients: [],
+    };
   }
 
   setPizza(pizza: IPizza) {

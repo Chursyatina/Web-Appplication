@@ -18,6 +18,13 @@ export const pizzaDialogStyles = makeStyles((theme: Theme) =>
       margin: 2,
       fontFamily: 'Segoe UI',
     },
+    root: {
+      width: 370,
+      margin: 15,
+    },
+    media: {
+      height: 390,
+    },
     center: {
       textAlign: 'center',
     },

@@ -6,6 +6,8 @@ import { IPizza } from 'src/interfaces/pizza';
 import { getPizzas } from 'src/api/pizzasApi';
 import { pizzaListStyles } from 'src/componentsStyles/pizzaListStyles';
 import { menuStore } from 'src/store/currentMenu';
+import { userStore } from 'src/store/currentUser';
+import { AddingNewPizzaDialog } from 'src/components/AddingNewPizzaDialog';
 
 import { Pizza } from './Pizza';
 
@@ -32,6 +34,7 @@ export const PizzaList = observer(() => {
           {menuStore.pizzas.map(pizza => (
             <Pizza key={pizza.id} pizza={pizza} />
           ))}
+          {userStore.role === 'admin' && <AddingNewPizzaDialog />}
         </Grid>
       </Grid>
     </Grid>

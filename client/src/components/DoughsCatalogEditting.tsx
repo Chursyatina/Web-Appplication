@@ -39,7 +39,7 @@ export const PriceForEditting = (props: IPizzaDoughProps) => {
 
   return (
     <div>
-      <h4 className={center}>{`${props.dough.priceMultiplier} р.`}</h4>
+      <h4 className={center}>{`X ${props.dough.priceMultiplier}`}</h4>
     </div>
   );
 };

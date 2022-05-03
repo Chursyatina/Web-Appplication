@@ -59,6 +59,10 @@ class UserStore {
     return await insertOrder(order);
   }
 
+  async createNewPizza(){
+    // to do
+  }
+
   async addCurrentPizzaToBasket() {
     const newPizzaVariation: IPizzaVariation = {
       id: 'newId',

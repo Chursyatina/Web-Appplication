@@ -80,7 +80,7 @@ export const AdditionalIngredientsCatalog = observer(() => {
             onClick={() => menuStore.createAdditionalIngredient(name, price, 'some')}
           >
             {' '}
-            Добавить новую доюавку{' '}
+            Добавить новую добавку{' '}
           </Button>
         </Grid>
         <Grid item xs={3}>
