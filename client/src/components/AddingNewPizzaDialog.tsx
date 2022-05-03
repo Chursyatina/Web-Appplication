@@ -18,22 +18,86 @@ export const AddingNewPizzaDialog = observer(() => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
+  const [bigCover, setBigCover] = useState('');
+  const [cover, setCover] = useState('');
+
+  const getBigCoverBase64 = (file: Blob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      setBigCover(typeof reader.result === 'string' ? reader.result : '');
+    };
+  };
+
+  const getCoverBase64 = (file: Blob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      setCover(typeof reader.result === 'string' ? reader.result : '');
+    };
+  };
+
   const clickHandler = () => {
     setOpen(!open);
     creatingPizzaStore.removePizza();
+    setCover('');
+    setBigCover('');
   };
 
   const body = (
     <div className={paper}>
       <Grid container>
         <Grid item xs={7} className={pizzaImage}>
-          <img
-            src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngwing.com%2Fru%2Ffree-png-zbdea&psig=AOvVaw35swaS506XxLQrU6a4JiJT&ust=1651695889406000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCNC8oOiUxPcCFQAAAAAdAAAAABAD"
-            width="539"
-            height="500"
-          />
+          <div
+            onClick={() => {
+              document.getElementById('bigfileinput')?.click();
+            }}
+          >
+            <img
+              src={bigCover !== '' ? bigCover : 'http://artismedia.by/blog/wp-content/uploads/2018/05/in-blog2-1.png'}
+              width="539"
+              height="500"
+            />
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              style={{ display: 'none' }}
+              id="bigfileinput"
+              onChange={async e => {
+                const { files } = e.target;
+                if (files && files.length > 0) {
+                  const file = files[0];
+                  getBigCoverBase64(file);
+                }
+              }}
+            />
+          </div>
         </Grid>
         <Grid item xs={5} className={basketItem}>
+          <div
+            onClick={() => {
+              document.getElementById('fileinput')?.click();
+            }}
+          >
+            <img
+              src={cover !== '' ? cover : 'http://artismedia.by/blog/wp-content/uploads/2018/05/in-blog2-1.png'}
+              width="360"
+              height="200"
+            />
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              style={{ display: 'none' }}
+              id="fileinput"
+              onChange={async e => {
+                const { files } = e.target;
+                if (files && files.length > 0) {
+                  const file = files[0];
+                  getCoverBase64(file);
+                }
+              }}
+            />
+          </div>
           <TextField
             fullWidth
             id="standard-basic"
@@ -70,6 +134,8 @@ export const AddingNewPizzaDialog = observer(() => {
                   onClick={() => {
                     creatingPizzaStore.setName(name);
                     creatingPizzaStore.setDescription(description);
+                    creatingPizzaStore.setImageLink(cover);
+                    creatingPizzaStore.setSingleImageLink(bigCover);
                     creatingPizzaStore.createNewPizza();
                     setOpen(!open);
                   }}
@@ -90,7 +156,7 @@ export const AddingNewPizzaDialog = observer(() => {
         <Card className={root}>
           <CardActionArea>
             <CardMedia
-              image="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pngwing.com%2Fru%2Ffree-png-zbdea&psig=AOvVaw35swaS506XxLQrU6a4JiJT&ust=1651695889406000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCNC8oOiUxPcCFQAAAAAdAAAAABAD"
+              image="http://artismedia.by/blog/wp-content/uploads/2018/05/in-blog2-1.png"
               title="Photo of pizza"
               className={media}
             />

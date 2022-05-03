@@ -22,15 +22,17 @@ class CreatingPizzaStore {
     console.log(this.name);
     console.log(this.description);
     console.log(this.ingredients);
+    console.log(this.imageLink);
+    console.log(this.singleItemImageLink);
   }
 
   removePizza(){
     this.imageLink = ' ';
     this.singleItemImageLink= ' ';
     this.name = ' ';
-  this.description = ' ';
-  this.ingredients = [];
-  this.price = this.basicPizzaPrice;
+    this.description = ' ';
+    this.ingredients = [];
+    this.price = this.basicPizzaPrice;
   }
 
   setName(newName: string){
@@ -39,6 +41,14 @@ class CreatingPizzaStore {
 
   setDescription(newDescription: string){
     this.description = newDescription;
+  }
+
+  setImageLink(link:string){
+    this.imageLink = link;
+  }
+
+  setSingleImageLink(link:string){
+    this.singleItemImageLink = link;
   }
 
   changeExistenceOfIngredient(newIngredient: IIngredient) {
