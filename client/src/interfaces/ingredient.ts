@@ -9,3 +9,8 @@ export interface IIngredient {
 export interface IIngredientProps {
   ingredient: IIngredient;
 }
+
+export interface IIngredientIsPickedProps {
+  ingredient: IIngredient;
+  isPicked: boolean;
+}

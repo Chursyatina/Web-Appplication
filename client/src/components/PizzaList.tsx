@@ -30,12 +30,20 @@ export const PizzaList = observer(() => {
   return (
     <Grid container justify="center" className={root}>
       <Grid item>
-        <Grid container justify="center">
-          {menuStore.pizzas.map(pizza => (
-            <Pizza key={pizza.id} pizza={pizza} />
-          ))}
-          {userStore.role === 'admin' && <AddingNewPizzaDialog />}
-        </Grid>
+        {userStore.role === 'admin' ? (
+          <Grid container justify="center">
+            {menuStore.pizzas.map(pizza => (
+              <Pizza key={pizza.id} pizza={pizza} />
+            ))}
+            {userStore.role === 'admin' && <AddingNewPizzaDialog />}
+          </Grid>
+        ) : (
+          <Grid container justify="center">
+            {menuStore.pizzas.map(pizza => (
+              <Pizza key={pizza.id} pizza={pizza} />
+            ))}
+          </Grid>
+        )}
       </Grid>
     </Grid>
   );

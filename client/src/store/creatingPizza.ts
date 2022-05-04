@@ -3,6 +3,7 @@
 import { makeAutoObservable } from 'mobx';
 import { insertPizza } from 'src/api/pizzasApi';
 import { IPizzaCreate } from 'src/interfaces/DTOs/PizzaCreate';
+import { IPizzaUpdate } from 'src/interfaces/DTOs/PizzaUpdate';
 
 import { IIngredient } from 'src/interfaces/ingredient';
 import { IPizza } from 'src/interfaces/pizza';
@@ -10,6 +11,7 @@ import { IPizza } from 'src/interfaces/pizza';
 class CreatingPizzaStore {
   basicPizzaPrice = 200;
 
+  id: string = ' ';
   imageLink: string = ' ';
   singleItemImageLink: string = ' ';
   name: string = ' ';
@@ -19,6 +21,24 @@ class CreatingPizzaStore {
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  getEdittingPizza(){
+    let ingredientsIds: string[] = [];
+
+    this.ingredients.forEach(ingredient => {
+        ingredientsIds.push(ingredient.id);
+    })
+
+    let pizza: IPizzaUpdate = {
+        Name: this.name,
+        Description: this.description,
+        ImageLink: this.imageLink,
+        SingleItemImageLink: this.singleItemImageLink,
+        Ingredients: ingredientsIds
+    }
+
+    return pizza;
   }
 
   getNewPizza(){
@@ -48,6 +68,10 @@ class CreatingPizzaStore {
     this.price = this.basicPizzaPrice;
   }
 
+  setId(id: string){
+    this.id = id;
+  }
+
   setName(newName: string){
     this.name = newName;
   }
@@ -73,11 +97,7 @@ class CreatingPizzaStore {
     } else {
       this.ingredients.push(newIngredient);
     }
-    console.log('addedone');
     this.recalculatePrice();
-    console.log(this.price);
-    console.log(this.name);
-    console.log(this.description);
   }
 
   changeExistenceOfAdditionalIngredient(ing: IIngredient) {

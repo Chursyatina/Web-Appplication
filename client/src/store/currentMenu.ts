@@ -7,7 +7,7 @@ import { IPizza } from 'src/interfaces/pizza';
 import { IPizzaDough } from 'src/interfaces/pizzaDough';
 import { IPizzaSize } from 'src/interfaces/pizzaSize';
 import { IAdditionalIngredient } from 'src/interfaces/additionalIngredient';
-import { getPizzas, insertPizza } from 'src/api/pizzasApi';
+import { deletePizza, getPizzas, insertPizza, updatePizza } from 'src/api/pizzasApi';
 import { deleteDough, getDoughs, insertDough, updateDough } from 'src/api/doughsApi';
 import { deleteSize, getSizes, insertSize, updateSize } from 'src/api/sizesApi';
 import { deleteIngredient, getIngredients, insertIngredient, updateIngredient } from 'src/api/ingredientsApi';
@@ -21,6 +21,7 @@ import { ISizeCreate } from 'src/interfaces/DTOs/SizeCreate';
 import { IDoughUpdate, IDoughUpdateProps } from 'src/interfaces/DTOs/DoughUpdate';
 import { ISizeUpdate, ISizeUpdateProps } from 'src/interfaces/DTOs/SizeUpdate';
 import { IPizzaCreate } from 'src/interfaces/DTOs/PizzaCreate';
+import { IPizzaUpdate, IPizzaUpdateProps } from 'src/interfaces/DTOs/PizzaUpdate';
 
 class MenuStore {
   pizzas: IPizza[] = [];
@@ -51,6 +52,25 @@ class MenuStore {
     this.pizzas.push(returnedPizza);
 
     return returnedPizza;
+  }
+
+  async updatePizza(id: string, pizza:IPizzaUpdate){
+    let updateProps: IPizzaUpdateProps = {
+      id: id,
+      pizza: pizza,
+    }
+
+    let returnedPizza = await updatePizza(updateProps)
+
+    this.pizzas[this.pizzas.findIndex(element => element.id === returnedPizza.id)] = returnedPizza;
+    this.loadData();
+  }
+
+  async deletePizza(id: string){
+    let returned = await deletePizza(id)
+
+    this.pizzas.splice(this.pizzas.findIndex(element => element.id === id),1);
+    this.loadData();
   }
 
   async createIngredient(name: string, price: number, image: string) {

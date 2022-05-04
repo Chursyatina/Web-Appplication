@@ -15,13 +15,22 @@ export const catalogsEdittingStyles = makeStyles(() =>
     center: {
       textAlign: 'center',
     },
-    fieldwidth: {
+    namefieldwidth: {
       width: 150,
       marginLeft: 85,
       textAlign: 'center',
     },
+    pricefieldwidth: {
+      width: 150,
+      marginLeft: 30,
+      textAlign: 'center',
+    },
     button: {
-      margin: 20,
+      '& .makeStyles-button-37': {
+        margin: 0,
+      },
+      marginLeft: 20,
+      marginBottom: 100,
     },
     loadLine1: {
       width: '100%',
@@ -29,6 +38,20 @@ export const catalogsEdittingStyles = makeStyles(() =>
         marginTop: 400,
       },
       marginTop: 350,
+    },
+    iconRoot: {
+      width: 108,
+      height: 120,
+      margin: 4,
+      transition: 'all 0.3s ease',
+      borderRadius: '10px',
+      boxSizing: 'border-box',
+    },
+    media: {
+      height: 120,
+    },
+    border: {
+      border: '1px solid darkblue',
     },
   }),
 );

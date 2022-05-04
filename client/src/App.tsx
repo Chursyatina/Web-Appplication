@@ -18,13 +18,8 @@ export const App: React.FC = () => {
   useEffect(() => {
     const getData = async () => {
       if (menuStore.pizzas.length === 0) {
-        console.log(menuStore.pizzas.length);
-        console.log(Date.now());
-        console.log('started loading');
         await menuStore.loadData();
         await userStore.loadData();
-        console.log('loaded');
-        console.log(menuStore.pizzas.length);
       }
     };
     getData();

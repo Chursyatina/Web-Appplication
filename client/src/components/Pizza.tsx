@@ -1,15 +1,18 @@
-import { CardContent, Typography, Card, CardActionArea, CardMedia, Grid, CardActions } from '@material-ui/core';
+import { CardContent, Typography, Card, CardActionArea, CardMedia, Grid, CardActions, Button } from '@material-ui/core';
 import React from 'react';
 
 import { IPizzaProps } from 'src/interfaces/pizza';
 import { pizzaStyles } from 'src/componentsStyles/pizzaStyles';
+import { userStore } from 'src/store/currentUser';
+import { menuStore } from 'src/store/currentMenu';
 
 import { ButtonForEditting } from './PizzaDialog';
+import { EdittingPizzaDialog } from './EdittingPizzaDialog';
 
 export const Pizza = (props: IPizzaProps) => {
-  const { root, media, pizzaDescription, cardActions } = pizzaStyles();
+  const { button, root, media, pizzaDescription, cardActions } = pizzaStyles();
   const { pizza } = props;
-  const { imageLink, name, description, price } = pizza;
+  const { id, imageLink, name, description, price } = pizza;
 
   return (
     <Card className={root}>
@@ -30,9 +33,18 @@ export const Pizza = (props: IPizzaProps) => {
             {`from ${price} $`}
           </Typography>
         </Grid>
-        <Grid container justify="flex-end">
-          <ButtonForEditting pizza={pizza} />
-        </Grid>
+        {userStore.role === 'admin' ? (
+          <Grid container justify="flex-end">
+            <Button className={button} onClick={() => menuStore.deletePizza(id)}>
+              Delete
+            </Button>
+            <EdittingPizzaDialog pizza={pizza} />
+          </Grid>
+        ) : (
+          <Grid container justify="flex-end">
+            <ButtonForEditting pizza={pizza} />
+          </Grid>
+        )}
       </CardActions>
     </Card>
   );

@@ -2,22 +2,24 @@ import React, { useState } from 'react';
 import { Grid, Typography, Button, Modal, TextField, Card, CardActionArea, CardMedia } from '@material-ui/core';
 import { observer, Observer } from 'mobx-react-lite';
 
-import { IPizzaProps } from 'src/interfaces/pizza';
-import { SizeTabs } from 'src/components/SizeTabs';
-import { DoughTabs } from 'src/components/DoughTabs';
-import { AdditionalIngredientsList } from 'src/components/AdditionalIngredientsList';
-import { pizzaDialogStyles } from 'src/componentsStyles/pizzaDialogStyles';
 import { pizzaStore } from 'src/store/currentPizza';
 import { IngredientsListForPizzaCreating } from 'src/components/IngredientsListForPizzaCreating';
 import { creatingPizzaStore } from 'src/store/creatingPizza';
 import { menuStore } from 'src/store/currentMenu';
+import { pizzaDialogStyles } from 'src/componentsStyles/pizzaDialogStyles';
+import { IPizzaProps } from 'src/interfaces/pizza';
 
-export const AddingNewPizzaDialog = observer(() => {
+import { IngredientsListForEditting } from './IngredinetListForEditting';
+
+export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
   const { root, media, button, center, paper, pizzaImage, basketItem, buyButton, tab } = pizzaDialogStyles();
 
+  const { pizza } = props;
+  const { id, ingredients, singleItemImageLink, imageLink, name, description, price } = pizza;
+
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [currentName, setName] = useState('');
+  const [currentDescription, setDescription] = useState('');
 
   const [bigCover, setBigCover] = useState('');
   const [cover, setCover] = useState('');
@@ -39,10 +41,22 @@ export const AddingNewPizzaDialog = observer(() => {
   };
 
   const clickHandler = () => {
-    setOpen(!open);
     creatingPizzaStore.removePizza();
-    setCover('');
-    setBigCover('');
+    setName(name);
+    creatingPizzaStore.setName(name);
+    setDescription(description);
+    creatingPizzaStore.setDescription(description);
+    setCover(imageLink);
+    creatingPizzaStore.setImageLink(imageLink);
+    setBigCover(singleItemImageLink);
+    creatingPizzaStore.setSingleImageLink(singleItemImageLink);
+    ingredients.forEach(element => {
+      if (!element.isDeleted) {
+        creatingPizzaStore.changeExistenceOfIngredient(element);
+        console.log('added ingredient');
+      }
+    });
+    setOpen(!open);
   };
 
   const body = (
@@ -55,11 +69,7 @@ export const AddingNewPizzaDialog = observer(() => {
             }}
           >
             <img
-              src={
-                bigCover !== ''
-                  ? bigCover
-                  : 'https://img2.freepng.ru/20180315/qae/kisspng-computer-icons-plus-sign-clip-art-plus-sign-5aaad899307aa1.3479178215211460091986.jpg'
-              }
+              src={bigCover !== '' ? bigCover : 'http://artismedia.by/blog/wp-content/uploads/2018/05/in-blog2-1.png'}
               width="539"
               height="500"
             />
@@ -85,11 +95,7 @@ export const AddingNewPizzaDialog = observer(() => {
             }}
           >
             <img
-              src={
-                cover !== ''
-                  ? cover
-                  : 'https://img2.freepng.ru/20180315/qae/kisspng-computer-icons-plus-sign-clip-art-plus-sign-5aaad899307aa1.3479178215211460091986.jpg'
-              }
+              src={cover !== '' ? cover : 'http://artismedia.by/blog/wp-content/uploads/2018/05/in-blog2-1.png'}
               width="360"
               height="200"
             />
@@ -112,9 +118,10 @@ export const AddingNewPizzaDialog = observer(() => {
             id="standard-basic"
             label="Название"
             variant="standard"
+            defaultValue={currentName}
             onChange={e => setName(e.target.value)}
           >
-            {creatingPizzaStore.name}
+            {currentName}
           </TextField>
           <TextField
             fullWidth
@@ -123,13 +130,14 @@ export const AddingNewPizzaDialog = observer(() => {
             rows={4}
             label="Описание"
             variant="standard"
+            defaultValue={currentDescription}
             onChange={e => setDescription(e.target.value)}
           >
-            {creatingPizzaStore.description}
+            {currentDescription}
           </TextField>
           <div>
             <Typography variant="h6">Ингредиенты</Typography>
-            <IngredientsListForPizzaCreating />
+            <IngredientsListForEditting pizza={pizza} />
           </div>
         </Grid>
         <Grid item xs={12}>
@@ -141,15 +149,16 @@ export const AddingNewPizzaDialog = observer(() => {
                   color="primary"
                   className={buyButton}
                   onClick={() => {
+                    creatingPizzaStore.setId(id);
                     creatingPizzaStore.setName(name);
                     creatingPizzaStore.setDescription(description);
                     creatingPizzaStore.setImageLink(cover);
                     creatingPizzaStore.setSingleImageLink(bigCover);
-                    menuStore.createPizza(creatingPizzaStore.getNewPizza());
+                    menuStore.updatePizza(id, creatingPizzaStore.getEdittingPizza());
                     setOpen(!open);
                   }}
                 >
-                  {`Создать пиццу, начальная цена = ${creatingPizzaStore.price} $`}
+                  {`Cохранить пиццу, начальная цена = ${creatingPizzaStore.price} $`}
                 </Button>
               )}
             </Observer>
@@ -161,16 +170,10 @@ export const AddingNewPizzaDialog = observer(() => {
 
   return (
     <div>
-      <div onClick={clickHandler}>
-        <Card className={root}>
-          <CardActionArea>
-            <CardMedia
-              image="https://img2.freepng.ru/20180315/qae/kisspng-computer-icons-plus-sign-clip-art-plus-sign-5aaad899307aa1.3479178215211460091986.jpg"
-              title="Photo of pizza"
-              className={media}
-            />
-          </CardActionArea>
-        </Card>
+      <div className={center}>
+        <Button className={button} onClick={clickHandler}>
+          Edit
+        </Button>
       </div>
       <Modal
         open={open}

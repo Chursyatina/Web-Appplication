@@ -15,7 +15,7 @@ import {
 import { PizzaList } from './PizzaList';
 
 export const AdditionalIngredientsCatalog = observer(() => {
-  const { root, addButton, center, fieldwidth, button, loadLine1 } = catalogsEdittingStyles();
+  const { root, addButton, center, namefieldwidth, pricefieldwidth, button, loadLine1 } = catalogsEdittingStyles();
 
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
@@ -47,7 +47,7 @@ export const AdditionalIngredientsCatalog = observer(() => {
             color="secondary"
             fullWidth
             label="Название"
-            className={fieldwidth}
+            className={namefieldwidth}
             onChange={e => setName(e.target.value)}
           />
         </Grid>
@@ -62,7 +62,7 @@ export const AdditionalIngredientsCatalog = observer(() => {
             color="secondary"
             fullWidth
             label="Цена"
-            className={fieldwidth}
+            className={pricefieldwidth}
             onChange={e => setPrice(Number(e.target.value))}
           />
         </Grid>

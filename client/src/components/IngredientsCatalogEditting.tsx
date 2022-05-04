@@ -41,7 +41,7 @@ export const PriceForEditting = (props: IIngredientProps) => {
 };
 
 export const ButtonForEditting = (props: IIngredientProps) => {
-  const { root, button, center } = catalogsEdittingButtonsStyles();
+  const { root, button, center, editButton, iconRoot, divCenter } = catalogsEdittingButtonsStyles();
 
   const [open, setOpen] = React.useState(false);
   const [name, setName] = useState('');
@@ -49,6 +49,15 @@ export const ButtonForEditting = (props: IIngredientProps) => {
   const [image, setImage] = useState('');
   const [isDeleted, setDeleted] = useState(false);
   const [id, setId] = useState('');
+
+  const getCoverBase64 = (file: Blob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      console.log(typeof reader.result === 'string' ? reader.result : '');
+      setImage(typeof reader.result === 'string' ? reader.result : '');
+    };
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -70,7 +79,7 @@ export const ButtonForEditting = (props: IIngredientProps) => {
   return (
     <div>
       <div className={center}>
-        <Button color="primary" className={button} onClick={handleClickOpen}>
+        <Button color="primary" className={editButton} onClick={handleClickOpen}>
           {' '}
           Редактировать
         </Button>
@@ -98,6 +107,34 @@ export const ButtonForEditting = (props: IIngredientProps) => {
             value={price}
             onChange={e => setPrice(Number(e.target.value))}
           />
+          <div
+            onClick={() => {
+              document.getElementById('image')?.click();
+            }}
+            className={divCenter}
+          >
+            <img
+              src={
+                image !== ''
+                  ? image
+                  : 'https://img2.freepng.ru/20180315/qae/kisspng-computer-icons-plus-sign-clip-art-plus-sign-5aaad899307aa1.3479178215211460091986.jpg'
+              }
+              className={iconRoot}
+            />
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              style={{ display: 'none' }}
+              id="image"
+              onChange={async e => {
+                const { files } = e.target;
+                if (files && files.length > 0) {
+                  const file = files[0];
+                  getCoverBase64(file);
+                }
+              }}
+            />
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

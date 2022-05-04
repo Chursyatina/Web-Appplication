@@ -12,6 +12,10 @@ export const pizzaStyles = makeStyles((theme: Theme) =>
     pizzaDescription: {
       height: 50,
     },
+    button: {
+      margin: 2,
+      fontFamily: 'Segoe UI',
+    },
     expand: {
       transform: 'rotate(0deg)',
       marginLeft: 'auto',
