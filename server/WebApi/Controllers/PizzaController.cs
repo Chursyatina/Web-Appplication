@@ -60,6 +60,7 @@
         [SwaggerResponse(400, "Bad request with message of an error.")]
         public ActionResult<PizzaDto> Insert([FromBody] PizzaCreateRequestDto pizza)
         {
+            IEnumerable<string> ingredientsIdentificators = _ingredientService.GetIdentificators();
             ValidationResult validationResult = _pizzaValidator.Validate(pizza);
             if (!validationResult.IsValid)
             {

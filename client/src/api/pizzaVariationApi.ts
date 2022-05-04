@@ -7,13 +7,13 @@ export const getPizzasVariations = async (): Promise<IPizzaVariation[]> => {
   return response.json();
 };
 
-export const insertPizzaVariation = async (order: IPizzaVariationCreate) => {
+export const insertPizzaVariation = async (pizzaVariation: IPizzaVariationCreate) => {
   const response = await fetch(PIZZAS_VARIATIONS_URL, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(order),
+    body: JSON.stringify(pizzaVariation),
   });
   return (await response.json()) as IPizzaVariation;
 };

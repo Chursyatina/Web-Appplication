@@ -7,7 +7,7 @@ import { IPizza } from 'src/interfaces/pizza';
 import { IPizzaDough } from 'src/interfaces/pizzaDough';
 import { IPizzaSize } from 'src/interfaces/pizzaSize';
 import { IAdditionalIngredient } from 'src/interfaces/additionalIngredient';
-import { getPizzas } from 'src/api/pizzasApi';
+import { getPizzas, insertPizza } from 'src/api/pizzasApi';
 import { deleteDough, getDoughs, insertDough, updateDough } from 'src/api/doughsApi';
 import { deleteSize, getSizes, insertSize, updateSize } from 'src/api/sizesApi';
 import { deleteIngredient, getIngredients, insertIngredient, updateIngredient } from 'src/api/ingredientsApi';
@@ -20,6 +20,7 @@ import { IDoughCreate } from 'src/interfaces/DTOs/DoughCreate';
 import { ISizeCreate } from 'src/interfaces/DTOs/SizeCreate';
 import { IDoughUpdate, IDoughUpdateProps } from 'src/interfaces/DTOs/DoughUpdate';
 import { ISizeUpdate, ISizeUpdateProps } from 'src/interfaces/DTOs/SizeUpdate';
+import { IPizzaCreate } from 'src/interfaces/DTOs/PizzaCreate';
 
 class MenuStore {
   pizzas: IPizza[] = [];
@@ -42,6 +43,14 @@ class MenuStore {
     this.ingredients = await getIngredients();
 
     this.additionalIngredients = await getAdditionalIngredients();
+  }
+
+  async createPizza(pizza:IPizzaCreate){
+    let returnedPizza = await insertPizza(pizza)
+
+    this.pizzas.push(returnedPizza);
+
+    return returnedPizza;
   }
 
   async createIngredient(name: string, price: number, image: string) {

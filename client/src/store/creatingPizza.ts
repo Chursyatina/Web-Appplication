@@ -1,8 +1,11 @@
 /* eslint-disable */
 
 import { makeAutoObservable } from 'mobx';
+import { insertPizza } from 'src/api/pizzasApi';
+import { IPizzaCreate } from 'src/interfaces/DTOs/PizzaCreate';
 
 import { IIngredient } from 'src/interfaces/ingredient';
+import { IPizza } from 'src/interfaces/pizza';
 
 class CreatingPizzaStore {
   basicPizzaPrice = 200;
@@ -18,12 +21,22 @@ class CreatingPizzaStore {
     makeAutoObservable(this);
   }
 
-  createNewPizza(){
-    console.log(this.name);
-    console.log(this.description);
-    console.log(this.ingredients);
-    console.log(this.imageLink);
-    console.log(this.singleItemImageLink);
+  getNewPizza(){
+    let ingredientsIds: string[] = [];
+
+    this.ingredients.forEach(ingredient => {
+        ingredientsIds.push(ingredient.id);
+    })
+
+    let pizza: IPizzaCreate = {
+        Name: this.name,
+        Description: this.description,
+        ImageLink: this.imageLink,
+        SingleItemImageLink: this.singleItemImageLink,
+        Ingredients: ingredientsIds
+    }
+
+    return pizza;
   }
 
   removePizza(){

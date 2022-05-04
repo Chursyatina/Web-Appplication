@@ -104,7 +104,8 @@
             {
                 getPizzaDto = new MapperConfiguration(cfg => cfg.CreateMap<Pizza, PizzaDto>()
                 .ForMember(dest => dest.Ingredients, opts => opts.Ignore()));
-                getPizzaFromCreateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaCreateRequestDto, Pizza>());
+                getPizzaFromCreateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaCreateRequestDto, Pizza>()
+                .ForMember(dest => dest.Ingredients, opts => opts.Ignore()));
                 getPizzaFromUpdateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaUpdateRequestDto, Pizza>()
                 .ForMember(dest => dest.Ingredients, opts => opts.Ignore()));
                 getPizzaFromPartialUpdateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaPatchRequestDto, Pizza>()

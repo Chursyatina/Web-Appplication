@@ -1,9 +1,10 @@
 ﻿namespace Application.DTO.Request
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Application.Interfaces;
 
-    public class PizzaCreateRequestDto : INamedRequestDto
+    public class PizzaCreateRequestDto : INamedPizzaWithIngredients
     {
         [Required]
         [StringLength(20, MinimumLength = 1)]
@@ -18,5 +19,8 @@
 
         [Required]
         public string SingleItemImageLink { get; set; }
+
+        [Required]
+        public IEnumerable<string> Ingredients { get; set; }
     }
 }

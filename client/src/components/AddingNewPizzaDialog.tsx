@@ -10,6 +10,7 @@ import { pizzaDialogStyles } from 'src/componentsStyles/pizzaDialogStyles';
 import { pizzaStore } from 'src/store/currentPizza';
 import { IngredientsListForPizzaCreating } from 'src/components/IngredientsListForPizzaCreating';
 import { creatingPizzaStore } from 'src/store/creatingPizza';
+import { menuStore } from 'src/store/currentMenu';
 
 export const AddingNewPizzaDialog = observer(() => {
   const { root, media, button, center, paper, pizzaImage, basketItem, buyButton, tab } = pizzaDialogStyles();
@@ -136,7 +137,7 @@ export const AddingNewPizzaDialog = observer(() => {
                     creatingPizzaStore.setDescription(description);
                     creatingPizzaStore.setImageLink(cover);
                     creatingPizzaStore.setSingleImageLink(bigCover);
-                    creatingPizzaStore.createNewPizza();
+                    menuStore.createPizza(creatingPizzaStore.getNewPizza());
                     setOpen(!open);
                   }}
                 >

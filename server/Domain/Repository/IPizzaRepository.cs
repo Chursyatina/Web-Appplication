@@ -13,6 +13,6 @@
 
         public IEnumerable<string> GetIdentificators();
 
-        public Pizza Insert(Pizza item);
+        public Pizza Insert(Pizza item, List<string> ingredientsIds);
     }
 }

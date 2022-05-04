@@ -75,7 +75,9 @@
 
         public PizzaDto Insert(PizzaCreateRequestDto pizza)
         {
-            return _pizzaRepository.Insert(pizza.ToModel()).ToViewModel();
+            List<string> ingredientsIds = pizza.Ingredients.ToList();
+
+            return _pizzaRepository.Insert(pizza.ToModel(), ingredientsIds).ToViewModel();
         }
 
         public void Delete(string id)

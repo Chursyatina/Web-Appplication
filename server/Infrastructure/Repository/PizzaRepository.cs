@@ -24,6 +24,22 @@
             return entity.Entity;
         }
 
+        public Pizza Insert(Pizza item, List<string> ingredientsIds)
+        {
+            item.Ingredients = new List<Ingredient>();
+
+            foreach (string id in ingredientsIds)
+            {
+                item.Ingredients.Add(_context.Ingredients.FirstOrDefault(ing => ing.Id == id));
+            }
+
+            item.Price = PriceCountingService.GetStartingPriceForPizza(item);
+
+            var entity = _context.Add(item);
+            _context.SaveChanges();
+            return entity.Entity;
+        }
+
         public IEnumerable<Pizza> GetAll()
         {
             IEnumerable<Pizza> pizzas = new List<Pizza>(_context.Pizzas
