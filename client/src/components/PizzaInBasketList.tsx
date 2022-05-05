@@ -1,6 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Divider, Typography, Button } from '@material-ui/core';
+import {
+  Grid,
+  Divider,
+  Typography,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  IconButton,
+  Input,
+  InputAdornment,
+  InputLabel,
+} from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
+import MuiPhoneNumber from 'material-ui-phone-number';
+import { VisibilityOff, Visibility } from '@material-ui/icons';
 
 import { pizzaListStyles } from 'src/componentsStyles/pizzaListStyles';
 import { userStore } from 'src/store/currentUser';
@@ -12,6 +28,33 @@ export const PizzaInBasketList = observer(() => {
   const { root, summary, button } = pizzaListStyles();
 
   const [order, setOrder] = useState<IOrder>({} as IOrder);
+
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [signInOpen, setSignInOpen] = useState(false);
+  const [signUpOpen, setSignUpOpen] = useState(false);
+
+  const clickSignIn = () => {
+    setPhone('');
+    setPassword('');
+    setPasswordConfirmation('');
+    setSignInOpen(!signInOpen);
+  };
+
+  const clickSignUp = () => {
+    setPhone('');
+    setPassword('');
+    setPasswordConfirmation('');
+    setSignUpOpen(!signUpOpen);
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className={root}>
@@ -34,7 +77,12 @@ export const PizzaInBasketList = observer(() => {
           <Button
             className={button}
             onClick={() => {
-              userStore.createOrder(), userStore.clearBasket();
+              if (userStore.role === 'user') {
+                userStore.createOrder();
+                userStore.clearBasket();
+              } else {
+                clickSignIn();
+              }
             }}
             variant="contained"
             color="primary"
@@ -42,6 +90,121 @@ export const PizzaInBasketList = observer(() => {
           >{`Оформить заказ`}</Button>
         </Grid>
       </Grid>
+      <div>
+        <Dialog open={signInOpen} onClose={setSignInOpen} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Для совершения заказа требуется авторизоваться</DialogTitle>
+          <DialogContent>
+            <Grid container justify="center" alignItems="center">
+              <Grid item xs={12}>
+                <MuiPhoneNumber defaultCountry={'ru'} onChange={e => setPhone(e.toString())} />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl variant="standard">
+                  <InputLabel htmlFor="standard-adornment-password">Пароль</InputLabel>
+                  <Input
+                    id="standard-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword}>
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={clickSignIn} color="primary">
+              Отмена
+            </Button>
+            <Button
+              onClick={e => {
+                userStore.signIn(phone, password);
+                clickSignIn();
+              }}
+              color="primary"
+            >
+              Войти
+            </Button>
+            <Button
+              onClick={e => {
+                clickSignIn();
+                clickSignUp();
+              }}
+              color="primary"
+            >
+              Регистрация
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+      <div>
+        <Dialog open={signUpOpen} onClose={setSignUpOpen} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Регистрация</DialogTitle>
+          <DialogContent>
+            <Grid container justify="center" alignItems="center">
+              <Grid item xs={12}>
+                <MuiPhoneNumber defaultCountry={'ru'} onChange={e => setPhone(e.toString())} />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl variant="standard">
+                  <InputLabel htmlFor="standard-adornment-password">Пароль</InputLabel>
+                  <Input
+                    id="standard-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword}>
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl variant="standard">
+                  <InputLabel htmlFor="standard-adornment-password">Подтверждение пароля</InputLabel>
+                  <Input
+                    id="standard-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={passwordConfirmation}
+                    onChange={e => setPasswordConfirmation(e.target.value)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword}>
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={clickSignUp} color="primary">
+              Отмена
+            </Button>
+            <Button
+              onClick={e => {
+                userStore.signUp(phone, password, passwordConfirmation);
+                clickSignUp();
+              }}
+              color="primary"
+            >
+              Зарегистрироваться
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
   );
 });

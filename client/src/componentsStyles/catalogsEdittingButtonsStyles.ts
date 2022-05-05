@@ -20,7 +20,7 @@ export const catalogsEdittingButtonsStyles = makeStyles(theme =>
     },
     center: {
       marginTop: 70,
-      marginBottom: 110,
+      marginBottom: 107,
       textAlign: 'center',
       '& .MuiIconButton-root': {
         padding: 0,
@@ -39,7 +39,7 @@ export const catalogsEdittingButtonsStyles = makeStyles(theme =>
       },
       textAlign: 'center',
       marginTop: 65,
-      marginBottom: 103,
+      marginBottom: 100,
     },
     iconRoot: {
       width: 108,

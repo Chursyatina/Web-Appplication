@@ -151,7 +151,7 @@
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/signout")]
         public async Task<IActionResult> Signout()
         {

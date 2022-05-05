@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx';
 
 import { IOrderLine } from 'src/interfaces/orderLine';
 import { ICreateOrder } from 'src/interfaces/DTOs/OrderCreate';
-import { getCurrentuser } from 'src/api/usersApi';
+import { getCurrentuser, signIn, signOut, signUp } from 'src/api/usersApi';
 import { IBasket } from 'src/interfaces/basket';
 import { insertOrder } from 'src/api/ordersApi';
 import { IPizzaVariation } from 'src/interfaces/pizzaVariation';
@@ -16,6 +16,8 @@ import { insertPizzaVariation } from 'src/api/pizzaVariationApi';
 
 import { pizzaStore } from './currentPizza';
 import { IOrderLineCreate } from 'src/interfaces/DTOs/OrderLineCreate';
+import { ISignInForm } from 'src/interfaces/DTOs/SignInForm';
+import { ISignUpForm } from 'src/interfaces/DTOs/SignUpForm';
 
 class UserStore {
   isAuthenticated = false;
@@ -31,15 +33,65 @@ class UserStore {
     makeAutoObservable(this);
   }
 
+  async signIn(phone: string, password: string){
+    let normalizedPhone = '8';
+    normalizedPhone += phone.substring(4,7);
+    normalizedPhone += phone.substring(9,12);
+    normalizedPhone += phone.substring(13,15);
+    normalizedPhone += phone.substring(16);
+
+    let form: ISignInForm = {
+      Phone: normalizedPhone,
+      Password: password,
+      RememberMe: true,
+      ReturnUrl:'',
+    };
+
+    await signIn(form);
+    await this.loadData();
+  }
+
+  async signUp(phone: string, password: string, passwordConfirm: string){
+    let normalizedPhone = '8';
+    normalizedPhone += phone.substring(4,7);
+    normalizedPhone += phone.substring(9,12);
+    normalizedPhone += phone.substring(13,15);
+    normalizedPhone += phone.substring(16);
+
+    let form: ISignUpForm = {
+      Phone: normalizedPhone,
+      Password: password,
+      PasswordConfirm: passwordConfirm
+    };
+
+    await signUp(form);
+    await this.loadData();
+  }
+
+  async signOut(){
+    await signOut();
+    this.isAuthenticated = false;
+    this.role = '';
+    await this.loadData();
+  }
+
   async loadData() {
-    const authinfo = getCurrentuser();
+    const authinfo = await getCurrentuser();
     this.isAuthenticated = (await authinfo).isAuth;
     if (this.isAuthenticated)
     {
     this.role = (await authinfo).role;
-    this.basket = (await authinfo).user.basket;
+    if (this.basket.orderLines.length !== 0)
+    {
+      this.basket.id == (await authinfo).user.basket.id;
+    }
+    else{
+      this.basket = (await authinfo).user.basket;
+    }
     this.recalculatePrice();
     }
+
+    console.log(this.basket.orderLines.length);
   }
 
   async createOrder() {
@@ -119,6 +171,7 @@ class UserStore {
 
   clearBasket(){
     this.basket.orderLines = [];
+    this.recalculatePrice();
   }
 
   deleteOrderLine(line: IOrderLine) {
