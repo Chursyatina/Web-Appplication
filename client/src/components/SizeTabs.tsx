@@ -15,7 +15,7 @@ export const SizeTabs = () => {
 
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
-    pizzaStore.setSize(sizes[newValue]);
+    pizzaStore.setSize(menuStore.sizes[newValue]);
   };
 
   return (

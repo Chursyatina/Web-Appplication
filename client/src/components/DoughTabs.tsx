@@ -14,7 +14,7 @@ export const DoughTabs = () => {
 
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
-    pizzaStore.setDough(doughs[newValue]);
+    pizzaStore.setDough(menuStore.doughs[newValue]);
   };
 
   return (

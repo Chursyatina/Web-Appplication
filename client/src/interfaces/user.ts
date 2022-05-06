@@ -6,7 +6,7 @@ import { IBasket } from 'src/interfaces/basket';
 
 export interface IUser {
   id: string;
-  name: string,
+  name: string;
   phone: string;
   basket: IBasket;
   orders: IOrder[];
