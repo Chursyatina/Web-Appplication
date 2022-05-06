@@ -22,6 +22,7 @@ import { IUser } from 'src/interfaces/user';
 import { ordersStore } from './currentOrders';
 
 class UserStore {
+  id = '';
   isAuthenticated = false;
   role = "";
   name = "Гость";
@@ -87,6 +88,7 @@ class UserStore {
     this.isAuthenticated = (await authinfo).isAuth;
     if (this.isAuthenticated)
     {
+    this.id = (await authinfo).user.id;
     this.name = (await authinfo).user.name;
     this.role = (await authinfo).role;
     if (this.basket.orderLines.length !== 0)
@@ -116,7 +118,11 @@ class UserStore {
       order.OrderLines.push(createLine);
     });
 
-    return await insertOrder(order);
+    const returnedOrder = await insertOrder(order)
+
+    ordersStore.loadData();
+
+    return returnedOrder;
   }
 
   async addCurrentPizzaToBasket() {

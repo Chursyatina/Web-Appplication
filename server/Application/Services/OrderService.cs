@@ -40,6 +40,11 @@
             return null;
         }
 
+        public IEnumerable<OrderDto> GetOrdersForUserById(string id)
+        {
+            return _orderRepository.GetOrdersForUserById(id).Select(x => x.ToViewModel()).ToList();
+        }
+
         public IEnumerable<string> GetIdentificators()
         {
             return _orderRepository.GetIdentificators();

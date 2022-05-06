@@ -68,6 +68,26 @@
             return Ok(existingOrder);
         }
 
+        [HttpGet("forUser/{id}")]
+        [SwaggerResponse(200, "Returns order by input id")]
+        [SwaggerResponse(400, "Bad request with message of an error.")]
+        [SwaggerResponse(404, "Not found")]
+        public ActionResult<OrderDto> GetOrdersForUser(string id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var existingOrder = _orderService.GetOrdersForUserById(id);
+            if (existingOrder == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(existingOrder);
+        }
+
         [HttpPost]
         [SwaggerResponse(201, "Inserts new order in database")]
         [SwaggerResponse(400, "Bad request with message of an error.")]

@@ -30,7 +30,7 @@
         public User GetById(string id)
         {
             User user = _context.User
-                .Include(b => b.Basket).ThenInclude(ol => ol.OrderLines).ThenInclude(pv => pv.PizzaVariation).ThenInclude(p => p.Pizza)
+                .Include(b => b.Basket)
                 .Include(o => o.Orders)
                 .IgnoreAutoIncludes()
                 .FirstOrDefault(u => u.Id == id);

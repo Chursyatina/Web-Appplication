@@ -175,7 +175,14 @@ export const PrimarySearchAppBarToolBar = observer(() => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>История заказов</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleClose();
+                      history.push('/OrdersHistory');
+                    }}
+                  >
+                    История заказов
+                  </MenuItem>
                   <MenuItem
                     onClick={e => {
                       handleClose();
@@ -277,6 +284,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
             >
               <MenuItem
                 onClick={() => {
+                  handleClose();
                   history.push('/OrdersHistory');
                 }}
               >

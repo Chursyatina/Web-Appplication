@@ -7,6 +7,7 @@ import { IPizza } from 'src/interfaces/pizza';
 import { IPizzaDough } from 'src/interfaces/pizzaDough';
 import { IPizzaSize } from 'src/interfaces/pizzaSize';
 import { IAdditionalIngredient } from 'src/interfaces/additionalIngredient';
+import { menuStore } from './currentMenu';
 
 class PizzaStore {
   basicPizzaPrice = 200;
@@ -44,6 +45,8 @@ class PizzaStore {
 
   setPizza(pizza: IPizza) {
     this.pizza = pizza;
+    this.setSize(menuStore.sizes[0]);
+    this.setDough(menuStore.doughs[0]);
     this.setIngredients(pizza.ingredients);
     this.clearAdditionalIngredients();
   }

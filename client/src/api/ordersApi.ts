@@ -7,6 +7,11 @@ export const getOrders = async (): Promise<IOrder[]> => {
   return (await response.json()) as IOrder[];
 };
 
+export const getOrdersForUser = async (id: string): Promise<IOrder[]> => {
+  const response = await fetch(`${ORDERS_URL}/forUser/${id}`);
+  return (await response.json()) as IOrder[];
+};
+
 export const getOrder = async (id: number): Promise<IOrder> => {
   const response = await fetch(`${ORDERS_URL}/${id}`);
   return response.json();

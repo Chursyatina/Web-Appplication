@@ -2,7 +2,8 @@
 
 import { makeAutoObservable } from 'mobx';
 import { IOrder } from 'src/interfaces/order';
-import { getOrders } from 'src/api/ordersApi';
+import { getOrders, getOrdersForUser } from 'src/api/ordersApi';
+import { userStore } from './currentUser';
 
 class OrdersStore {
   orders: IOrder[] = [];
@@ -12,7 +13,13 @@ class OrdersStore {
   }
 
   async loadData() {
-    this.orders = await getOrders();
+    if (userStore.role === 'admin')
+    {
+        this.orders = await getOrders();
+    }
+    else {
+        this.orders = await getOrdersForUser(userStore.id);
+    }
   }
 }
 

@@ -14,5 +14,7 @@
         public Order Update(string id, Order item, List<string> orderLinesIds);
 
         public Order Insert(Order item, List<string> orderLinesIds, User user);
+
+        public IEnumerable<Order> GetOrdersForUserById(string id);
     }
 }

@@ -26,6 +26,34 @@
             _context.SaveChanges();
         }
 
+        public IEnumerable<Order> GetOrdersForUserById(string id)
+        {
+            List<Order> orders = _context.Orders
+                .Include(s => s.OrderStatus)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Pizza)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Ingredients)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Dough)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Size)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Ingredients)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.AdditionalIngredients)
+                .Include(u => u.User)
+                .Select(o => new Order()
+                {
+                    Id = o.Id,
+                    IsDeleted = o.IsDeleted,
+                    OrderLines = o.OrderLines,
+                    Date = o.Date,
+                    OrderStatus = o.OrderStatus,
+                    Price = o.Price,
+                    User = o.User,
+                })
+                .Where(p => p.User.Id == id)
+                .AsNoTracking()
+                .ToList();
+
+            return orders;
+        }
+
         public IEnumerable<Order> GetAll()
         {
             List<Order> orders = _context.Orders
