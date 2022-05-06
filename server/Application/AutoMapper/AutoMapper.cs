@@ -375,6 +375,7 @@
             orderDto.OrderLines = new List<OrderLineDto>();
             orderDto.OrderLines = order.OrderLines.Select(line => line.ToViewModel()).ToList();
             orderDto.OrderStatus = order.OrderStatus.ToViewModel();
+            orderDto.Date = order.Date;
 
             return orderDto;
         }

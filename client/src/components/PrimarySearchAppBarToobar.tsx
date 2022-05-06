@@ -275,7 +275,13 @@ export const PrimarySearchAppBarToolBar = observer(() => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Истории заказов</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  history.push('/OrdersHistory');
+                }}
+              >
+                Истории заказов
+              </MenuItem>
               <MenuItem
                 onClick={e => {
                   handleClose();

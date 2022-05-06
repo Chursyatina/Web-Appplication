@@ -6,6 +6,7 @@ export interface IOrder {
   orderLines: IOrderLine[];
   price: number;
   orderStatus: IOrderStatus;
+  date: Date;
 }
 
 export interface IOrderProps {

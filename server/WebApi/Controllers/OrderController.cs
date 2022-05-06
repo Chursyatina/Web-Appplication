@@ -44,6 +44,7 @@
         [SwaggerResponse(400, "Bad request with message of an error.")]
         public ActionResult<List<OrderDto>> GetAll()
         {
+            List<OrderDto> orders = (List<OrderDto>)_orderService.GetAll();
             return Ok(_orderService.GetAll());
         }
 

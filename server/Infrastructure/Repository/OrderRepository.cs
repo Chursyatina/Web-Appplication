@@ -28,7 +28,7 @@
 
         public IEnumerable<Order> GetAll()
         {
-            return _context.Orders
+            List<Order> orders = _context.Orders
                 .Include(s => s.OrderStatus)
                 .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Pizza)
                 .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Ingredients)
@@ -46,7 +46,10 @@
                 Price = o.Price,
             })
                 .Where(p => p.IsDeleted == false)
-                .AsNoTracking();
+                .AsNoTracking()
+                .ToList();
+
+            return orders;
         }
 
         public Order GetById(string id)

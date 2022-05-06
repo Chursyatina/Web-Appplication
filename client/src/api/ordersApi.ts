@@ -4,7 +4,7 @@ import { ICreateOrder } from 'src/interfaces/DTOs/OrderCreate';
 
 export const getOrders = async (): Promise<IOrder[]> => {
   const response = await fetch(ORDERS_URL);
-  return response.json();
+  return (await response.json()) as IOrder[];
 };
 
 export const getOrder = async (id: number): Promise<IOrder> => {

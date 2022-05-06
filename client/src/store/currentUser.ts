@@ -19,6 +19,7 @@ import { IOrderLineCreate } from 'src/interfaces/DTOs/OrderLineCreate';
 import { ISignInForm } from 'src/interfaces/DTOs/SignInForm';
 import { ISignUpForm } from 'src/interfaces/DTOs/SignUpForm';
 import { IUser } from 'src/interfaces/user';
+import { ordersStore } from './currentOrders';
 
 class UserStore {
   isAuthenticated = false;
@@ -36,6 +37,7 @@ class UserStore {
   }
 
   async signIn(phone: string, password: string){
+
     let normalizedPhone = '8';
     normalizedPhone += phone.substring(4,7);
     normalizedPhone += phone.substring(9,12);
@@ -97,10 +99,7 @@ class UserStore {
     this.recalculatePrice();
     }
 
-    console.log('Base name');
-    console.log("ds");
-    console.log('Our name');
-    console.log(this.name);
+    ordersStore.loadData();
   }
 
   async createOrder() {

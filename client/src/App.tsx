@@ -14,6 +14,8 @@ import { AdditionalIngredientsCatalog } from 'src/components/AdditionalIngredien
 import { SizesCatalog } from 'src/components/SizesCatalog';
 import { DoughsCatalog } from 'src/components/DoughsCatalog';
 
+import { OrdersHistory } from './components/OrdersHistory';
+
 export const App: React.FC = () => {
   useEffect(() => {
     const getData = async () => {
@@ -37,6 +39,7 @@ export const App: React.FC = () => {
             <Route exact path="/AdditionalIngredientsCatalog" component={AdditionalIngredientsCatalog} />
             <Route exact path="/SizesCatalog" component={SizesCatalog} />
             <Route exact path="/DoughsCatalog" component={DoughsCatalog} />
+            <Route exact path="/OrdersHistory" component={OrdersHistory} />
           </Switch>
         </Container>
         <div className={'footerSpace'} />
