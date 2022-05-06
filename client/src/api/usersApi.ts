@@ -5,7 +5,7 @@ import { ISignUpForm } from 'src/interfaces/DTOs/SignUpForm';
 
 export const getCurrentuser = async (): Promise<IAuthInfo> => {
   const response = await fetch(`${USERS_URL}/authinfo`);
-  return response.json();
+  return (await response.json()) as IAuthInfo;
 };
 
 export const signOut = async () => {

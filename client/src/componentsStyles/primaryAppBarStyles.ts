@@ -53,5 +53,8 @@ export const primaryAppBarStyles = makeStyles((theme: Theme) =>
         },
       },
     },
+    userName: {
+      marginTop: 7,
+    },
   }),
 );

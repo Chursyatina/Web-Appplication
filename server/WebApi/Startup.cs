@@ -132,6 +132,7 @@
                 {
                     Email = adminEmail,
                     Phone = adminPhone,
+                    Name = "Admin",
                     Password = adminPassword,
                     UserName = adminPhone,
                     Basket = new Basket(),
@@ -155,6 +156,7 @@
                 {
                     Email = userEmail,
                     Phone = userPhone,
+                    Name = "Maksim",
                     Password = userPassword,
                     UserName = userPhone,
                     Basket = new Basket(),

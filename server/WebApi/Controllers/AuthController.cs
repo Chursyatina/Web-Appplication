@@ -71,7 +71,7 @@
         {
             if (ModelState.IsValid)
             {
-                User user = new User { UserName = model.Phone, Phone = model.Phone, Password = model.Password, Basket = new Basket() };
+                User user = new User { Name = model.Name, UserName = model.Phone, Phone = model.Phone, Password = model.Password, Basket = new Basket() };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 

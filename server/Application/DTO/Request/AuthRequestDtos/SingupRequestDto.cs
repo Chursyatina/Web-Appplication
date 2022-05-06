@@ -5,7 +5,11 @@
     public class SingupRequestDto
     {
         [Required]
-        [Display(Name = "Phone number")]
+        [Display(Name = "Имя")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Номер телефона")]
         public string Phone { get; set; }
 
         [Required]

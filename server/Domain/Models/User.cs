@@ -12,6 +12,8 @@
             Basket = new Basket();
         }
 
+        public string Name { get; set; }
+
         [Required]
         public string Phone { get; set; }
 

@@ -18,10 +18,12 @@ import { pizzaStore } from './currentPizza';
 import { IOrderLineCreate } from 'src/interfaces/DTOs/OrderLineCreate';
 import { ISignInForm } from 'src/interfaces/DTOs/SignInForm';
 import { ISignUpForm } from 'src/interfaces/DTOs/SignUpForm';
+import { IUser } from 'src/interfaces/user';
 
 class UserStore {
   isAuthenticated = false;
   role = "";
+  name = "Гость";
 
   basket: IBasket = {
     id: '-1',
@@ -51,7 +53,7 @@ class UserStore {
     await this.loadData();
   }
 
-  async signUp(phone: string, password: string, passwordConfirm: string){
+  async signUp(name: string, phone: string, password: string, passwordConfirm: string){
     let normalizedPhone = '8';
     normalizedPhone += phone.substring(4,7);
     normalizedPhone += phone.substring(9,12);
@@ -59,6 +61,7 @@ class UserStore {
     normalizedPhone += phone.substring(16);
 
     let form: ISignUpForm = {
+      Name: name,
       Phone: normalizedPhone,
       Password: password,
       PasswordConfirm: passwordConfirm
@@ -72,14 +75,17 @@ class UserStore {
     await signOut();
     this.isAuthenticated = false;
     this.role = '';
+    this.name = 'Гость';
     await this.loadData();
   }
 
   async loadData() {
     const authinfo = await getCurrentuser();
+    console.log(await authinfo);
     this.isAuthenticated = (await authinfo).isAuth;
     if (this.isAuthenticated)
     {
+    this.name = (await authinfo).user.name;
     this.role = (await authinfo).role;
     if (this.basket.orderLines.length !== 0)
     {
@@ -91,7 +97,10 @@ class UserStore {
     this.recalculatePrice();
     }
 
-    console.log(this.basket.orderLines.length);
+    console.log('Base name');
+    console.log("ds");
+    console.log('Our name');
+    console.log(this.name);
   }
 
   async createOrder() {

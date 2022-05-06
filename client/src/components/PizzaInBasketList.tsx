@@ -13,6 +13,7 @@ import {
   Input,
   InputAdornment,
   InputLabel,
+  TextField,
 } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 import MuiPhoneNumber from 'material-ui-phone-number';
@@ -29,6 +30,7 @@ export const PizzaInBasketList = observer(() => {
 
   const [order, setOrder] = useState<IOrder>({} as IOrder);
 
+  const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -39,6 +41,7 @@ export const PizzaInBasketList = observer(() => {
   const [signUpOpen, setSignUpOpen] = useState(false);
 
   const clickSignIn = () => {
+    setName('');
     setPhone('');
     setPassword('');
     setPasswordConfirmation('');
@@ -46,6 +49,7 @@ export const PizzaInBasketList = observer(() => {
   };
 
   const clickSignUp = () => {
+    setName('');
     setPhone('');
     setPassword('');
     setPasswordConfirmation('');
@@ -149,6 +153,16 @@ export const PizzaInBasketList = observer(() => {
           <DialogContent>
             <Grid container justify="center" alignItems="center">
               <Grid item xs={12}>
+                <TextField
+                  id="standard-basic"
+                  label="Имя"
+                  variant="standard"
+                  onChange={e => {
+                    setName(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <MuiPhoneNumber defaultCountry={'ru'} onChange={e => setPhone(e.toString())} />
               </Grid>
               <Grid item xs={12}>
@@ -195,7 +209,7 @@ export const PizzaInBasketList = observer(() => {
             </Button>
             <Button
               onClick={e => {
-                userStore.signUp(phone, password, passwordConfirmation);
+                userStore.signUp(name, phone, password, passwordConfirmation);
                 clickSignUp();
               }}
               color="primary"

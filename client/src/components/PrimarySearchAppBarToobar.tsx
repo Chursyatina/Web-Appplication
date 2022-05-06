@@ -18,6 +18,7 @@ import {
   Button,
   DialogActions,
   Grid,
+  TextField,
 } from '@material-ui/core';
 import { Search, ShoppingBasket, Edit, AccountCircle, VisibilityOff, Visibility } from '@material-ui/icons';
 import { useHistory } from 'react-router';
@@ -28,11 +29,13 @@ import { primaryAppBarStyles } from 'src/componentsStyles/primaryAppBarStyles';
 import { userStore } from 'src/store/currentUser';
 
 export const PrimarySearchAppBarToolBar = observer(() => {
-  const { menuButton, title, search, searchIcon, inputRoot, inputInput } = primaryAppBarStyles();
+  const { userName, menuButton, title, search, searchIcon, inputRoot, inputInput } = primaryAppBarStyles();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const history = useHistory();
+
+  const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -51,6 +54,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
   };
 
   const clickSignIn = () => {
+    setName('');
     setPhone('');
     setPassword('');
     setPasswordConfirmation('');
@@ -58,6 +62,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
   };
 
   const clickSignUp = () => {
+    setName('');
     setPhone('');
     setPassword('');
     setPasswordConfirmation('');
@@ -72,7 +77,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
     <div>
       <Toolbar>
         <IconButton edge="start" className={menuButton} color="inherit" aria-label="open drawer" />
-        <Typography className={title} variant="h6" noWrap>
+        <Typography className={title} variant="h4" noWrap>
           <IconButton
             edge="start"
             color="inherit"
@@ -86,28 +91,39 @@ export const PrimarySearchAppBarToolBar = observer(() => {
         </Typography>
         {userStore.role !== 'admin' ? (
           <div>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-              onClick={() => {
-                history.push('/Basket');
-              }}
-            >
-              <Badge badgeContent={userStore.basket.orderLines.length} color="secondary">
-                <ShoppingBasket />
-              </Badge>
-            </IconButton>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            <Grid container>
+              <Grid item>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={() => {
+                    history.push('/Basket');
+                  }}
+                >
+                  <Badge badgeContent={userStore.basket.orderLines.length} color="secondary">
+                    <ShoppingBasket />
+                  </Badge>
+                </IconButton>
+              </Grid>
+              <Grid item justify="center">
+                <Typography variant="h5" className={userName}>
+                  {userStore.name}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Grid>
+            </Grid>
             {userStore.role !== 'user' ? (
               <div>
                 <Menu
@@ -134,6 +150,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
                   </MenuItem>
                   <MenuItem
                     onClick={e => {
+                      handleClose();
                       setSignUpOpen(!signUpOpen);
                     }}
                   >
@@ -161,6 +178,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
                   <MenuItem onClick={handleClose}>История заказов</MenuItem>
                   <MenuItem
                     onClick={e => {
+                      handleClose();
                       userStore.signOut();
                     }}
                   >
@@ -172,59 +190,76 @@ export const PrimarySearchAppBarToolBar = observer(() => {
           </div>
         ) : (
           <div>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-              onClick={() => {
-                history.push('/DoughsCatalog');
-              }}
-            >
-              <Edit />
-            </IconButton>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-              onClick={() => {
-                history.push('/SizesCatalog');
-              }}
-            >
-              <Edit />
-            </IconButton>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-              onClick={() => {
-                history.push('/AdditionalIngredientsCatalog');
-              }}
-            >
-              <Edit />
-            </IconButton>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-              onClick={() => {
-                history.push('/IngredientsCatalog');
-              }}
-            >
-              <Edit />
-            </IconButton>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            <Grid container>
+              <Grid item>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={() => {
+                    history.push('/DoughsCatalog');
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={() => {
+                    history.push('/SizesCatalog');
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={() => {
+                    history.push('/AdditionalIngredientsCatalog');
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={() => {
+                    history.push('/IngredientsCatalog');
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <Typography className={userName} variant="h5">
+                  {userStore.name}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Grid>
+            </Grid>
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
@@ -243,6 +278,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
               <MenuItem onClick={handleClose}>Истории заказов</MenuItem>
               <MenuItem
                 onClick={e => {
+                  handleClose();
                   userStore.signOut();
                 }}
               >
@@ -286,6 +322,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
             </Button>
             <Button
               onClick={e => {
+                handleClose();
                 userStore.signIn(phone, password);
                 clickSignIn();
               }}
@@ -301,6 +338,16 @@ export const PrimarySearchAppBarToolBar = observer(() => {
           <DialogTitle id="form-dialog-title">Регистрация</DialogTitle>
           <DialogContent>
             <Grid container justify="center" alignItems="center">
+              <Grid item xs={12}>
+                <TextField
+                  id="standard-basic"
+                  label="Имя"
+                  variant="standard"
+                  onChange={e => {
+                    setName(e.target.value);
+                  }}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <MuiPhoneNumber defaultCountry={'ru'} onChange={e => setPhone(e.toString())} />
               </Grid>
@@ -348,7 +395,8 @@ export const PrimarySearchAppBarToolBar = observer(() => {
             </Button>
             <Button
               onClick={e => {
-                userStore.signUp(phone, password, passwordConfirmation);
+                handleClose();
+                userStore.signUp(name, phone, password, passwordConfirmation);
                 clickSignUp();
               }}
               color="primary"
