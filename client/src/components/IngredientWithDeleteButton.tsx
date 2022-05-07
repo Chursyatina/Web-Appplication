@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IconButton, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import { Delete, LocalPizza, RestoreFromTrash } from '@material-ui/icons';
 
@@ -10,6 +10,15 @@ export const IngredientWithDeleteButton = (props: IIngredientProps) => {
   const { withNoMarginsAndPaddings, crossedText } = ingredientListStyles();
   const { ingredient } = props;
   const [deleted, setDeleted] = useState(false);
+
+  useEffect(() => {
+    const checkIffChecked = async () => {
+      if (pizzaStore.ingredients.findIndex(ing => ing.id === ingredient.id) === -1) {
+        setDeleted(!deleted);
+      }
+    };
+    checkIffChecked();
+  }, []);
 
   return (
     <ListItem key={ingredient.id} className={withNoMarginsAndPaddings}>

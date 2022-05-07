@@ -13,6 +13,13 @@ export const SizeTabs = () => {
   const [sizes, setSizes] = useState<IPizzaSize[]>([]);
   const [value, setValue] = useState(0);
 
+  useEffect(() => {
+    const getChosenSize = async () => {
+      setValue(menuStore.sizes.findIndex(size => size.id === pizzaStore.size.id));
+    };
+    getChosenSize();
+  }, []);
+
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setValue(newValue);
     pizzaStore.setSize(menuStore.sizes[newValue]);

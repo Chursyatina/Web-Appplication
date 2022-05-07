@@ -12,7 +12,7 @@ import { IPizza } from 'src/interfaces/pizza';
 import { IIngredient } from 'src/interfaces/ingredient';
 import { IAdditionalIngredient } from 'src/interfaces/additionalIngredient';
 import { IPizzaVariationCreate } from 'src/interfaces/DTOs/PizzaVariationCreate';
-import { insertPizzaVariation } from 'src/api/pizzaVariationApi';
+import { insertPizzaVariation, updatePizzaVariation } from 'src/api/pizzaVariationApi';
 
 import { pizzaStore } from './currentPizza';
 import { IOrderLineCreate } from 'src/interfaces/DTOs/OrderLineCreate';
@@ -20,6 +20,7 @@ import { ISignInForm } from 'src/interfaces/DTOs/SignInForm';
 import { ISignUpForm } from 'src/interfaces/DTOs/SignUpForm';
 import { IUser } from 'src/interfaces/user';
 import { ordersStore } from './currentOrders';
+import { IPizzaVariationUpdate, IPizzaVariationUpdateProps } from 'src/interfaces/DTOs/PizzaVariationUpdate';
 
 class UserStore {
   id = '';
@@ -150,6 +151,36 @@ class UserStore {
     console.log(orderLine.pizzaVariation.id);
     this.basket.orderLines.push(orderLine);
     console.log(this.basket.orderLines.length);
+    this.recalculatePrice();
+  }
+
+  async updatePizzaVariationInBasket(id: string){
+
+    const pizzaVariationUpdate: IPizzaVariationUpdate = {
+      PizzaId: pizzaStore.pizza.id,
+      SizeId: pizzaStore.size.id,
+      DoughId: pizzaStore.dough.id,
+      Ingredients: [],
+      AdditionalIngredients: [],
+    };
+
+    pizzaStore.ingredients.forEach(element => {
+      pizzaVariationUpdate.Ingredients.push(element.id);
+    });
+
+    pizzaStore.additionalIngredients.forEach(element => {
+      pizzaVariationUpdate.AdditionalIngredients.push(element.id);
+    });
+
+    const pizzaVariationUpdateProps: IPizzaVariationUpdateProps ={
+      id: id,
+      pizzaVariation: pizzaVariationUpdate,
+    };
+
+    const returnedPizzaVariation = await updatePizzaVariation(pizzaVariationUpdateProps);
+
+    this.basket.orderLines[this.basket.orderLines.findIndex(o => o.pizzaVariation.id === returnedPizzaVariation.id)].pizzaVariation = returnedPizzaVariation;
+
     this.recalculatePrice();
   }
 

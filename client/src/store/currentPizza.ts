@@ -66,6 +66,11 @@ class PizzaStore {
     this.recalculatePrice();
   }
 
+  setAdditionalIngredients(additionalIngredients: IAdditionalIngredient[]) {
+    this.additionalIngredients = [...additionalIngredients];
+    this.recalculatePrice();
+  }
+
   changeExistenceOfIngredient(newIngredient: IIngredient) {
     if (this.ingredients.find(ingredient => ingredient.id === newIngredient.id) !== undefined) {
       this.ingredients.splice(

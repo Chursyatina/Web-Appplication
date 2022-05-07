@@ -18,3 +18,8 @@ export interface IPizzaVariation {
 export interface IPizzaVariationProps {
   pizzaVariation: IPizzaVariation;
 }
+
+export interface IPizzaVariationDialogProps {
+  isOpen: boolean;
+  pizzaVariation: IPizzaVariation;
+}

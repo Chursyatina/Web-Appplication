@@ -17,6 +17,13 @@ export const DoughTabs = () => {
     pizzaStore.setDough(menuStore.doughs[newValue]);
   };
 
+  useEffect(() => {
+    const getChosenDough = async () => {
+      setValue(menuStore.doughs.findIndex(dough => dough.id === pizzaStore.dough.id));
+    };
+    getChosenDough();
+  }, []);
+
   return (
     <Paper className={root}>
       <Tabs value={value} onChange={handleChange} indicatorColor="primary" textColor="primary" centered>
