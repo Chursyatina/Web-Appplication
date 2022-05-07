@@ -32,15 +32,22 @@ export const App: React.FC = () => {
       <div className={'mainContainer'}>
         <PrimaryAppBar />
         <Container>
-          <Switch>
-            <Route exact path="/" component={MainMenu} />
-            <Route exact path="/Basket" component={Basket} />
-            <Route exact path="/IngredientsCatalog" component={IngredientsCatalog} />
-            <Route exact path="/AdditionalIngredientsCatalog" component={AdditionalIngredientsCatalog} />
-            <Route exact path="/SizesCatalog" component={SizesCatalog} />
-            <Route exact path="/DoughsCatalog" component={DoughsCatalog} />
-            <Route exact path="/OrdersHistory" component={OrdersHistory} />
-          </Switch>
+          {userStore.role === 'admin' ? (
+            <Switch>
+              <Route exact path="/" component={MainMenu} />
+              <Route exact path="/IngredientsCatalog" component={IngredientsCatalog} />
+              <Route exact path="/AdditionalIngredientsCatalog" component={AdditionalIngredientsCatalog} />
+              <Route exact path="/SizesCatalog" component={SizesCatalog} />
+              <Route exact path="/DoughsCatalog" component={DoughsCatalog} />
+              <Route exact path="/OrdersHistory" component={OrdersHistory} />
+            </Switch>
+          ) : (
+            <Switch>
+              <Route exact path="/" component={MainMenu} />
+              <Route exact path="/Basket" component={Basket} />
+              <Route exact path="/OrdersHistory" component={OrdersHistory} />
+            </Switch>
+          )}
         </Container>
         <div className={'footerSpace'} />
       </div>

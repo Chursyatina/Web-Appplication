@@ -1,7 +1,7 @@
 import { IUser } from 'src/interfaces/user';
 
 export interface IAuthInfo {
-  id: string,
+  id: string;
   isAuth: boolean;
   user: IUser;
   role: string;
