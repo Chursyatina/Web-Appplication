@@ -4,6 +4,7 @@ export interface IIngredient {
   price: number;
   isDeleted: boolean;
   imageLink: string;
+  isAvailable: boolean;
 }
 
 export interface IIngredientProps {

@@ -10,7 +10,7 @@ import { ButtonForEditting } from './PizzaDialog';
 import { EdittingPizzaDialog } from './EdittingPizzaDialog';
 
 export const Pizza = (props: IPizzaProps) => {
-  const { button, root, media, pizzaDescription, cardActions } = pizzaStyles();
+  const { button, root, media, pizzaDescription, cardActions, divBack, divBackAdmin, notAvialable } = pizzaStyles();
   const { pizza } = props;
   const { id, imageLink, name, description, price } = pizza;
 
@@ -46,6 +46,14 @@ export const Pizza = (props: IPizzaProps) => {
           </Grid>
         )}
       </CardActions>
+      {!pizza.isAvailable && userStore.role === 'admin' && (
+        <div className={divBackAdmin}>
+          <Typography variant="h4" className={notAvialable}>
+            {' '}
+            Нет в наличии{' '}
+          </Typography>
+        </div>
+      )}
     </Card>
   );
 };

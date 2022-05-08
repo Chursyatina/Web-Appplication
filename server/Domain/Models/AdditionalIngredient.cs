@@ -23,6 +23,9 @@
         public string ImageLink { get; set; }
 
         [Required]
+        public bool IsAvailable { get; set; }
+
+        [Required]
         public ICollection<PizzaVariation> PizzasVariations { get; set; }
     }
 }

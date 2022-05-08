@@ -6,6 +6,7 @@ import { catalogsEdittingStyles } from 'src/componentsStyles/catalogsEdittingSty
 import { menuStore } from 'src/store/currentMenu';
 import { userStore } from 'src/store/currentUser';
 import {
+  AvialabnessForEditting,
   ButtonForEditting,
   DelButtonForEditting,
   NameForEditting,
@@ -87,8 +88,8 @@ export const AdditionalIngredientsCatalog = observer(() => {
           </Grid>
         </Grid>
 
-        <Grid item xs={3}>
-          <h3 className={center}> Название добавки </h3>
+        <Grid item xs={2}>
+          <h3 className={center}> Добавка </h3>
 
           {menuStore.additionalIngredients.map(
             ing => !ing.isDeleted && <NameForEditting key={ing.id} additionalIngredient={ing} />,
@@ -118,7 +119,7 @@ export const AdditionalIngredientsCatalog = observer(() => {
             onChange={e => setPrice(Number(e.target.value))}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <h3 className={center}> Редактирование </h3>
 
           {menuStore.additionalIngredients.map(
@@ -134,6 +135,13 @@ export const AdditionalIngredientsCatalog = observer(() => {
             {' '}
             Добавить новую добавку{' '}
           </Button>
+        </Grid>
+        <Grid item xs={2}>
+          <h3 className={center}> Наличие </h3>
+
+          {menuStore.additionalIngredients.map(
+            ing => !ing.isDeleted && <AvialabnessForEditting key={ing.id} additionalIngredient={ing} />,
+          )}
         </Grid>
         <Grid item xs={1}>
           <h3 className={center}> Удаление </h3>

@@ -6,6 +6,7 @@ import { catalogsEdittingStyles } from 'src/componentsStyles/catalogsEdittingSty
 import { menuStore } from 'src/store/currentMenu';
 import { userStore } from 'src/store/currentUser';
 import {
+  AvialabnessForEditting,
   ButtonForEditting,
   DelButtonForEditting,
   NameForEditting,
@@ -86,8 +87,8 @@ export const IngredientsCatalog = observer(() => {
           </Grid>
         </Grid>
 
-        <Grid item xs={3}>
-          <h3 className={center}> Название ингредиента </h3>
+        <Grid item xs={2}>
+          <h3 className={center}> Ингредиент </h3>
 
           {menuStore.ingredients.map(ing => !ing.isDeleted && <NameForEditting key={ing.id} ingredient={ing} />)}
 
@@ -113,7 +114,7 @@ export const IngredientsCatalog = observer(() => {
             onChange={e => setPrice(Number(e.target.value))}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <h3 className={center}> Редактирование </h3>
 
           {menuStore.ingredients.map(ing => !ing.isDeleted && <ButtonForEditting key={ing.id} ingredient={ing} />)}
@@ -127,6 +128,11 @@ export const IngredientsCatalog = observer(() => {
             {' '}
             Добавить новый ингредиент{' '}
           </Button>
+        </Grid>
+        <Grid item xs={2}>
+          <h3 className={center}> Наличие </h3>
+
+          {menuStore.ingredients.map(ing => !ing.isDeleted && <AvialabnessForEditting key={ing.id} ingredient={ing} />)}
         </Grid>
         <Grid item xs={1}>
           <h3 className={center}> Удаление </h3>

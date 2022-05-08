@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
@@ -48,6 +49,7 @@ export const ButtonForEditting = (props: IIngredientProps) => {
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState('');
   const [isDeleted, setDeleted] = useState(false);
+  const [isAvailable, setAvalabness] = useState(true);
   const [id, setId] = useState('');
 
   const getCoverBase64 = (file: Blob) => {
@@ -65,6 +67,7 @@ export const ButtonForEditting = (props: IIngredientProps) => {
     setPrice(props.ingredient.price);
     setImage(props.ingredient.imageLink);
     setDeleted(props.ingredient.isDeleted);
+    setAvalabness(props.ingredient.isAvailable);
     setId(props.ingredient.id);
   };
 
@@ -73,7 +76,7 @@ export const ButtonForEditting = (props: IIngredientProps) => {
   };
 
   const updateIng = async () => {
-    menuStore.updateIngredient(id, name, image, price);
+    menuStore.updateIngredient(id, name, image, price, true);
   };
 
   return (
@@ -106,6 +109,14 @@ export const ButtonForEditting = (props: IIngredientProps) => {
             fullWidth
             value={price}
             onChange={e => setPrice(Number(e.target.value))}
+          />
+          Наличие
+          <Checkbox
+            checked={isAvailable}
+            onChange={e => {
+              setAvalabness(!isAvailable);
+            }}
+            inputProps={{ 'aria-label': 'controlled' }}
           />
           <div
             onClick={() => {
@@ -153,6 +164,52 @@ export const ButtonForEditting = (props: IIngredientProps) => {
       </Dialog>
     </div>
   );
+};
+
+export const AvialabnessForEditting = (props: IIngredientProps) => {
+  const { root, button, center, editButton, iconRoot, divCenter } = catalogsEdittingButtonsStyles();
+
+  const changeAvialabnessOfIngredient = async () => {
+    menuStore.updateIngredient(
+      props.ingredient.id,
+      props.ingredient.name,
+      props.ingredient.imageLink,
+      props.ingredient.price,
+      !props.ingredient.isAvailable,
+    );
+  };
+
+  if (props.ingredient.isAvailable === true) {
+    return (
+      <div className={center}>
+        <Button
+          onClick={() => {
+            changeAvialabnessOfIngredient();
+          }}
+          color="primary"
+          className={button}
+        >
+          {' '}
+          Есть в наличии{' '}
+        </Button>
+      </div>
+    );
+  } else {
+    return (
+      <div className={center}>
+        <Button
+          onClick={() => {
+            changeAvialabnessOfIngredient();
+          }}
+          color="primary"
+          className={button}
+        >
+          {' '}
+          Нет в наличии{' '}
+        </Button>
+      </div>
+    );
+  }
 };
 
 export const DelButtonForEditting = (props: IIngredientProps) => {

@@ -58,6 +58,7 @@
             existingItem.Name = item.Name;
             existingItem.ImageLink = item.ImageLink;
             existingItem.Price = item.Price;
+            existingItem.IsAvailable = item.IsAvailable;
 
             var entity = _context.Update(existingItem);
             _context.SaveChanges();

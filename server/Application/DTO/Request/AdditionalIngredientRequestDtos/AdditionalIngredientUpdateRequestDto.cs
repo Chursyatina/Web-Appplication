@@ -16,5 +16,8 @@
 
         [Required]
         public string ImageLink { get; set; }
+
+        [Required]
+        public bool IsAvailable { get; set; }
     }
 }

@@ -69,6 +69,7 @@
             existingItem.ImageLink = item.ImageLink;
             existingItem.Price = item.Price;
             existingItem.IsDeleted = item.IsDeleted;
+            existingItem.IsAvailable = item.IsAvailable;
 
             var entity = _context.Update(existingItem);
 
@@ -77,6 +78,7 @@
                 if (pizza.Ingredients.Contains(existingItem))
                 {
                     pizza.Price = PriceCountingService.GetStartingPriceForPizza(pizza);
+                    pizza.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(pizza);
                 }
             }
 
@@ -109,6 +111,7 @@
                 if (pizza.Ingredients.Contains(existingItem))
                 {
                     pizza.Price = PriceCountingService.GetStartingPriceForPizza(pizza);
+                    pizza.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(pizza);
                 }
             }
 

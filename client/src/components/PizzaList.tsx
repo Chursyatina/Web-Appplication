@@ -39,9 +39,7 @@ export const PizzaList = observer(() => {
           </Grid>
         ) : (
           <Grid container justify="center">
-            {menuStore.pizzas.map(pizza => (
-              <Pizza key={pizza.id} pizza={pizza} />
-            ))}
+            {menuStore.pizzas.map(pizza => pizza.isAvailable && <Pizza key={pizza.id} pizza={pizza} />)}
           </Grid>
         )}
       </Grid>

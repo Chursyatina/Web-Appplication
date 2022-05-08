@@ -32,6 +32,9 @@
         public decimal Price { get; set; }
 
         [Required]
+        public bool IsAvailable { get; set; }
+
+        [Required]
         public ICollection<Ingredient> Ingredients { get; set; }
 
         [Required]

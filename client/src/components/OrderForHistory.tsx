@@ -15,6 +15,7 @@ import {
   InputLabel,
   TextField,
   Collapse,
+  Card,
 } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 import MuiPhoneNumber from 'material-ui-phone-number';
@@ -50,32 +51,34 @@ export const OrderForHistory = observer((props: IOrderProps) => {
 
   return (
     <Grid item xs={12} justify="center">
-      <Button onClick={handleClick}>
-        <Typography variant="h6" align="center">
-          Заказ на сумму {order.price} рубля, от {date}
-        </Typography>
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </Button>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <Grid container justify="center">
-          {order.orderLines.map(orderLine => (
-            <Grid item key={orderLine.id}>
-              <PizzaInOrderHistory orderLine={orderLine} />
-            </Grid>
-          ))}
-        </Grid>
-        <Divider variant="middle" />
-        <Grid container justify="flex-end" className={summary}>
-          <Grid item>
-            <Typography variant="h5" component="h5">
-              {`Итого: `} {order.orderLines.length} {` позиции`}
-            </Typography>
-            <Typography variant="h5" component="h5">
-              {`Сумма заказа: `} {order.price} {` ₽`}
-            </Typography>
+      <Card>
+        <Button onClick={handleClick}>
+          <Typography variant="h6" align="center">
+            Заказ на сумму {order.price} рубля, от {date}
+          </Typography>
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </Button>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <Grid container justify="center">
+            {order.orderLines.map(orderLine => (
+              <Grid item key={orderLine.id}>
+                <PizzaInOrderHistory orderLine={orderLine} />
+              </Grid>
+            ))}
           </Grid>
-        </Grid>
-      </Collapse>
+          <Divider variant="middle" />
+          <Grid container justify="flex-end" className={summary}>
+            <Grid item>
+              <Typography variant="h5" component="h5">
+                {`Итого: `} {order.orderLines.length} {` позиции`}
+              </Typography>
+              <Typography variant="h5" component="h5">
+                {`Сумма заказа: `} {order.price} {` ₽`}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Collapse>
+      </Card>
     </Grid>
   );
 });

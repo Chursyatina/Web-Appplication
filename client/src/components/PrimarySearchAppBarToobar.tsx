@@ -107,11 +107,6 @@ export const PrimarySearchAppBarToolBar = observer(() => {
                   </Badge>
                 </IconButton>
               </Grid>
-              <Grid item justify="center">
-                <Typography variant="h5" className={userName}>
-                  {userStore.name}
-                </Typography>
-              </Grid>
               <Grid item>
                 <IconButton
                   aria-label="account of current user"
@@ -122,6 +117,11 @@ export const PrimarySearchAppBarToolBar = observer(() => {
                 >
                   <AccountCircle />
                 </IconButton>
+              </Grid>
+              <Grid item justify="center">
+                <Typography variant="h6" className={userName}>
+                  {userStore.name}
+                </Typography>
               </Grid>
             </Grid>
             {userStore.role !== 'user' ? (

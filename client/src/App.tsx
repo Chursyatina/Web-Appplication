@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
 import { Container } from '@material-ui/core';
+import { observer } from 'mobx-react-lite';
 
 import { userStore } from 'src/store/currentUser';
 import { PrimaryAppBar } from 'src/components/PrimaryAppBar';
@@ -16,7 +17,7 @@ import { DoughsCatalog } from 'src/components/DoughsCatalog';
 
 import { OrdersHistory } from './components/OrdersHistory';
 
-export const App: React.FC = () => {
+export const App: React.FC = observer(() => {
   useEffect(() => {
     const getData = async () => {
       if (menuStore.pizzas.length === 0) {
@@ -28,7 +29,7 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <div className={'mainContainer'}>
         <PrimaryAppBar />
         <Container>
@@ -52,6 +53,6 @@ export const App: React.FC = () => {
         <div className={'footerSpace'} />
       </div>
       <Footer />
-    </div>
+    </>
   );
-};
+});

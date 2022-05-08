@@ -27,6 +27,9 @@
         public bool IsDeleted { get; set; }
 
         [Required]
+        public bool IsAvailable { get; set; }
+
+        [Required]
         public string SingleItemImageLink { get; set; }
 
         [Required]

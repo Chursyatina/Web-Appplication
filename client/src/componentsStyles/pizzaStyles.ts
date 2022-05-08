@@ -3,6 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 export const pizzaStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      position: 'relative',
       width: 370,
       margin: 15,
     },
@@ -35,6 +36,37 @@ export const pizzaStyles = makeStyles((theme: Theme) =>
     },
     cardContent: {
       padding: 16,
+    },
+    divBack: {
+      backgroundColor: 'grey',
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      opacity: 0.9,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+    },
+    divBackAdmin: {
+      backgroundColor: 'grey',
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      opacity: 0.8,
+      height: 200,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      pointerEvents: 'none',
+    },
+    notAvialable: {
+      alignContent: 'center',
+      alignSelf: 'center',
+      verticalAlign: 'middle',
     },
   }),
 );

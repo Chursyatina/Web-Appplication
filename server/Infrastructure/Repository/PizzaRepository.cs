@@ -34,6 +34,7 @@
             }
 
             item.Price = PriceCountingService.GetStartingPriceForPizza(item);
+            item.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(item);
 
             var entity = _context.Add(item);
             _context.SaveChanges();
@@ -54,6 +55,7 @@
                   SingleItemImageLink = p.SingleItemImageLink,
                   Ingredients = p.Ingredients,
                   Price = p.Price,
+                  IsAvailable = p.IsAvailable,
               }))
                 .Where(p => p.IsDeleted == false)
                 .AsQueryable()
@@ -96,11 +98,13 @@
             {
                 existingItem = ChangeIngredients(existingItem, ingredientsIds);
                 existingItem.Price = PriceCountingService.GetStartingPriceForPizza(existingItem);
+                existingItem.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(existingItem);
             }
             else
             {
                 existingItem.Ingredients = new List<Ingredient>();
                 existingItem.Price = PriceCountingService.GetStartingPriceForPizza(existingItem);
+                existingItem.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(existingItem);
             }
 
             var entity = _context.Update(existingItem);
@@ -139,9 +143,11 @@
             {
                 existingItem = ChangeIngredients(existingItem, ingredientsIds);
                 existingItem.Price = PriceCountingService.GetStartingPriceForPizza(existingItem);
+                existingItem.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(existingItem);
             }
 
             existingItem.Price = PriceCountingService.GetStartingPriceForPizza(existingItem);
+            existingItem.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(existingItem);
 
             var entity = _context.Update(existingItem);
             _context.SaveChanges();

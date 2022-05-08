@@ -10,6 +10,7 @@ export const Footer = () => {
   return (
     <Grid container alignContent="center" className={root}>
       <Grid item className={content}>
+        Follow{' '}
         <IconButton>
           <Twitter />
         </IconButton>

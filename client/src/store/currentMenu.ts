@@ -78,6 +78,7 @@ class MenuStore {
       Name: name,
       Price: price,
       ImageLink: image,
+      IsAvailable: true,
     };
 
     const newIngredient: IIngredient = await insertIngredient(ingredientCreate);
@@ -90,6 +91,7 @@ class MenuStore {
       Name: name,
       Price: price,
       ImageLink: image,
+      IsAvailable: true,
     };
 
     const newIngredient: IAdditionalIngredient = await insertAdditionalIngredient(ingredientCreate);
@@ -155,11 +157,12 @@ class MenuStore {
     this.loadData();
   }
 
-  async updateIngredient(id: string, name: string, image: string, price: number) {
+  async updateIngredient(id: string, name: string, image: string, price: number, isAvailable: boolean) {
     const newIngredient: IIngredientUpdate = {
       Name: name,
       ImageLink: image,
       Price: price,
+      IsAvailable: isAvailable,
     };
 
     const ingredientUpdateProps: IIngredientUpdateProps = {
@@ -173,11 +176,12 @@ class MenuStore {
     this.loadData();
   }
 
-  async updateAdditionalIngredient(id: string, name: string, image: string, price: number) {
+  async updateAdditionalIngredient(id: string, name: string, image: string, price: number, isAvailable: boolean) {
     const newIngredient: IAdditionalIngredientUpdate = {
       Name: name,
       ImageLink: image,
       Price: price,
+      IsAvailable: isAvailable,
     };
 
     const ingredientUpdateProps: IAdditionalIngredientUpdateProps = {

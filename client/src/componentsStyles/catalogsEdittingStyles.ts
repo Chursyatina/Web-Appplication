@@ -17,7 +17,7 @@ export const catalogsEdittingStyles = makeStyles(() =>
     },
     namefieldwidth: {
       width: 150,
-      marginLeft: 85,
+      marginLeft: 40,
       textAlign: 'center',
     },
     pricefieldwidth: {

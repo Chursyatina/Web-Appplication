@@ -8,6 +8,7 @@ export interface IPizza {
   description: string;
   price: number;
   ingredients: IIngredient[];
+  isAvailable: boolean;
 }
 
 export interface IPizzaProps {

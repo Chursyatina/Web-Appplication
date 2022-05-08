@@ -18,7 +18,10 @@ export const AdditionalIngredientsList = () => {
           <Grid container justify="center">
             {menuStore.additionalIngredients.map(
               ingredient =>
-                !ingredient.isDeleted && <AdditionalIngredient key={ingredient.id} additionalIngredient={ingredient} />,
+                !ingredient.isDeleted &&
+                ingredient.isAvailable && (
+                  <AdditionalIngredient key={ingredient.id} additionalIngredient={ingredient} />
+                ),
             )}
           </Grid>
         </Grid>

@@ -20,6 +20,7 @@ class PizzaStore {
     description: ' ',
     price: 0,
     ingredients: [],
+    isAvailable: true,
   };
   size: IPizzaSize = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ', isDeleted: false };
   dough: IPizzaDough = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ', isDeleted: false };
@@ -40,6 +41,7 @@ class PizzaStore {
     description: ' ',
     price: 0,
     ingredients: [],
+    isAvailable: true,
     };
   }
 
