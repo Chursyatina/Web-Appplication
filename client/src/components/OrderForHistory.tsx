@@ -16,6 +16,7 @@ import {
   TextField,
   Collapse,
   Card,
+  CardActionArea,
 } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 import MuiPhoneNumber from 'material-ui-phone-number';
@@ -29,7 +30,7 @@ import { PizzaInBasket } from './PizzaInBasket';
 import { PizzaInOrderHistory } from './PizzaInOrderHistory';
 
 export const OrderForHistory = observer((props: IOrderProps) => {
-  const { root, summary, button } = pizzaListStyles();
+  const { root, summary, button, cardMargin, expander, actionArea } = pizzaListStyles();
   const { order } = props;
 
   const [open, setOpen] = React.useState(false);
@@ -51,13 +52,22 @@ export const OrderForHistory = observer((props: IOrderProps) => {
 
   return (
     <Grid item xs={12} justify="center">
-      <Card>
-        <Button onClick={handleClick}>
-          <Typography variant="h6" align="center">
-            Заказ на сумму {order.price} рубля, от {date}
-          </Typography>
-          {open ? <ExpandLess /> : <ExpandMore />}
-        </Button>
+      <Card className={cardMargin}>
+        <CardActionArea onClick={handleClick} className={actionArea}>
+          <Grid container justify="center">
+            <Grid item xs={1}>
+              {open ? <ExpandLess /> : <ExpandMore />}
+            </Grid>
+            <Grid item xs={10}>
+              <Typography variant="h6" align="center">
+                Заказ на сумму {order.price} рубля, от {date}
+              </Typography>
+            </Grid>
+            <Grid item xs={1} className={expander}>
+              {open ? <ExpandLess /> : <ExpandMore />}
+            </Grid>
+          </Grid>
+        </CardActionArea>
         <Collapse in={open} timeout="auto" unmountOnExit>
           <Grid container justify="center">
             {order.orderLines.map(orderLine => (

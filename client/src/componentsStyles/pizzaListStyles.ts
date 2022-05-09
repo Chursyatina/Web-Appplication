@@ -14,5 +14,14 @@ export const pizzaListStyles = makeStyles(() =>
       marginTop: 7,
       padding: 7,
     },
+    cardMargin: {
+      margin: 10,
+    },
+    actionArea: {
+      padding: 30,
+    },
+    expander: {
+      textAlign: 'right',
+    },
   }),
 );
