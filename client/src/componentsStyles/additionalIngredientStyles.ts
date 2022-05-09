@@ -15,7 +15,7 @@ export const additionalIngredientStyles = makeStyles(() =>
       height: 120,
     },
     border: {
-      border: '1px solid darkblue',
+      border: '1px solid #FF4500',
     },
     ingredientName: {
       height: 32,

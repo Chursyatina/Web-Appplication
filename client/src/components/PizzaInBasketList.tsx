@@ -69,7 +69,7 @@ export const PizzaInBasketList = observer(() => {
           </Grid>
         ))}
       </Grid>
-      <Divider variant="middle" />
+      <Divider variant="middle" color="primary" />
       <Grid container justify="flex-end" className={summary}>
         <Grid item>
           <Typography variant="h5" component="h5">

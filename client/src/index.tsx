@@ -2,15 +2,30 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#FF4500',
+    },
+
+    secondary: {
+      main: '#228B22',
+    },
+  },
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

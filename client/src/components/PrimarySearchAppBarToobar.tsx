@@ -21,6 +21,10 @@ import {
   TextField,
 } from '@material-ui/core';
 import { Search, ShoppingBasket, Edit, AccountCircle, VisibilityOff, Visibility } from '@material-ui/icons';
+import CircleIcon from '@mui/icons-material/Circle';
+import StraightenIcon from '@mui/icons-material/Straighten';
+import LocalPizzaIcon from '@mui/icons-material/LocalPizza';
+import LocalPizzaOutlinedIcon from '@mui/icons-material/LocalPizzaOutlined';
 import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import MuiPhoneNumber from 'material-ui-phone-number';
@@ -76,7 +80,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
   return (
     <div>
       <Toolbar>
-        <IconButton edge="start" className={menuButton} color="inherit" aria-label="open drawer" />
+        <IconButton edge="start" className={menuButton} color="inherit" aria-label="open drawer" size="small" />
         <Typography className={title} variant="h4" noWrap>
           <IconButton
             edge="start"
@@ -208,7 +212,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
                     history.push('/DoughsCatalog');
                   }}
                 >
-                  <Edit />
+                  <CircleIcon />
                 </IconButton>
               </Grid>
               <Grid item>
@@ -221,7 +225,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
                     history.push('/SizesCatalog');
                   }}
                 >
-                  <Edit />
+                  <StraightenIcon />
                 </IconButton>
               </Grid>
               <Grid item>
@@ -234,7 +238,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
                     history.push('/AdditionalIngredientsCatalog');
                   }}
                 >
-                  <Edit />
+                  <LocalPizzaOutlinedIcon />
                 </IconButton>
               </Grid>
               <Grid item>
@@ -247,7 +251,7 @@ export const PrimarySearchAppBarToolBar = observer(() => {
                     history.push('/IngredientsCatalog');
                   }}
                 >
-                  <Edit />
+                  <LocalPizzaIcon />
                 </IconButton>
               </Grid>
               <Grid item>

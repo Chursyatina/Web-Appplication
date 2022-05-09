@@ -30,7 +30,7 @@ export const Pizza = (props: IPizzaProps) => {
       <CardActions disableSpacing className={cardActions}>
         <Grid container justify="flex-start">
           <Typography variant="h6" component="h2">
-            {`from ${price} $`}
+            {`from ${price} ₽`}
           </Typography>
         </Grid>
         {userStore.role === 'admin' ? (
