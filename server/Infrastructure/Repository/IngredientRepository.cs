@@ -70,6 +70,7 @@
             existingItem.Price = item.Price;
             existingItem.IsDeleted = item.IsDeleted;
             existingItem.IsAvailable = item.IsAvailable;
+            existingItem.IsObligatory = item.IsObligatory;
 
             var entity = _context.Update(existingItem);
 

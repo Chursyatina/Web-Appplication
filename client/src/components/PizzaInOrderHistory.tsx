@@ -4,10 +4,11 @@ import { AddBoxOutlined, IndeterminateCheckBoxOutlined, Delete } from '@material
 import { observer } from 'mobx-react-lite';
 
 import { pizzaInBasketStyles } from 'src/componentsStyles/pizzaInBasketStyles';
-import { userStore } from 'src/store/currentUser';
 import { IPizzaVariationProps } from 'src/interfaces/pizzaVariation';
 import { IOrderLineProps } from 'src/interfaces/orderLine';
 import { IngredientInBasket } from 'src/components/IngredientInBasket';
+
+import { AdditionalIngredientInBasket } from './AddtionalIngredientInBasket';
 
 export const PizzaInOrderHistory = observer((props: IOrderLineProps) => {
   const { orderLine } = props;
@@ -31,7 +32,7 @@ export const PizzaInOrderHistory = observer((props: IOrderLineProps) => {
               <Grid item xs={6} md={6}>
                 <Typography variant="subtitle2" style={{ fontWeight: 600 }}>{`Дополнительные ингредиеты`}</Typography>
                 {pizzaVariation.additionalIngredients.map(ingredient => (
-                  <IngredientInBasket key={ingredient.id} ingredient={ingredient} />
+                  <AdditionalIngredientInBasket key={ingredient.id} additionalIngredient={ingredient} />
                 ))}
               </Grid>
               <Grid item xs={6} md={6}>

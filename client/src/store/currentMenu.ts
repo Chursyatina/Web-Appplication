@@ -79,6 +79,7 @@ class MenuStore {
       Price: price,
       ImageLink: image,
       IsAvailable: true,
+      IsObligatory: false,
     };
 
     const newIngredient: IIngredient = await insertIngredient(ingredientCreate);
@@ -157,12 +158,13 @@ class MenuStore {
     this.loadData();
   }
 
-  async updateIngredient(id: string, name: string, image: string, price: number, isAvailable: boolean) {
+  async updateIngredient(id: string, name: string, image: string, price: number, isAvailable: boolean, isObligatory: boolean) {
     const newIngredient: IIngredientUpdate = {
       Name: name,
       ImageLink: image,
       Price: price,
       IsAvailable: isAvailable,
+      IsObligatory: isObligatory,
     };
 
     const ingredientUpdateProps: IIngredientUpdateProps = {

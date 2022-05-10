@@ -10,6 +10,7 @@ import { IOrderLineProps } from 'src/interfaces/orderLine';
 import { IngredientInBasket } from 'src/components/IngredientInBasket';
 
 import { PizzaInBasketEditting } from './PizzaInBasketEditting';
+import { AdditionalIngredientInBasket } from './AddtionalIngredientInBasket';
 
 export const PizzaInBasket = observer((props: IOrderLineProps) => {
   const { orderLine } = props;
@@ -45,7 +46,7 @@ export const PizzaInBasket = observer((props: IOrderLineProps) => {
                       style={{ fontWeight: 600 }}
                     >{`Дополнительные ингредиеты`}</Typography>
                     {pizzaVariation.additionalIngredients.map(ingredient => (
-                      <IngredientInBasket key={ingredient.id} ingredient={ingredient} />
+                      <AdditionalIngredientInBasket key={ingredient.id} additionalIngredient={ingredient} />
                     ))}
                   </Grid>
                   <Grid item xs={6} md={6}>

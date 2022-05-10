@@ -22,6 +22,7 @@
                     ImageLink = "https://nemagaz.ru/wa-data/public/shop/products/16/19/1916/ImageLinks/1259/1259.970.jpg",
                     Pizzas = new List<Pizza>(),
                     IsAvailable = true,
+                    IsObligatory = true,
                 },
                 new Ingredient()
                 {
@@ -30,6 +31,7 @@
                     ImageLink = "https://th.bing.com/th/id/OIP._qc-JyiqXuESTu4d2-Uv7wHaFn?pid=ImgDet&rs=1",
                     Pizzas = new List<Pizza>(),
                     IsAvailable = true,
+                    IsObligatory = true,
                 },
                 new Ingredient()
                 {
@@ -38,6 +40,7 @@
                     ImageLink = "https://th.bing.com/th/id/R.230f7f2997d8d4847bff0c8a9710284d?rik=4UxrVIIeEhI0eg&pid=ImgRaw",
                     Pizzas = new List<Pizza>(),
                     IsAvailable = true,
+                    IsObligatory = false,
                 },
                 new Ingredient()
                 {
@@ -46,6 +49,7 @@
                     ImageLink = "https://calorizator.ru/sites/default/files/ImageLinkcache/product_512/product/ham-1.jpg",
                     Pizzas = new List<Pizza>(),
                     IsAvailable = true,
+                    IsObligatory = true,
                 },
                 new Ingredient()
                 {
@@ -54,6 +58,7 @@
                     ImageLink = "https://th.bing.com/th/id/R.2918e9aea1dc8d68cfd9d75d5515b337?rik=46txHXTQt8PpJg&pid=ImgRaw",
                     Pizzas = new List<Pizza>(),
                     IsAvailable = true,
+                    IsObligatory = false,
                 },
                 new Ingredient()
                 {
@@ -62,6 +67,7 @@
                     ImageLink = "https://th.bing.com/th/id/OIP.PTkRgM4Ghx5ze1OLYsd0mAHaHa?pid=ImgDet&rs=1",
                     Pizzas = new List<Pizza>(),
                     IsAvailable = true,
+                    IsObligatory = false,
                 },
                 new Ingredient()
                 {
@@ -70,6 +76,7 @@
                     ImageLink = "https://th.bing.com/th/id/R.5f07433624fd630965f7b163824c78de?rik=dG2Xx1ovNKGZFg&pid=ImgRaw",
                     Pizzas = new List<Pizza>(),
                     IsAvailable = true,
+                    IsObligatory = false,
                 },
                 new Ingredient()
                 {
@@ -78,6 +85,7 @@
                     ImageLink = "https://ImageLinks6.alphacoders.com/529/529319.jpg",
                     Pizzas = new List<Pizza>(),
                     IsAvailable = true,
+                    IsObligatory = true,
                 },
                 new Ingredient()
                 {
@@ -86,6 +94,7 @@
                     ImageLink = "https://th.bing.com/th/id/R.3a0447f3ed4161f4a72d2e49a7e8312d?rik=BABv628NLdwREg&pid=ImgRaw",
                     Pizzas = new List<Pizza>(),
                     IsAvailable = true,
+                    IsObligatory = false,
                 },
             };
 

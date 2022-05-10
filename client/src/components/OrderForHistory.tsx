@@ -41,7 +41,6 @@ export const OrderForHistory = observer((props: IOrderProps) => {
       const newDate = new Date(order.date).toLocaleString('ru');
 
       setDate(newDate);
-      console.log(date);
     };
     parseDate();
   }, []);

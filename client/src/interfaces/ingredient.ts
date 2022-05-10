@@ -5,6 +5,7 @@ export interface IIngredient {
   isDeleted: boolean;
   imageLink: string;
   isAvailable: boolean;
+  isObligatory: boolean;
 }
 
 export interface IIngredientProps {

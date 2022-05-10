@@ -27,16 +27,18 @@ export const IngredientWithDeleteButton = (props: IIngredientProps) => {
       </ListItemIcon>
       <ListItemText className={deleted ? `${crossedText}` : ''} primary={ingredient.name} />
       <ListItemSecondaryAction>
-        <IconButton
-          edge="end"
-          aria-label="delete"
-          onClick={() => {
-            setDeleted(!deleted);
-            pizzaStore.changeExistenceOfIngredient(ingredient);
-          }}
-        >
-          {deleted ? <RestoreFromTrash /> : <Delete />}
-        </IconButton>
+        {!ingredient.isObligatory && (
+          <IconButton
+            edge="end"
+            aria-label="delete"
+            onClick={() => {
+              setDeleted(!deleted);
+              pizzaStore.changeExistenceOfIngredient(ingredient);
+            }}
+          >
+            {deleted ? <RestoreFromTrash /> : <Delete />}
+          </IconButton>
+        )}
       </ListItemSecondaryAction>
     </ListItem>
   );

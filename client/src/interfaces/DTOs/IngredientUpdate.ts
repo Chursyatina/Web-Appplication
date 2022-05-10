@@ -5,6 +5,7 @@ export interface IIngredientUpdate {
     Price: number;
     ImageLink: string;
     IsAvailable: boolean,
+    IsObligatory: boolean,
   }
   
 export interface IIngredientUpdateProps {

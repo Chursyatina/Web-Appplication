@@ -6,6 +6,7 @@ import { OrderForHistory } from 'src/components/OrderForHistory';
 import { orderHistoryStyles } from 'src/componentsStyles/orderHistoryStyles';
 import { ordersStore } from 'src/store/currentOrders';
 
+import { OrderDatePicker } from './OrderDatePicker';
 import { PizzaInBasketList } from './PizzaInBasketList';
 
 export const OrdersHistory = observer(() => {
@@ -16,9 +17,12 @@ export const OrdersHistory = observer(() => {
       <Typography variant="h4" align="center" className={typo}>
         История заказов
       </Typography>
-      <Grid container>
+      <Grid container alignItems="center">
+        <Grid item justifyContent="center" alignItems="center" xs={12}>
+          <OrderDatePicker />
+        </Grid>
         <Grid container justify="center" alignItems="center">
-          {ordersStore.orders.map(order => (
+          {ordersStore.filteredOrders.map(order => (
             <OrderForHistory key={order.id} order={order} />
           ))}
         </Grid>

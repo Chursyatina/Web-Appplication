@@ -50,6 +50,7 @@ export const ButtonForEditting = (props: IIngredientProps) => {
   const [image, setImage] = useState('');
   const [isDeleted, setDeleted] = useState(false);
   const [isAvailable, setAvalabness] = useState(true);
+  const [isObligatory, setObligatorness] = useState(true);
   const [id, setId] = useState('');
 
   const getCoverBase64 = (file: Blob) => {
@@ -68,6 +69,7 @@ export const ButtonForEditting = (props: IIngredientProps) => {
     setImage(props.ingredient.imageLink);
     setDeleted(props.ingredient.isDeleted);
     setAvalabness(props.ingredient.isAvailable);
+    setObligatorness(props.ingredient.isObligatory);
     setId(props.ingredient.id);
   };
 
@@ -76,7 +78,7 @@ export const ButtonForEditting = (props: IIngredientProps) => {
   };
 
   const updateIng = async () => {
-    menuStore.updateIngredient(id, name, image, price, true);
+    menuStore.updateIngredient(id, name, image, price, isAvailable, isObligatory);
   };
 
   return (
@@ -115,6 +117,14 @@ export const ButtonForEditting = (props: IIngredientProps) => {
             checked={isAvailable}
             onChange={e => {
               setAvalabness(!isAvailable);
+            }}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+          Нельзя удалить
+          <Checkbox
+            checked={isObligatory}
+            onChange={e => {
+              setObligatorness(!isObligatory);
             }}
             inputProps={{ 'aria-label': 'controlled' }}
           />
@@ -176,6 +186,7 @@ export const AvialabnessForEditting = (props: IIngredientProps) => {
       props.ingredient.imageLink,
       props.ingredient.price,
       !props.ingredient.isAvailable,
+      props.ingredient.isObligatory,
     );
   };
 

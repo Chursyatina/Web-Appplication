@@ -22,6 +22,9 @@
         public bool IsAvailable { get; set; }
 
         [Required]
+        public bool IsObligatory { get; set; }
+
+        [Required]
         [Range(0.1, 100)]
         public decimal Price { get; set; }
     }
