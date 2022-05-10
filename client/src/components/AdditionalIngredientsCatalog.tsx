@@ -15,6 +15,7 @@ import {
 
 import { PizzaList } from './PizzaList';
 import { AdditionalIngredientForCatalog } from './AdditionalIngredientForCatalog';
+import { AdditionalIngredientSearchBar } from './SearchBarForFiltration';
 
 export const AdditionalIngredientsCatalog = observer(() => {
   const { root, addButton, center, namefieldwidth, pricefieldwidth, button, loadLine1, iconRoot } =
@@ -44,12 +45,15 @@ export const AdditionalIngredientsCatalog = observer(() => {
   return (
     <div>
       <h2 className={root}>Добавки</h2>
+      <div className={root}>
+        <AdditionalIngredientSearchBar />
+      </div>
 
       <Grid container>
         <Grid item xs={3}>
           <h3 className={center}> Иконка </h3>
 
-          {menuStore.additionalIngredients.map(
+          {menuStore.filteredAdditionalIngredients.map(
             ing => !ing.isDeleted && <AdditionalIngredientForCatalog key={ing.id} additionalIngredient={ing} />,
           )}
 
@@ -91,7 +95,7 @@ export const AdditionalIngredientsCatalog = observer(() => {
         <Grid item xs={2}>
           <h3 className={center}> Добавка </h3>
 
-          {menuStore.additionalIngredients.map(
+          {menuStore.filteredAdditionalIngredients.map(
             ing => !ing.isDeleted && <NameForEditting key={ing.id} additionalIngredient={ing} />,
           )}
 
@@ -107,7 +111,7 @@ export const AdditionalIngredientsCatalog = observer(() => {
         <Grid item xs={2}>
           <h3 className={center}> Цена добавки </h3>
 
-          {menuStore.additionalIngredients.map(
+          {menuStore.filteredAdditionalIngredients.map(
             ing => !ing.isDeleted && <PriceForEditting key={ing.id} additionalIngredient={ing} />,
           )}
           <TextField
@@ -122,7 +126,7 @@ export const AdditionalIngredientsCatalog = observer(() => {
         <Grid item xs={2}>
           <h3 className={center}> Редактирование </h3>
 
-          {menuStore.additionalIngredients.map(
+          {menuStore.filteredAdditionalIngredients.map(
             ing => !ing.isDeleted && <ButtonForEditting key={ing.id} additionalIngredient={ing} />,
           )}
 
@@ -139,14 +143,14 @@ export const AdditionalIngredientsCatalog = observer(() => {
         <Grid item xs={2}>
           <h3 className={center}> Наличие </h3>
 
-          {menuStore.additionalIngredients.map(
+          {menuStore.filteredAdditionalIngredients.map(
             ing => !ing.isDeleted && <AvialabnessForEditting key={ing.id} additionalIngredient={ing} />,
           )}
         </Grid>
         <Grid item xs={1}>
           <h3 className={center}> Удаление </h3>
 
-          {menuStore.additionalIngredients.map(
+          {menuStore.filteredAdditionalIngredients.map(
             ing => !ing.isDeleted && <DelButtonForEditting key={ing.id} additionalIngredient={ing} />,
           )}
         </Grid>

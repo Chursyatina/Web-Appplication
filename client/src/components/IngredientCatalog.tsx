@@ -16,6 +16,7 @@ import {
 import { PizzaList } from './PizzaList';
 import { IngredientForPizzaCreating } from './IngredientForPizzaCreating';
 import { IngredientForCatalog } from './IngredientForCatalog';
+import { IngredientSearchBar } from './SearchBarForFiltration';
 
 export const IngredientsCatalog = observer(() => {
   const { root, addButton, center, namefieldwidth, pricefieldwidth, button, loadLine1, iconRoot, media, border } =
@@ -45,12 +46,17 @@ export const IngredientsCatalog = observer(() => {
   return (
     <div>
       <h2 className={root}>Ингредиенты </h2>
+      <div className={root}>
+        <IngredientSearchBar />
+      </div>
 
       <Grid container>
         <Grid item xs={3}>
           <h3 className={center}> Иконка </h3>
 
-          {menuStore.ingredients.map(ing => !ing.isDeleted && <IngredientForCatalog key={ing.id} ingredient={ing} />)}
+          {menuStore.filteredIngredients.map(
+            ing => !ing.isDeleted && <IngredientForCatalog key={ing.id} ingredient={ing} />,
+          )}
 
           <Grid container alignItems="center" justify="center">
             <Card className={iconRoot}>
@@ -90,7 +96,9 @@ export const IngredientsCatalog = observer(() => {
         <Grid item xs={2}>
           <h3 className={center}> Ингредиент </h3>
 
-          {menuStore.ingredients.map(ing => !ing.isDeleted && <NameForEditting key={ing.id} ingredient={ing} />)}
+          {menuStore.filteredIngredients.map(
+            ing => !ing.isDeleted && <NameForEditting key={ing.id} ingredient={ing} />,
+          )}
 
           <TextField
             id="name"
@@ -104,7 +112,9 @@ export const IngredientsCatalog = observer(() => {
         <Grid item xs={2}>
           <h3 className={center}> Цена ингредиента </h3>
 
-          {menuStore.ingredients.map(ing => !ing.isDeleted && <PriceForEditting key={ing.id} ingredient={ing} />)}
+          {menuStore.filteredIngredients.map(
+            ing => !ing.isDeleted && <PriceForEditting key={ing.id} ingredient={ing} />,
+          )}
           <TextField
             id="name"
             color="secondary"
@@ -117,7 +127,9 @@ export const IngredientsCatalog = observer(() => {
         <Grid item xs={2}>
           <h3 className={center}> Редактирование </h3>
 
-          {menuStore.ingredients.map(ing => !ing.isDeleted && <ButtonForEditting key={ing.id} ingredient={ing} />)}
+          {menuStore.filteredIngredients.map(
+            ing => !ing.isDeleted && <ButtonForEditting key={ing.id} ingredient={ing} />,
+          )}
 
           <Button
             variant="contained"
@@ -132,12 +144,16 @@ export const IngredientsCatalog = observer(() => {
         <Grid item xs={2}>
           <h3 className={center}> Наличие </h3>
 
-          {menuStore.ingredients.map(ing => !ing.isDeleted && <AvialabnessForEditting key={ing.id} ingredient={ing} />)}
+          {menuStore.filteredIngredients.map(
+            ing => !ing.isDeleted && <AvialabnessForEditting key={ing.id} ingredient={ing} />,
+          )}
         </Grid>
         <Grid item xs={1}>
           <h3 className={center}> Удаление </h3>
 
-          {menuStore.ingredients.map(ing => !ing.isDeleted && <DelButtonForEditting key={ing.id} ingredient={ing} />)}
+          {menuStore.filteredIngredients.map(
+            ing => !ing.isDeleted && <DelButtonForEditting key={ing.id} ingredient={ing} />,
+          )}
         </Grid>
       </Grid>
     </div>

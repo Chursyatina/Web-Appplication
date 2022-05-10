@@ -30,6 +30,9 @@ class MenuStore {
   ingredients: IIngredient[] = [];
   additionalIngredients: IAdditionalIngredient[] = [];
 
+  filteredIngredients: IIngredient[] = [];
+  filteredAdditionalIngredients: IAdditionalIngredient[] = [];
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -42,8 +45,10 @@ class MenuStore {
     this.sizes = await getSizes();
 
     this.ingredients = await getIngredients();
+    this.filteredIngredients = this.ingredients;
 
     this.additionalIngredients = await getAdditionalIngredients();
+    this.filteredAdditionalIngredients = this.additionalIngredients;
   }
 
   async createPizza(pizza:IPizzaCreate){
@@ -229,6 +234,29 @@ class MenuStore {
 
     this.sizes[this.sizes.findIndex(element => element.id === returnedSize.id)] = returnedSize;
     this.loadData();
+  }
+
+  filterIngredients(name:string){
+    this.filteredIngredients = [];
+    this.ingredients.forEach(ingredient => {
+      if (ingredient.name.includes(name)){
+        this.filteredIngredients.push(ingredient);
+      }
+    })
+  }
+
+  filterAdditionalIngredients(name:string){
+    this.filteredAdditionalIngredients = [];
+    this.additionalIngredients.forEach(ingredient => {
+      if (ingredient.name.includes(name)){
+        this.filteredAdditionalIngredients.push(ingredient);
+      }
+    })
+  }
+
+  clearFilter(){
+    this.filteredIngredients = this.ingredients;
+    this.filteredAdditionalIngredients = this.additionalIngredients;
   }
 }
 
