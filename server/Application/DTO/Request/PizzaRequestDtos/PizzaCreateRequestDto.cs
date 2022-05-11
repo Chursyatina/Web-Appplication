@@ -15,6 +15,14 @@
         public string Description { get; set; }
 
         [Required]
+        [Range(0.1, 1)]
+        public double Discount { get; set; }
+
+        [Required]
+        [Range(0.1, 1)]
+        public double BonusCoef { get; set; }
+
+        [Required]
         public string ImageLink { get; set; }
 
         [Required]

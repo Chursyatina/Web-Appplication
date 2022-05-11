@@ -5,6 +5,8 @@ export interface IPizzaUpdate {
     Description: string;
     ImageLink: string;
     SingleItemImageLink: string;
+    Discount: number;
+    BonusCoef: number;
     Ingredients: string[];
 }
   

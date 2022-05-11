@@ -94,8 +94,13 @@ export const PizzaInBasket = observer((props: IOrderLineProps) => {
                 <Typography variant="h6" component="h6">
                   {`Итого:`}
                 </Typography>
+                {pizzaVariation.pizza.discount !== 0 && (
+                  <Typography variant="h6" component="h6">
+                    <s>{Number(price / pizzaVariation.pizza.discount).toFixed(3)}</s>
+                  </Typography>
+                )}
                 <Typography variant="h6" component="h6">
-                  {price}
+                  {Number(price).toFixed(3)}
                 </Typography>
               </Grid>
               <Grid item container xs={2} md={1} justify="center" alignItems="center">

@@ -18,6 +18,8 @@ export const AddingNewPizzaDialog = observer(() => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [discount, setDiscount] = useState(0);
+  const [bonusCoef, setBonusCoef] = useState(0);
 
   const [isNameError, setNameError] = useState(false);
   const [isDescriptionError, setDescriptionError] = useState(false);
@@ -124,7 +126,7 @@ export const AddingNewPizzaDialog = observer(() => {
             <TextField
               error
               fullWidth
-              id="standard-basic"
+              id="F"
               label="Название"
               variant="standard"
               helperText="Строка от 1 до 20 символов"
@@ -149,7 +151,7 @@ export const AddingNewPizzaDialog = observer(() => {
             <TextField
               error
               fullWidth
-              id="standard-multiline-static"
+              id="standard-basic"
               multiline
               rows={4}
               label="Описание"
@@ -160,6 +162,28 @@ export const AddingNewPizzaDialog = observer(() => {
               {creatingPizzaStore.description}
             </TextField>
           )}
+          <TextField
+            fullWidth
+            id="standard-basic"
+            multiline
+            label="Скидка"
+            variant="standard"
+            onChange={e => setDiscount(Number(e.target.value))}
+          >
+            {creatingPizzaStore.discount}
+          </TextField>
+
+          <TextField
+            fullWidth
+            id="standard-multiline-static"
+            multiline
+            label="Бонусный коэффициент"
+            variant="standard"
+            onChange={e => setBonusCoef(Number(e.target.value))}
+          >
+            {creatingPizzaStore.bonusCoef}
+          </TextField>
+
           <div>
             <Typography variant="h6">Ингредиенты</Typography>
             <IngredientsListForPizzaCreating />
@@ -178,6 +202,8 @@ export const AddingNewPizzaDialog = observer(() => {
                     creatingPizzaStore.setDescription(description);
                     creatingPizzaStore.setImageLink(cover);
                     creatingPizzaStore.setSingleImageLink(bigCover);
+                    creatingPizzaStore.setBonusCoef(bonusCoef);
+                    creatingPizzaStore.setDiscount(discount);
 
                     setNameError(false);
                     setDescriptionError(false);

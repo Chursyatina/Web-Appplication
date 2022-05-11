@@ -6,6 +6,8 @@ export interface IPizza {
   singleItemImageLink: string;
   name: string;
   description: string;
+  discount: number;
+  bonusCoef: number;
   price: number;
   ingredients: IIngredient[];
   isAvailable: boolean;

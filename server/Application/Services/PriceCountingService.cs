@@ -45,6 +45,8 @@
 
             price *= pizzaVariation.Size.PriceMultiplier;
 
+            price = price - (price * (decimal)pizzaVariation.Pizza.Discount);
+
             return price;
         }
 

@@ -1,5 +1,6 @@
 import { CardContent, Typography, Card, CardActionArea, CardMedia, Grid, CardActions, Button } from '@material-ui/core';
 import React from 'react';
+import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 
 import { IPizzaProps } from 'src/interfaces/pizza';
 import { pizzaStyles } from 'src/componentsStyles/pizzaStyles';
@@ -10,7 +11,20 @@ import { ButtonForEditting } from './PizzaDialog';
 import { EdittingPizzaDialog } from './EdittingPizzaDialog';
 
 export const Pizza = (props: IPizzaProps) => {
-  const { button, root, media, pizzaDescription, cardActions, divBack, divBackAdmin, notAvialable } = pizzaStyles();
+  const {
+    button,
+    root,
+    media,
+    pizzaDescription,
+    cardActions,
+    divBack,
+    divBackAdmin,
+    notAvialable,
+    discount,
+    discountText,
+    bonusCoef,
+    bonusCoefText,
+  } = pizzaStyles();
   const { pizza } = props;
   const { id, imageLink, name, description, price } = pizza;
 
@@ -52,6 +66,18 @@ export const Pizza = (props: IPizzaProps) => {
             {' '}
             Нет в наличии{' '}
           </Typography>
+        </div>
+      )}
+      {pizza.discount !== 0 && (
+        <div className={discount}>
+          <Typography variant="h5" className={discountText}>
+            -{pizza.discount * 100}%
+          </Typography>
+        </div>
+      )}
+      {pizza.bonusCoef !== 0 && (
+        <div className={bonusCoef}>
+          <CatchingPokemonIcon />
         </div>
       )}
     </Card>

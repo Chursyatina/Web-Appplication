@@ -10,4 +10,3 @@ export interface IAdditionalIngredientCreate {
   export interface IAdditionalIngredientCreateProps {
     additionalIngredient: IAdditionalIngredientCreate;
   }
-  

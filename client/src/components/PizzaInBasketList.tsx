@@ -78,7 +78,7 @@ export const PizzaInBasketList = observer(() => {
             {`Итого: `} {userStore.basket.orderLines.length} {` позиции`}
           </Typography>
           <Typography variant="h5" component="h5">
-            {`Сумма заказа: `} {userStore.basket.price} {` ₽`}
+            {`Сумма заказа: `} {Number(userStore.basket.price).toFixed(3)} {` ₽`}
           </Typography>
           <Button
             className={button}

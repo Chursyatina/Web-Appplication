@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Button, Modal } from '@material-ui/core';
+import { Grid, Typography, Button, Modal, Box } from '@material-ui/core';
 import { Observer } from 'mobx-react-lite';
 
 import { IPizzaProps } from 'src/interfaces/pizza';
@@ -68,7 +68,10 @@ export const ButtonForEditting = (props: IPizzaProps) => {
                     setOpen(!open);
                   }}
                 >
-                  {`Buy for ${pizzaStore.price} $`}
+                  <Box>
+                    Купить за <s>{pizzaStore.price}</s>{' '}
+                    {Number(pizzaStore.price - pizzaStore.price * pizzaStore.pizza.discount).toFixed(3)} ₽
+                  </Box>
                 </Button>
               )}
             </Observer>
@@ -82,7 +85,7 @@ export const ButtonForEditting = (props: IPizzaProps) => {
     <div>
       <div className={center}>
         <Button className={button} onClick={clickHandler}>
-          Buy
+          Купить
         </Button>
       </div>
       <Modal

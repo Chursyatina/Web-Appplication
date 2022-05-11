@@ -240,7 +240,7 @@ class UserStore {
   recalculatePrice() {
     this.basket.price = 0;
     this.basket.orderLines.forEach(element => {
-      element.price = element.pizzaVariation.price * element.quantity;
+      element.price = (element.pizzaVariation.price - element.pizzaVariation.price * element.pizzaVariation.pizza.discount) * element.quantity;
       this.basket.price += element.price;
     });
   }

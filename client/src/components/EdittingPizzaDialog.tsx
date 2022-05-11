@@ -15,11 +15,13 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
   const { root, media, button, center, paper, pizzaImage, basketItem, buyButton, tab } = pizzaDialogStyles();
 
   const { pizza } = props;
-  const { id, ingredients, singleItemImageLink, imageLink, name, description, price } = pizza;
+  const { id, ingredients, singleItemImageLink, imageLink, name, description, price, discount, bonusCoef } = pizza;
 
   const [open, setOpen] = useState(false);
   const [currentName, setName] = useState('');
   const [currentDescription, setDescription] = useState('');
+  const [currentDiscount, setDiscount] = useState(0);
+  const [currentBonusCoef, setBonusCoef] = useState(0);
 
   const [isNameError, setNameError] = useState(false);
   const [isDescriptionError, setDescriptionError] = useState(false);
@@ -53,6 +55,10 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
     creatingPizzaStore.setImageLink(imageLink);
     setBigCover(singleItemImageLink);
     creatingPizzaStore.setSingleImageLink(singleItemImageLink);
+    setDiscount(discount);
+    creatingPizzaStore.setDiscount(discount);
+    setBonusCoef(bonusCoef);
+    creatingPizzaStore.setBonusCoef(bonusCoef);
     ingredients.forEach(element => {
       if (!element.isDeleted) {
         creatingPizzaStore.changeExistenceOfIngredient(element);
@@ -170,6 +176,31 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
               {currentDescription}
             </TextField>
           )}
+
+          <TextField
+            fullWidth
+            id="standard-basic"
+            multiline
+            label="Скидка"
+            variant="standard"
+            defaultValue={currentDiscount}
+            onChange={e => setDiscount(Number(e.target.value))}
+          >
+            {currentDescription}
+          </TextField>
+
+          <TextField
+            fullWidth
+            id="standard-basic"
+            multiline
+            label="Бонусный коэффициент"
+            variant="standard"
+            defaultValue={currentBonusCoef}
+            onChange={e => setBonusCoef(Number(e.target.value))}
+          >
+            {currentBonusCoef}
+          </TextField>
+
           <div>
             <Typography variant="h6">Ингредиенты</Typography>
             <IngredientsListForEditting pizza={pizza} />
@@ -189,6 +220,8 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
                     creatingPizzaStore.setDescription(currentDescription);
                     creatingPizzaStore.setImageLink(cover);
                     creatingPizzaStore.setSingleImageLink(bigCover);
+                    creatingPizzaStore.setDiscount(currentDiscount);
+                    creatingPizzaStore.setBonusCoef(currentBonusCoef);
                     console.log('some');
                     setNameError(false);
                     setDescriptionError(false);

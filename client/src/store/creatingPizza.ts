@@ -17,6 +17,8 @@ class CreatingPizzaStore {
   name: string = ' ';
   description: string = ' ';
   ingredients: IIngredient[] = [];
+  discount: number = 0;
+  bonusCoef: number = 0;
   price = this.basicPizzaPrice;
 
   constructor() {
@@ -34,6 +36,8 @@ class CreatingPizzaStore {
         Name: this.name,
         Description: this.description,
         ImageLink: this.imageLink,
+        Discount: this.discount,
+        BonusCoef: this.bonusCoef,
         SingleItemImageLink: this.singleItemImageLink,
         Ingredients: ingredientsIds
     }
@@ -52,6 +56,8 @@ class CreatingPizzaStore {
         Name: this.name,
         Description: this.description,
         ImageLink: this.imageLink,
+        Discount: this.discount,
+        BonusCoef: this.bonusCoef,
         SingleItemImageLink: this.singleItemImageLink,
         Ingredients: ingredientsIds
     }
@@ -87,6 +93,14 @@ class CreatingPizzaStore {
 
   setSingleImageLink(link:string){
     this.singleItemImageLink = link;
+  }
+
+  setBonusCoef(bonusCoef:number){
+    this.bonusCoef = bonusCoef;
+  }
+
+  setDiscount(discount: number){
+    this.discount = discount;
   }
 
   changeExistenceOfIngredient(newIngredient: IIngredient) {

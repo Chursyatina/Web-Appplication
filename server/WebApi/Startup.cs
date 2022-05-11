@@ -136,6 +136,7 @@
                     Password = adminPassword,
                     UserName = adminPhone,
                     Basket = new Basket(),
+                    Coins = 0,
                 };
                 IdentityResult result = await
 
@@ -160,6 +161,7 @@
                     Password = userPassword,
                     UserName = userPhone,
                     Basket = new Basket(),
+                    Coins = 0,
                 };
                 IdentityResult result = await
 

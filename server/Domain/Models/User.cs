@@ -21,6 +21,9 @@
         [Required]
         public string Password { get; set; }
 
+        [Required]
+        public int Coins { get; set; }
+
         public List<Order> Orders { get; set; }
 
         [Required]

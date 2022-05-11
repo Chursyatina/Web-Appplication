@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Typography, Button, Modal, IconButton } from '@material-ui/core';
+import { Grid, Typography, Button, Modal, IconButton, Box } from '@material-ui/core';
 import { Delete, Edit } from '@material-ui/icons';
 import { observer, Observer } from 'mobx-react-lite';
 
@@ -74,7 +74,10 @@ export const PizzaInBasketEditting = observer((props: IPizzaVariationProps) => {
                     setOpen(!open);
                   }}
                 >
-                  {`Сохранить. Текущая стоимость ${pizzaStore.price} $`}
+                  <Box>
+                    Сохранить. Текущая стоимость <s>{pizzaStore.price}</s>{' '}
+                    {Number(pizzaStore.price - pizzaStore.price * pizzaStore.pizza.discount).toFixed(3)} ₽
+                  </Box>
                 </Button>
               )}
             </Observer>

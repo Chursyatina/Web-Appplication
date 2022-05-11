@@ -56,6 +56,8 @@
                   Ingredients = p.Ingredients,
                   Price = p.Price,
                   IsAvailable = p.IsAvailable,
+                  Discount = p.Discount,
+                  BonusCoef = p.BonusCoef,
               }))
                 .Where(p => p.IsDeleted == false)
                 .AsQueryable()
@@ -93,6 +95,8 @@
             existingItem.Description = item.Description;
             existingItem.ImageLink = item.ImageLink;
             existingItem.SingleItemImageLink = item.SingleItemImageLink;
+            existingItem.Discount = item.Discount;
+            existingItem.BonusCoef = item.BonusCoef;
 
             if (ingredientsIds.Count != 0)
             {

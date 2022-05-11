@@ -19,6 +19,8 @@ class PizzaStore {
     name: ' ',
     description: ' ',
     price: 0,
+    discount: 0,
+    bonusCoef: 0,
     ingredients: [],
     isAvailable: true,
   };
@@ -40,6 +42,8 @@ class PizzaStore {
     name: ' ',
     description: ' ',
     price: 0,
+    bonusCoef: 0,
+    discount: 0,
     ingredients: [],
     isAvailable: true,
     };

@@ -27,6 +27,12 @@
         public bool IsDeleted { get; set; }
 
         [Required]
+        public double Discount { get; set; }
+
+        [Required]
+        public double BonusCoef { get; set; }
+
+        [Required]
         public bool IsAvailable { get; set; }
 
         [Required]

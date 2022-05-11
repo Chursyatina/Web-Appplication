@@ -137,6 +137,7 @@
             item.User = user;
             item.Date = System.DateTime.Now;
             item.Price = PriceCountingService.GetPriceForOrder(item);
+            item.User.Coins += CoinCountingService.GetCoins(item);
 
             var entity = _context.Add(item);
             _context.SaveChanges();
