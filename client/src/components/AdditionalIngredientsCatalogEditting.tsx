@@ -53,6 +53,9 @@ export const ButtonForEditting = (props: IAdditionalIngredientProps) => {
   const [isAvailable, setAvalabness] = useState(true);
   const [id, setId] = useState('');
 
+  const [isNameError, setNameError] = useState(false);
+  const [isPriceError, setPriceError] = useState(false);
+
   const getCoverBase64 = (file: Blob) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -92,25 +95,54 @@ export const ButtonForEditting = (props: IAdditionalIngredientProps) => {
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Изменение добавки</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="ingname"
-            label="Название"
-            type="email"
-            fullWidth
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            id="price"
-            label="Цена"
-            type="email"
-            fullWidth
-            value={price}
-            onChange={e => setPrice(Number(e.target.value))}
-          />
+          {!isNameError ? (
+            <TextField
+              autoFocus
+              margin="dense"
+              id="ingname"
+              label="Название"
+              type="email"
+              fullWidth
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+          ) : (
+            <TextField
+              error
+              autoFocus
+              margin="dense"
+              id="ingname"
+              label="Название"
+              type="email"
+              fullWidth
+              value={name}
+              helperText="Строка от 1 до 20 символов"
+              onChange={e => setName(e.target.value)}
+            />
+          )}
+          {!isPriceError ? (
+            <TextField
+              margin="dense"
+              id="price"
+              label="Цена"
+              type="email"
+              fullWidth
+              value={price}
+              onChange={e => setPrice(Number(e.target.value))}
+            />
+          ) : (
+            <TextField
+              error
+              margin="dense"
+              id="price"
+              label="Цена"
+              type="email"
+              fullWidth
+              value={price}
+              helperText="Число от 0.1 до 1000"
+              onChange={e => setPrice(Number(e.target.value))}
+            />
+          )}
           Наличие
           <Checkbox
             checked={isAvailable}
@@ -154,8 +186,20 @@ export const ButtonForEditting = (props: IAdditionalIngredientProps) => {
           </Button>
           <Button
             onClick={e => {
-              handleClose();
-              updateIng();
+              setNameError(false);
+              setPriceError(false);
+              if (name.length < 1 || name.length > 20) {
+                setNameError(true);
+              } else if (
+                isNaN(Number(price.toString())) ||
+                Number(price.toString()) < 0.1 ||
+                Number(price.toString()) > 1000
+              ) {
+                setPriceError(true);
+              } else {
+                handleClose();
+                updateIng();
+              }
             }}
             color="primary"
           >

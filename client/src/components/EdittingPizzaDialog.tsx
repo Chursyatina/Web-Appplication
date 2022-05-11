@@ -120,6 +120,7 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
             variant="standard"
             defaultValue={currentName}
             onChange={e => setName(e.target.value)}
+            inputProps={{ minLength: 1, maxLength: 20 }}
           >
             {currentName}
           </TextField>
@@ -132,6 +133,7 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
             variant="standard"
             defaultValue={currentDescription}
             onChange={e => setDescription(e.target.value)}
+            inputProps={{ minLength: 10, maxLength: 150 }}
           >
             {currentDescription}
           </TextField>

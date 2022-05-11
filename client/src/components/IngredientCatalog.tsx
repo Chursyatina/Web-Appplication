@@ -25,6 +25,10 @@ export const IngredientsCatalog = observer(() => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [cover, setCover] = useState('');
+
+  const [isNameError, setNameError] = useState(false);
+  const [isPriceError, setPriceError] = useState(false);
+
   const getCoverBase64 = (file: Blob) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -100,14 +104,29 @@ export const IngredientsCatalog = observer(() => {
             ing => !ing.isDeleted && <NameForEditting key={ing.id} ingredient={ing} />,
           )}
 
-          <TextField
-            id="name"
-            color="secondary"
-            fullWidth
-            label="Название"
-            className={namefieldwidth}
-            onChange={e => setName(e.target.value)}
-          />
+          {!isNameError ? (
+            <TextField
+              id="name"
+              color="secondary"
+              fullWidth
+              label="Название"
+              className={namefieldwidth}
+              inputProps={{ minLength: 1, maxLength: 20 }}
+              onChange={e => setName(e.target.value)}
+            />
+          ) : (
+            <TextField
+              error
+              id="name"
+              color="secondary"
+              fullWidth
+              label="Название"
+              className={namefieldwidth}
+              inputProps={{ minLength: 1, maxLength: 20 }}
+              onChange={e => setName(e.target.value)}
+              helperText="Строка от 1 до 20 символов"
+            />
+          )}
         </Grid>
         <Grid item xs={2}>
           <h3 className={center}> Цена ингредиента </h3>
@@ -115,14 +134,28 @@ export const IngredientsCatalog = observer(() => {
           {menuStore.filteredIngredients.map(
             ing => !ing.isDeleted && <PriceForEditting key={ing.id} ingredient={ing} />,
           )}
-          <TextField
-            id="name"
-            color="secondary"
-            fullWidth
-            label="Цена"
-            className={pricefieldwidth}
-            onChange={e => setPrice(Number(e.target.value))}
-          />
+
+          {!isPriceError ? (
+            <TextField
+              id="name"
+              color="secondary"
+              fullWidth
+              label="Цена"
+              className={pricefieldwidth}
+              onChange={e => setPrice(Number(e.target.value))}
+            />
+          ) : (
+            <TextField
+              error
+              id="name"
+              color="secondary"
+              fullWidth
+              label="Цена"
+              className={pricefieldwidth}
+              helperText="Число от 0.1 до 1000"
+              onChange={e => setPrice(Number(e.target.value))}
+            />
+          )}
         </Grid>
         <Grid item xs={2}>
           <h3 className={center}> Редактирование </h3>
@@ -135,7 +168,21 @@ export const IngredientsCatalog = observer(() => {
             variant="contained"
             color="primary"
             className={button}
-            onClick={() => menuStore.createIngredient(name, price, cover)}
+            onClick={() => {
+              setNameError(false);
+              setPriceError(false);
+              if (name.length < 1 || name.length > 20) {
+                setNameError(true);
+              } else if (
+                isNaN(Number(price.toString())) ||
+                Number(price.toString()) < 0.1 ||
+                Number(price.toString()) > 1000
+              ) {
+                setPriceError(true);
+              } else {
+                menuStore.createIngredient(name, price, cover);
+              }
+            }}
           >
             {' '}
             Добавить новый ингредиент{' '}

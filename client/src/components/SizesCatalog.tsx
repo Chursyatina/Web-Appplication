@@ -21,6 +21,9 @@ export const SizesCatalog = observer(() => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
 
+  const [isNameError, setNameError] = useState(false);
+  const [isPriceError, setPriceError] = useState(false);
+
   if (menuStore.sizes === null) {
     return (
       <>
@@ -41,27 +44,58 @@ export const SizesCatalog = observer(() => {
 
           {menuStore.sizes.map(s => !s.isDeleted && <NameForEditting key={s.id} size={s} />)}
 
-          <TextField
-            id="name"
-            color="secondary"
-            fullWidth
-            label="Название"
-            className={fieldwidth}
-            onChange={e => setName(e.target.value)}
-          />
+          {!isNameError ? (
+            <TextField
+              autoFocus
+              margin="dense"
+              id="ingname"
+              label="Название"
+              type="email"
+              fullWidth
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+          ) : (
+            <TextField
+              error
+              autoFocus
+              margin="dense"
+              id="ingname"
+              label="Название"
+              type="email"
+              fullWidth
+              value={name}
+              helperText="Строка от 1 до 20 символов"
+              onChange={e => setName(e.target.value)}
+            />
+          )}
         </Grid>
         <Grid item xs={3}>
           <h3 className={center}> Множитель цены ингредиентов </h3>
 
           {menuStore.sizes.map(s => !s.isDeleted && <PriceForEditting key={s.id} size={s} />)}
-          <TextField
-            id="name"
-            color="secondary"
-            fullWidth
-            label="Множитель цены"
-            className={fieldwidth}
-            onChange={e => setPrice(Number(e.target.value))}
-          />
+
+          {!isPriceError ? (
+            <TextField
+              id="name"
+              color="secondary"
+              fullWidth
+              label="Множитель цены"
+              className={fieldwidth}
+              onChange={e => setPrice(Number(e.target.value))}
+            />
+          ) : (
+            <TextField
+              error
+              id="name"
+              color="secondary"
+              fullWidth
+              label="Множитель цены"
+              className={fieldwidth}
+              helperText="Число от 0.1 до 3"
+              onChange={e => setPrice(Number(e.target.value))}
+            />
+          )}
         </Grid>
         <Grid item xs={3}>
           <h3 className={center}> Редактирование </h3>
@@ -72,7 +106,21 @@ export const SizesCatalog = observer(() => {
             variant="contained"
             color="primary"
             className={button}
-            onClick={() => menuStore.createSize(name, price)}
+            onClick={() => {
+              setNameError(false);
+              setPriceError(false);
+              if (name.length < 1 || name.length > 20) {
+                setNameError(true);
+              } else if (
+                isNaN(Number(price.toString())) ||
+                Number(price.toString()) < 0.1 ||
+                Number(price.toString()) > 3
+              ) {
+                setPriceError(true);
+              } else {
+                menuStore.createSize(name, price);
+              }
+            }}
           >
             {' '}
             Добавить новый тип размера{' '}

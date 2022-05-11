@@ -53,6 +53,9 @@ export const ButtonForEditting = (props: IPizzaDoughProps) => {
   const [isDeleted, setDeleted] = useState(false);
   const [id, setId] = useState('');
 
+  const [isNameError, setNameError] = useState(false);
+  const [isPriceError, setPriceError] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
     setName(props.dough.name);
@@ -81,25 +84,54 @@ export const ButtonForEditting = (props: IPizzaDoughProps) => {
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Изменение типа теста</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="ingname"
-            label="Название"
-            type="email"
-            fullWidth
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            id="price"
-            label="Цена"
-            type="email"
-            fullWidth
-            value={priceMultiplier}
-            onChange={e => setPriceMultiplier(Number(e.target.value))}
-          />
+          {!isNameError ? (
+            <TextField
+              autoFocus
+              margin="dense"
+              id="ingname"
+              label="Название"
+              type="email"
+              fullWidth
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+          ) : (
+            <TextField
+              error
+              autoFocus
+              margin="dense"
+              id="ingname"
+              label="Название"
+              type="email"
+              fullWidth
+              value={name}
+              helperText="Строка от 1 до 20 символов"
+              onChange={e => setName(e.target.value)}
+            />
+          )}
+          {!isPriceError ? (
+            <TextField
+              margin="dense"
+              id="price"
+              label="Цена"
+              type="email"
+              fullWidth
+              value={priceMultiplier}
+              onChange={e => setPriceMultiplier(Number(e.target.value))}
+            />
+          ) : (
+            <TextField
+              error
+              margin="dense"
+              id="price"
+              label="Цена"
+              type="email"
+              fullWidth
+              helperText="Число от 0.1 до 3"
+              value={priceMultiplier}
+              onChange={e => setPriceMultiplier(Number(e.target.value))}
+            />
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -107,8 +139,20 @@ export const ButtonForEditting = (props: IPizzaDoughProps) => {
           </Button>
           <Button
             onClick={e => {
-              handleClose();
-              updateIng();
+              setNameError(false);
+              setPriceError(false);
+              if (name.length < 1 || name.length > 20) {
+                setNameError(true);
+              } else if (
+                isNaN(Number(priceMultiplier.toString())) ||
+                Number(priceMultiplier.toString()) < 0.1 ||
+                Number(priceMultiplier.toString()) > 3
+              ) {
+                setPriceError(true);
+              } else {
+                handleClose();
+                updateIng();
+              }
             }}
             color="primary"
           >
