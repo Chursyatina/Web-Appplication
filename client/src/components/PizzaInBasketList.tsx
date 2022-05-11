@@ -35,6 +35,8 @@ export const PizzaInBasketList = observer(() => {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
+  const [isNameError, setNameError] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
 
   const [signInOpen, setSignInOpen] = useState(false);
@@ -153,14 +155,27 @@ export const PizzaInBasketList = observer(() => {
           <DialogContent>
             <Grid container justify="center" alignItems="center">
               <Grid item xs={12}>
-                <TextField
-                  id="standard-basic"
-                  label="Имя"
-                  variant="standard"
-                  onChange={e => {
-                    setName(e.target.value);
-                  }}
-                />
+                {!isNameError ? (
+                  <TextField
+                    id="standard-basic"
+                    label="Имя"
+                    variant="standard"
+                    onChange={e => {
+                      setName(e.target.value);
+                    }}
+                  />
+                ) : (
+                  <TextField
+                    error
+                    id="standard-basic"
+                    label="Имя"
+                    variant="standard"
+                    helperText="Строка от 1 до 100 символов"
+                    onChange={e => {
+                      setName(e.target.value);
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
                 <MuiPhoneNumber defaultCountry={'ru'} onChange={e => setPhone(e.toString())} />
@@ -209,8 +224,12 @@ export const PizzaInBasketList = observer(() => {
             </Button>
             <Button
               onClick={e => {
-                userStore.signUp(name, phone, password, passwordConfirmation);
-                clickSignUp();
+                if (name.length < 1 || name.length > 100) {
+                  setNameError(true);
+                } else {
+                  userStore.signUp(name, phone, password, passwordConfirmation);
+                  clickSignUp();
+                }
               }}
               color="primary"
             >

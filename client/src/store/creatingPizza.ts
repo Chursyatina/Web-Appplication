@@ -73,6 +73,7 @@ class CreatingPizzaStore {
   }
 
   setName(newName: string){
+    console.log(newName);
     this.name = newName;
   }
 

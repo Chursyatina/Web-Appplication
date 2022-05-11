@@ -21,6 +21,9 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
   const [currentName, setName] = useState('');
   const [currentDescription, setDescription] = useState('');
 
+  const [isNameError, setNameError] = useState(false);
+  const [isDescriptionError, setDescriptionError] = useState(false);
+
   const [bigCover, setBigCover] = useState('');
   const [cover, setCover] = useState('');
 
@@ -113,30 +116,60 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
               }}
             />
           </div>
-          <TextField
-            fullWidth
-            id="standard-basic"
-            label="Название"
-            variant="standard"
-            defaultValue={currentName}
-            onChange={e => setName(e.target.value)}
-            inputProps={{ minLength: 1, maxLength: 20 }}
-          >
-            {currentName}
-          </TextField>
-          <TextField
-            fullWidth
-            id="standard-multiline-static"
-            multiline
-            rows={4}
-            label="Описание"
-            variant="standard"
-            defaultValue={currentDescription}
-            onChange={e => setDescription(e.target.value)}
-            inputProps={{ minLength: 10, maxLength: 150 }}
-          >
-            {currentDescription}
-          </TextField>
+          {!isNameError ? (
+            <TextField
+              fullWidth
+              id="standard-basic"
+              label="Название"
+              variant="standard"
+              defaultValue={currentName}
+              onChange={e => setName(e.target.value)}
+            >
+              {currentName}
+            </TextField>
+          ) : (
+            <TextField
+              error
+              fullWidth
+              id="standard-basic"
+              label="Название"
+              variant="standard"
+              defaultValue={currentName}
+              helperText="Строка от 1 до 20 символов"
+              onChange={e => setName(e.target.value)}
+            >
+              {currentName}
+            </TextField>
+          )}
+          {!isDescriptionError ? (
+            <TextField
+              fullWidth
+              id="standard-multiline-static"
+              multiline
+              rows={4}
+              label="Описание"
+              variant="standard"
+              defaultValue={currentDescription}
+              onChange={e => setDescription(e.target.value)}
+            >
+              {currentDescription}
+            </TextField>
+          ) : (
+            <TextField
+              error
+              fullWidth
+              id="standard-multiline-static"
+              multiline
+              rows={4}
+              label="Описание"
+              variant="standard"
+              defaultValue={currentDescription}
+              helperText="Строка от 10 до 150 символов"
+              onChange={e => setDescription(e.target.value)}
+            >
+              {currentDescription}
+            </TextField>
+          )}
           <div>
             <Typography variant="h6">Ингредиенты</Typography>
             <IngredientsListForEditting pizza={pizza} />
@@ -152,12 +185,21 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
                   className={buyButton}
                   onClick={() => {
                     creatingPizzaStore.setId(id);
-                    creatingPizzaStore.setName(name);
-                    creatingPizzaStore.setDescription(description);
+                    creatingPizzaStore.setName(currentName);
+                    creatingPizzaStore.setDescription(currentDescription);
                     creatingPizzaStore.setImageLink(cover);
                     creatingPizzaStore.setSingleImageLink(bigCover);
-                    menuStore.updatePizza(id, creatingPizzaStore.getEdittingPizza());
-                    setOpen(!open);
+                    console.log('some');
+                    setNameError(false);
+                    setDescriptionError(false);
+                    if (currentName.length < 1 || currentName.length > 20) {
+                      setNameError(true);
+                    } else if (currentDescription.length < 10 || currentDescription.length > 150) {
+                      setDescriptionError(true);
+                    } else {
+                      menuStore.updatePizza(id, creatingPizzaStore.getEdittingPizza());
+                      setOpen(!open);
+                    }
                   }}
                 >
                   {`Cохранить пиццу, начальная цена = ${creatingPizzaStore.price} $`}

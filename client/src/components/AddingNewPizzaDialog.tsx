@@ -19,6 +19,9 @@ export const AddingNewPizzaDialog = observer(() => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
+  const [isNameError, setNameError] = useState(false);
+  const [isDescriptionError, setDescriptionError] = useState(false);
+
   const [bigCover, setBigCover] = useState('');
   const [cover, setCover] = useState('');
 
@@ -107,26 +110,56 @@ export const AddingNewPizzaDialog = observer(() => {
               }}
             />
           </div>
-          <TextField
-            fullWidth
-            id="standard-basic"
-            label="Название"
-            variant="standard"
-            onChange={e => setName(e.target.value)}
-          >
-            {creatingPizzaStore.name}
-          </TextField>
-          <TextField
-            fullWidth
-            id="standard-multiline-static"
-            multiline
-            rows={4}
-            label="Описание"
-            variant="standard"
-            onChange={e => setDescription(e.target.value)}
-          >
-            {creatingPizzaStore.description}
-          </TextField>
+          {!isNameError ? (
+            <TextField
+              fullWidth
+              id="standard-basic"
+              label="Название"
+              variant="standard"
+              onChange={e => setName(e.target.value)}
+            >
+              {creatingPizzaStore.name}
+            </TextField>
+          ) : (
+            <TextField
+              error
+              fullWidth
+              id="standard-basic"
+              label="Название"
+              variant="standard"
+              helperText="Строка от 1 до 20 символов"
+              onChange={e => setName(e.target.value)}
+            >
+              {creatingPizzaStore.name}
+            </TextField>
+          )}
+          {!isDescriptionError ? (
+            <TextField
+              fullWidth
+              id="standard-multiline-static"
+              multiline
+              rows={4}
+              label="Описание"
+              variant="standard"
+              onChange={e => setDescription(e.target.value)}
+            >
+              {creatingPizzaStore.description}
+            </TextField>
+          ) : (
+            <TextField
+              error
+              fullWidth
+              id="standard-multiline-static"
+              multiline
+              rows={4}
+              label="Описание"
+              variant="standard"
+              helperText="Строка от 10 до 150 символов"
+              onChange={e => setDescription(e.target.value)}
+            >
+              {creatingPizzaStore.description}
+            </TextField>
+          )}
           <div>
             <Typography variant="h6">Ингредиенты</Typography>
             <IngredientsListForPizzaCreating />
@@ -145,8 +178,17 @@ export const AddingNewPizzaDialog = observer(() => {
                     creatingPizzaStore.setDescription(description);
                     creatingPizzaStore.setImageLink(cover);
                     creatingPizzaStore.setSingleImageLink(bigCover);
-                    menuStore.createPizza(creatingPizzaStore.getNewPizza());
-                    setOpen(!open);
+
+                    setNameError(false);
+                    setDescriptionError(false);
+                    if (name.length < 1 || name.length > 20) {
+                      setNameError(true);
+                    } else if (description.length < 10 || description.length > 150) {
+                      setDescriptionError(true);
+                    } else {
+                      menuStore.createPizza(creatingPizzaStore.getNewPizza());
+                      setOpen(!open);
+                    }
                   }}
                 >
                   {`Создать пиццу, начальная цена = ${creatingPizzaStore.price} $`}

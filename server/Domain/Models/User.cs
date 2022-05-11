@@ -12,6 +12,7 @@
             Basket = new Basket();
         }
 
+        [StringLength(100, MinimumLength = 1)]
         public string Name { get; set; }
 
         [Required]
