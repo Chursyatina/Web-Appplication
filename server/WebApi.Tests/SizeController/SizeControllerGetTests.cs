@@ -1,8 +1,8 @@
 ﻿namespace WebApi.Tests.SizeController
 {
+    using Application.DTO.Request;
     using Application.DTO.Response;
     using Microsoft.AspNetCore.Mvc;
-    using WebAPI.MockFactory.Tests.Data;
     using WebApi.Tests.SharedData;
     using Xunit;
 
@@ -19,13 +19,33 @@
         [Fact]
         public void Get_IdentificatorIntegerArgument_SizeDto()
         {
+            // Arrange
+            var testSize = new SizeCreateRequestDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
+            var expectedSize = new SizeDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
             // Act
-            var result = _fixture.SizesController.Get(1);
+            var insertingResult = _fixture.SizesController.Insert(testSize);
+            var successedResult = insertingResult.Result as CreatedResult;
+            var inBaseSize = successedResult.Value as SizeDto;
+
+            var result = _fixture.SizesController.Get(inBaseSize.Id);
             var successResult = result.Result as OkObjectResult;
             var receivedSize = successResult.Value as SizeDto;
 
             // Assert
-            Assert.True(SizeEqualityChecker.IsDtoEqualsModel(receivedSize, TestSizes.SizeA));
+            Assert.True(SizeEqualityChecker.IsDtoEqualsDto(receivedSize, expectedSize));
+
+            // Clear changes
+            _fixture.SizesController.Delete(inBaseSize.Id);
         }
 
         [Fact]
@@ -35,7 +55,7 @@
             NotFoundResult expected = new NotFoundResult();
 
             // Act
-            var result = _fixture.SizesController.Get(20);
+            var result = _fixture.SizesController.Get("Non existent");
             var notFoundResult = result.Result as NotFoundResult;
 
             // Assert

@@ -68,10 +68,14 @@ export const ButtonForEditting = (props: IPizzaProps) => {
                     setOpen(!open);
                   }}
                 >
-                  <Box>
-                    Купить за <s>{pizzaStore.price}</s>{' '}
-                    {Number(pizzaStore.price - pizzaStore.price * pizzaStore.pizza.discount).toFixed(3)} ₽
-                  </Box>
+                  {pizzaStore.pizza.discount !== 0 ? (
+                    <Box>
+                      Купить за <s>{pizzaStore.price}</s>{' '}
+                      {Number(pizzaStore.price - pizzaStore.price * pizzaStore.pizza.discount).toFixed(3)} ₽
+                    </Box>
+                  ) : (
+                    <Box>Купить за {pizzaStore.price} ₽</Box>
+                  )}
                 </Button>
               )}
             </Observer>

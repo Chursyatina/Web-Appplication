@@ -6,6 +6,7 @@ import { OrderForHistory } from 'src/components/OrderForHistory';
 import { orderHistoryStyles } from 'src/componentsStyles/orderHistoryStyles';
 import { ordersStore } from 'src/store/currentOrders';
 
+import { ItsEmpty } from './IstEmpty';
 import { OrderDatePicker } from './OrderDatePicker';
 import { PizzaInBasketList } from './PizzaInBasketList';
 
@@ -21,11 +22,15 @@ export const OrdersHistory = observer(() => {
         <Grid item justifyContent="center" alignItems="center" xs={12}>
           <OrderDatePicker />
         </Grid>
-        <Grid container justify="center" alignItems="center">
-          {ordersStore.filteredOrders.map(order => (
-            <OrderForHistory key={order.id} order={order} />
-          ))}
-        </Grid>
+        {ordersStore.filteredOrders.length !== 0 ? (
+          <Grid container justify="center" alignItems="center">
+            {ordersStore.filteredOrders.map(order => (
+              <OrderForHistory key={order.id} order={order} />
+            ))}
+          </Grid>
+        ) : (
+          <ItsEmpty />
+        )}
       </Grid>
     </div>
   );

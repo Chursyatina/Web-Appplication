@@ -21,6 +21,13 @@
         public void Patch_IdentificatorAndAdditionalIngredientPatrtialUpdateRequestDto_AdditionalIngredientDto()
         {
             // Arrange
+            var newAdditionalIngredient = new AdditionalIngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testAdditionalIngredient = new AdditionalIngredientPatchRequestDto()
             {
                 Name = "New ingredient",
@@ -36,7 +43,11 @@
             };
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Patch(2, testAdditionalIngredient);
+            var insertResult = _fixture.AdditionalIngredientsController.Insert(newAdditionalIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingAdditionalIngredient = successedResult.Value as AdditionalIngredientDto;
+
+            var result = _fixture.AdditionalIngredientsController.Patch(resultOfInsertingAdditionalIngredient.Id, testAdditionalIngredient);
             var successResult = result.Result as OkObjectResult;
             var resultAdditionalIngredient = successResult.Value as AdditionalIngredientDto;
 
@@ -44,14 +55,7 @@
             Assert.True(AdditionalIngredientEqualityChecker.IsDtoEqualsDto(resultAdditionalIngredient, expectedAdditionalIngredient));
 
             // Clear changes
-            var initializedIngredient = new AdditionalIngredientUpdateRequestDto()
-            {
-                Name = TestAdditionalIngredients.AdditionalIngredientB.Name,
-                Price = TestAdditionalIngredients.AdditionalIngredientB.Price,
-                ImageLink = TestAdditionalIngredients.AdditionalIngredientB.ImageLink,
-            };
-
-            _fixture.AdditionalIngredientsController.Update(2, initializedIngredient);
+            _fixture.AdditionalIngredientsController.Delete(resultOfInsertingAdditionalIngredient.Id);
         }
 
         [Fact]
@@ -68,7 +72,7 @@
             NotFoundResult expected = new NotFoundResult();
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Patch(20, testAdditionalIngredient);
+            var result = _fixture.AdditionalIngredientsController.Patch("Non existent", testAdditionalIngredient);
             var notFoundResult = result.Result as NotFoundResult;
 
             // Assert
@@ -79,6 +83,13 @@
         public void Patch_IdentificatorAndAdditionalIngredientPartialUpdateRequestDtoWithNullName_AdditionalIngredientDto()
         {
             // Arrange
+            var newAdditionalIngredient = new AdditionalIngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testAdditionalIngredient = new AdditionalIngredientPatchRequestDto()
             {
                 Name = null,
@@ -88,13 +99,17 @@
 
             var expectedAdditionalIngredient = new AdditionalIngredientDto()
             {
-                Name = "Mozzarella",
+                Name = "Ingredient",
                 Price = 100,
                 ImageLink = "New image",
             };
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Patch(1, testAdditionalIngredient);
+            var insertResult = _fixture.AdditionalIngredientsController.Insert(newAdditionalIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingAdditionalIngredient = successedResult.Value as AdditionalIngredientDto;
+
+            var result = _fixture.AdditionalIngredientsController.Patch(resultOfInsertingAdditionalIngredient.Id, testAdditionalIngredient);
             var successResult = result.Result as OkObjectResult;
             var resultAdditionalIngredient = successResult.Value as AdditionalIngredientDto;
 
@@ -102,20 +117,20 @@
             Assert.True(AdditionalIngredientEqualityChecker.IsDtoEqualsDto(resultAdditionalIngredient, expectedAdditionalIngredient));
 
             // Clear changes
-            var initializedIngredient = new AdditionalIngredientUpdateRequestDto()
-            {
-                Name = TestAdditionalIngredients.AdditionalIngredientA.Name,
-                Price = TestAdditionalIngredients.AdditionalIngredientA.Price,
-                ImageLink = TestAdditionalIngredients.AdditionalIngredientA.ImageLink,
-            };
-
-            _fixture.AdditionalIngredientsController.Update(1, initializedIngredient);
+            _fixture.AdditionalIngredientsController.Delete(resultOfInsertingAdditionalIngredient.Id);
         }
 
         [Fact]
         public void Patch_IdentificatorAndAdditionalIngredientPartialUpdateRequestDtoWithNameLengthMoreThan20_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newAdditionalIngredient = new AdditionalIngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testAdditionalIngredient = new AdditionalIngredientPatchRequestDto()
             {
                 Name = "There are more then twenty symbols",
@@ -126,18 +141,32 @@
             JsonResult expectedJsonResult = new JsonResult("The field Name must be a string with a minimum length of 1 and a maximum length of 20.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Patch(2, testAdditionalIngredient);
+            var insertResult = _fixture.AdditionalIngredientsController.Insert(newAdditionalIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingAdditionalIngredient = successedResult.Value as AdditionalIngredientDto;
+
+            var result = _fixture.AdditionalIngredientsController.Patch(resultOfInsertingAdditionalIngredient.Id, testAdditionalIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.AdditionalIngredientsController.Delete(resultOfInsertingAdditionalIngredient.Id);
         }
 
         [Fact]
         public void Patch_IdentificatorAndAdditionalIngredientPartialUpdateRequestDtoWithNotUniqueName_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newAdditionalIngredient = new AdditionalIngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testAdditionalIngredient = new AdditionalIngredientPatchRequestDto()
             {
                 Name = TestAdditionalIngredients.AdditionalIngredientA.Name,
@@ -148,18 +177,32 @@
             JsonResult expectedJsonResult = new JsonResult("Enity with such name already exists") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Patch(2, testAdditionalIngredient);
+            var insertResult = _fixture.AdditionalIngredientsController.Insert(newAdditionalIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingAdditionalIngredient = successedResult.Value as AdditionalIngredientDto;
+
+            var result = _fixture.AdditionalIngredientsController.Patch(resultOfInsertingAdditionalIngredient.Id, testAdditionalIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.AdditionalIngredientsController.Delete(resultOfInsertingAdditionalIngredient.Id);
         }
 
         [Fact]
         public void Patch_IdentificatorAndAdditionalIngredientPartialUpdateRequestDtoWithNullPrice_AdditionalIngredientDto()
         {
             // Arrange
+            var newAdditionalIngredient = new AdditionalIngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testAdditionalIngredient = new AdditionalIngredientPatchRequestDto()
             {
                 Name = "New ingredient",
@@ -170,12 +213,16 @@
             var expectedAdditionalIngredient = new AdditionalIngredientDto()
             {
                 Name = "New ingredient",
-                Price = 59,
+                Price = 101,
                 ImageLink = "New image",
             };
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Patch(1, testAdditionalIngredient);
+            var insertResult = _fixture.AdditionalIngredientsController.Insert(newAdditionalIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingAdditionalIngredient = successedResult.Value as AdditionalIngredientDto;
+
+            var result = _fixture.AdditionalIngredientsController.Patch(resultOfInsertingAdditionalIngredient.Id, testAdditionalIngredient);
             var successResult = result.Result as OkObjectResult;
             var resultAdditionalIngredient = successResult.Value as AdditionalIngredientDto;
 
@@ -183,20 +230,20 @@
             Assert.True(AdditionalIngredientEqualityChecker.IsDtoEqualsDto(resultAdditionalIngredient, expectedAdditionalIngredient));
 
             // Clear changes
-            var initializedIngredient = new AdditionalIngredientUpdateRequestDto()
-            {
-                Name = TestAdditionalIngredients.AdditionalIngredientA.Name,
-                Price = TestAdditionalIngredients.AdditionalIngredientA.Price,
-                ImageLink = TestAdditionalIngredients.AdditionalIngredientA.ImageLink,
-            };
-
-            _fixture.AdditionalIngredientsController.Update(1, initializedIngredient);
+            _fixture.AdditionalIngredientsController.Delete(resultOfInsertingAdditionalIngredient.Id);
         }
 
         [Fact]
         public void Patch_IdentificatorAndAdditionalIngredientPartialUpdateRequestDtoWithPriceMoreThan1000_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newAdditionalIngredient = new AdditionalIngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testAdditionalIngredient = new AdditionalIngredientPatchRequestDto()
             {
                 Name = "New ingredient",
@@ -207,18 +254,32 @@
             JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Patch(2, testAdditionalIngredient);
+            var insertResult = _fixture.AdditionalIngredientsController.Insert(newAdditionalIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingAdditionalIngredient = successedResult.Value as AdditionalIngredientDto;
+
+            var result = _fixture.AdditionalIngredientsController.Patch(resultOfInsertingAdditionalIngredient.Id, testAdditionalIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.AdditionalIngredientsController.Delete(resultOfInsertingAdditionalIngredient.Id);
         }
 
         [Fact]
         public void Patch_IdentificatorAndAdditionalIngredientPartialUpdateRequestDtoWithPriceLessThanOneTenth_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newAdditionalIngredient = new AdditionalIngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testAdditionalIngredient = new AdditionalIngredientPatchRequestDto()
             {
                 Name = "New ingredient",
@@ -229,18 +290,32 @@
             JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Patch(2, testAdditionalIngredient);
+            var insertResult = _fixture.AdditionalIngredientsController.Insert(newAdditionalIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingAdditionalIngredient = successedResult.Value as AdditionalIngredientDto;
+
+            var result = _fixture.AdditionalIngredientsController.Patch(resultOfInsertingAdditionalIngredient.Id, testAdditionalIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.AdditionalIngredientsController.Delete(resultOfInsertingAdditionalIngredient.Id);
         }
 
         [Fact]
         public void Patch_IdentificatorAndAdditionalIngredientPartialUpdateRequestDtoWithNullImage_AdditionalIngredientDto()
         {
             // Arrange
+            var newAdditionalIngredient = new AdditionalIngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testAdditionalIngredient = new AdditionalIngredientPatchRequestDto()
             {
                 Name = "New name",
@@ -252,11 +327,15 @@
             {
                 Name = "New name",
                 Price = 100,
-                ImageLink = "IngredientA image",
+                ImageLink = "Image",
             };
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Patch(1, testAdditionalIngredient);
+            var insertResult = _fixture.AdditionalIngredientsController.Insert(newAdditionalIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingAdditionalIngredient = successedResult.Value as AdditionalIngredientDto;
+
+            var result = _fixture.AdditionalIngredientsController.Patch(resultOfInsertingAdditionalIngredient.Id, testAdditionalIngredient);
             var successResult = result.Result as OkObjectResult;
             var resultAdditionalIngredient = successResult.Value as AdditionalIngredientDto;
 
@@ -264,20 +343,20 @@
             Assert.True(AdditionalIngredientEqualityChecker.IsDtoEqualsDto(resultAdditionalIngredient, expectedAdditionalIngredient));
 
             // Clear changes
-            var initializedIngredient = new AdditionalIngredientUpdateRequestDto()
-            {
-                Name = TestAdditionalIngredients.AdditionalIngredientA.Name,
-                Price = TestAdditionalIngredients.AdditionalIngredientA.Price,
-                ImageLink = TestAdditionalIngredients.AdditionalIngredientA.ImageLink,
-            };
-
-            _fixture.AdditionalIngredientsController.Update(1, initializedIngredient);
+            _fixture.AdditionalIngredientsController.Delete(resultOfInsertingAdditionalIngredient.Id);
         }
 
         [Fact]
         public void Patch_IdentificatorAndAdditionalIngredientPatrtialUpdateRequestDtoWithAllNullProperties_AdditionalIngredientDto()
         {
             // Arrange
+            var newAdditionalIngredient = new AdditionalIngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testAdditionalIngredient = new AdditionalIngredientPatchRequestDto()
             {
                 Name = null,
@@ -287,18 +366,25 @@
 
             var expectedAdditionalIngredient = new AdditionalIngredientDto()
             {
-                Name = "Mozzarella",
-                Price = 59,
-                ImageLink = "IngredientA image",
+                Name = "Ingredient",
+                Price = 101,
+                ImageLink = "Image",
             };
 
             // Act
-            var result = _fixture.AdditionalIngredientsController.Patch(1, testAdditionalIngredient);
+            var insertResult = _fixture.AdditionalIngredientsController.Insert(newAdditionalIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingAdditionalIngredient = successedResult.Value as AdditionalIngredientDto;
+
+            var result = _fixture.AdditionalIngredientsController.Patch(resultOfInsertingAdditionalIngredient.Id, testAdditionalIngredient);
             var successResult = result.Result as OkObjectResult;
             var resultAdditionalIngredient = successResult.Value as AdditionalIngredientDto;
 
             // Assert
             Assert.True(AdditionalIngredientEqualityChecker.IsDtoEqualsDto(resultAdditionalIngredient, expectedAdditionalIngredient));
+
+            // Clear changes
+            _fixture.AdditionalIngredientsController.Delete(resultOfInsertingAdditionalIngredient.Id);
         }
     }
 }

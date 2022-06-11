@@ -22,7 +22,7 @@
             // Arrange
             var testAdditionalIngredient = new AdditionalIngredientCreateRequestDto()
             {
-                Name = "New ingredient",
+                Name = "Ingredient",
                 ImageLink = "New image",
                 Price = 101,
             };

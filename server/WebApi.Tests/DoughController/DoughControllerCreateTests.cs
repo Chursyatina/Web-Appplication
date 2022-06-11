@@ -38,7 +38,7 @@
             var successResult = result.Result as CreatedResult;
             var resultDough = successResult.Value as DoughDto;
 
-            var resultOfGettingNewDough = _fixture.DoughsController.Get(3);
+            var resultOfGettingNewDough = _fixture.DoughsController.Get(resultDough.Id);
             var successResultOfGettingNewDough = resultOfGettingNewDough.Result as OkObjectResult;
             var inBaseDough = successResultOfGettingNewDough.Value as DoughDto;
 
@@ -46,7 +46,7 @@
             Assert.True(DoughEqualityChecker.IsDtoEqualsDto(resultDough, expectedDough) && DoughEqualityChecker.IsDtoEqualsDto(expectedDough, inBaseDough));
 
             // Clear changes
-            _fixture.DoughsController.Delete(3);
+            _fixture.DoughsController.Delete(inBaseDough.Id);
         }
 
         [Fact]

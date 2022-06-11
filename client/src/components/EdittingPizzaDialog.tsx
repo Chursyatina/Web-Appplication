@@ -186,7 +186,7 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
             defaultValue={currentDiscount}
             onChange={e => setDiscount(Number(e.target.value))}
           >
-            {currentDescription}
+            {currentDiscount}
           </TextField>
 
           <TextField
@@ -235,7 +235,7 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
                     }
                   }}
                 >
-                  {`Cохранить пиццу, начальная цена = ${creatingPizzaStore.price} $`}
+                  {`Cохранить пиццу, начальная цена = ${creatingPizzaStore.price} ₽`}
                 </Button>
               )}
             </Observer>

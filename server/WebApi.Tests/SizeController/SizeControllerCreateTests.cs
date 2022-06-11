@@ -38,7 +38,7 @@
             var successResult = result.Result as CreatedResult;
             var resultSize = successResult.Value as SizeDto;
 
-            var resultOfGettingNewSize = _fixture.SizesController.Get(4);
+            var resultOfGettingNewSize = _fixture.SizesController.Get(resultSize.Id);
             var successResultOfGettingNewSize = resultOfGettingNewSize.Result as OkObjectResult;
             var inBaseSize = successResultOfGettingNewSize.Value as SizeDto;
 
@@ -46,7 +46,7 @@
             Assert.True(SizeEqualityChecker.IsDtoEqualsDto(resultSize, expectedSize) && SizeEqualityChecker.IsDtoEqualsDto(expectedSize, inBaseSize));
 
             // Clear changes
-            _fixture.SizesController.Delete(4);
+            _fixture.SizesController.Delete(resultSize.Id);
         }
 
         [Fact]

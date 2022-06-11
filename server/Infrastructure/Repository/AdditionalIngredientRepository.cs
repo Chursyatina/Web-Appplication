@@ -26,17 +26,17 @@
 
         public AdditionalIngredient GetById(string id)
         {
-            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Id == id);
+            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Id == id && !p.IsDeleted);
         }
 
         public AdditionalIngredient GetByName(string name)
         {
-            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Name == name);
+            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Name == name && !p.IsDeleted);
         }
 
         public IEnumerable<AdditionalIngredient> GetAll()
         {
-            return _context.AdditionalIngredients.AsNoTracking();
+            return _context.AdditionalIngredients.Where(p => p.IsDeleted == false).AsNoTracking();
         }
 
         public IEnumerable<string> GetIdentificators()

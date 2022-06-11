@@ -75,11 +75,11 @@ export const Pizza = (props: IPizzaProps) => {
           </Typography>
         </div>
       )}
-      {pizza.bonusCoef !== 0 && (
+      {/* {pizza.bonusCoef !== 0 && (
         <div className={bonusCoef}>
           <CatchingPokemonIcon />
         </div>
-      )}
+      )} */}
     </Card>
   );
 };

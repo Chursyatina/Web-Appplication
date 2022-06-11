@@ -21,6 +21,12 @@
         public void Update_IdentificatorAndDoughUpdateRequestDto_DoughDto()
         {
             // Arrange
+            var newDough = new DoughCreateRequestDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
             var testDough = new DoughUpdateRequestDto()
             {
                 Name = "New name",
@@ -34,7 +40,11 @@
             };
 
             // Act
-            var result = _fixture.DoughsController.Update(2, testDough);
+            var insertResult = _fixture.DoughsController.Insert(newDough);
+            var successedResult = insertResult.Result as CreatedResult;
+            var inBaseDough = successedResult.Value as DoughDto;
+
+            var result = _fixture.DoughsController.Update(inBaseDough.Id, testDough);
             var successResult = result.Result as OkObjectResult;
             var resultDough = successResult.Value as DoughDto;
 
@@ -48,7 +58,8 @@
                 PriceMultiplier = TestDoughs.DoughB.PriceMultiplier,
             };
 
-            _fixture.DoughsController.Update(2, initializedDough);
+            // Clear changes
+            _fixture.DoughsController.Delete(inBaseDough.Id);
         }
 
         [Fact]
@@ -64,7 +75,7 @@
             NotFoundResult expected = new NotFoundResult();
 
             // Act
-            var result = _fixture.DoughsController.Update(20, testDough);
+            var result = _fixture.DoughsController.Update("Non existent", testDough);
             var notFoundResult = result.Result as NotFoundResult;
 
             // Assert
@@ -75,6 +86,12 @@
         public void Update_IdentificatorAndDoughUpdateRequestDtoWithNullName_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newDough = new DoughCreateRequestDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
             var testDough = new DoughUpdateRequestDto()
             {
                 Name = null,
@@ -84,18 +101,31 @@
             JsonResult expectedJsonResult = new JsonResult("The Name field is required.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.DoughsController.Update(2, testDough);
+            var insertResult = _fixture.DoughsController.Insert(newDough);
+            var successedResult = insertResult.Result as CreatedResult;
+            var inBaseDough = successedResult.Value as DoughDto;
+
+            var result = _fixture.DoughsController.Update(inBaseDough.Id, testDough);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.DoughsController.Delete(inBaseDough.Id);
         }
 
         [Fact]
         public void Update_IdentificatorAndDoughUpdateRequestDtoWithNameLengthMoreThan20_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newDough = new DoughCreateRequestDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
             var testDough = new DoughUpdateRequestDto()
             {
                 Name = "There are more then twenty symbols",
@@ -105,18 +135,31 @@
             JsonResult expectedJsonResult = new JsonResult("The field Name must be a string with a minimum length of 1 and a maximum length of 20.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.DoughsController.Update(2, testDough);
+            var insertResult = _fixture.DoughsController.Insert(newDough);
+            var successedResult = insertResult.Result as CreatedResult;
+            var inBaseDough = successedResult.Value as DoughDto;
+
+            var result = _fixture.DoughsController.Update(inBaseDough.Id, testDough);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.DoughsController.Delete(inBaseDough.Id);
         }
 
         [Fact]
         public void Create_IdentificatorAndDoughUpdateRequestDtoWithNullPriceMultiplier_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newDough = new DoughCreateRequestDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
             var testDough = new DoughUpdateRequestDto()
             {
                 Name = "TestDough",
@@ -125,18 +168,31 @@
             JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0,1 and 7.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.DoughsController.Update(2, testDough);
+            var insertResult = _fixture.DoughsController.Insert(newDough);
+            var successedResult = insertResult.Result as CreatedResult;
+            var inBaseDough = successedResult.Value as DoughDto;
+
+            var result = _fixture.DoughsController.Update(inBaseDough.Id, testDough);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.DoughsController.Delete(inBaseDough.Id);
         }
 
         [Fact]
         public void Update_IdentificatorAndDoughUpdateRequestDtoWithPriceMultiplierMoreThan7_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newDough = new DoughCreateRequestDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
             var testDough = new DoughUpdateRequestDto()
             {
                 Name = "NewName",
@@ -146,18 +202,31 @@
             JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0,1 and 7.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.DoughsController.Update(2, testDough);
+            var insertResult = _fixture.DoughsController.Insert(newDough);
+            var successedResult = insertResult.Result as CreatedResult;
+            var inBaseDough = successedResult.Value as DoughDto;
+
+            var result = _fixture.DoughsController.Update(inBaseDough.Id, testDough);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.DoughsController.Delete(inBaseDough.Id);
         }
 
         [Fact]
         public void Update_IdentificatorAndDoughUpdateRequestDtoWithPriceMultiplierLessThanOneTenth_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newDough = new DoughCreateRequestDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
             var testDough = new DoughUpdateRequestDto()
             {
                 Name = "NewName",
@@ -167,18 +236,31 @@
             JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0,1 and 7.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.DoughsController.Update(2, testDough);
+            var insertResult = _fixture.DoughsController.Insert(newDough);
+            var successedResult = insertResult.Result as CreatedResult;
+            var inBaseDough = successedResult.Value as DoughDto;
+
+            var result = _fixture.DoughsController.Update(inBaseDough.Id, testDough);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.DoughsController.Delete(inBaseDough.Id);
         }
 
         [Fact]
         public void Update_IdentificatorAndDoughUpdateRequestDtoWithNotUniqueName_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newDough = new DoughCreateRequestDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
             var testDough = new DoughUpdateRequestDto()
             {
                 Name = TestDoughs.DoughA.Name,
@@ -188,12 +270,19 @@
             JsonResult expectedJsonResult = new JsonResult("Enity with such name already exists") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.DoughsController.Update(2, testDough);
+            var insertResult = _fixture.DoughsController.Insert(newDough);
+            var successedResult = insertResult.Result as CreatedResult;
+            var inBaseDough = successedResult.Value as DoughDto;
+
+            var result = _fixture.DoughsController.Update(inBaseDough.Id, testDough);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.DoughsController.Delete(inBaseDough.Id);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace WebApi.Tests.DoughController
 {
+    using Application.DTO.Request;
     using Application.DTO.Response;
     using Microsoft.AspNetCore.Mvc;
-    using WebAPI.MockFactory.Tests.Data;
     using WebApi.Tests.SharedData;
     using Xunit;
 
@@ -19,23 +19,43 @@
         [Fact]
         public void Get_IdentificatorIntegerArgument_DoughDto()
         {
+            // Arrange
+            var testDough = new DoughCreateRequestDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
+            var expectedDough = new DoughDto()
+            {
+                Name = "New dough",
+                PriceMultiplier = 7,
+            };
+
             // Act
-            var result = _fixture.DoughsController.Get(1);
-            var successResult = result.Result as OkObjectResult;
-            var receivedDough = successResult.Value as DoughDto;
+            var result = _fixture.DoughsController.Insert(testDough);
+            var successResult = result.Result as CreatedResult;
+            var resultDough = successResult.Value as DoughDto;
+
+            var resultOfGettingNewDough = _fixture.DoughsController.Get(resultDough.Id);
+            var successResultOfGettingNewDough = resultOfGettingNewDough.Result as OkObjectResult;
+            var inBaseDough = successResultOfGettingNewDough.Value as DoughDto;
 
             // Assert
-            Assert.True(DoughEqualityChecker.IsDtoEqualsModel(receivedDough, TestDoughs.DoughA));
+            Assert.True(DoughEqualityChecker.IsDtoEqualsDto(resultDough, expectedDough) && DoughEqualityChecker.IsDtoEqualsDto(expectedDough, inBaseDough));
+
+            // Clear changes
+            _fixture.DoughsController.Delete(inBaseDough.Id);
         }
 
         [Fact]
-        public void Get__IntIdentificatorIfNonExistingDough_NotFound()
+        public void Get_IntIdentificatorIfNonExistingDough_NotFound()
         {
             // Arrange
             NotFoundResult expected = new NotFoundResult();
 
             // Act
-            var result = _fixture.DoughsController.Get(20);
+            var result = _fixture.DoughsController.Get("fdjvslkdfvb");
             var notFoundResult = result.Result as NotFoundResult;
 
             // Assert

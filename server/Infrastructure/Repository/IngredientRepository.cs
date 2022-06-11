@@ -31,17 +31,17 @@
 
         public Ingredient GetById(string id)
         {
-            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Id == id);
+            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Id == id && !p.IsDeleted);
         }
 
         public Ingredient GetByName(string name)
         {
-            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Name == name);
+            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Name == name && !p.IsDeleted);
         }
 
         public IEnumerable<Ingredient> GetAll()
         {
-            return _context.Ingredients.AsNoTracking();
+            return _context.Ingredients.Where(p => p.IsDeleted == false).AsNoTracking();
         }
 
         public IQueryable<Ingredient> GetIngredientsById(List<string> identificators)

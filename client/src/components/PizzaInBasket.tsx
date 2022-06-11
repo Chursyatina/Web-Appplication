@@ -61,7 +61,7 @@ export const PizzaInBasket = observer((props: IOrderLineProps) => {
                 <Grid item xs={4} md={4}>
                   <IconButton
                     onClick={e => {
-                      if (orderLine.quantity > 0) {
+                      if (orderLine.quantity > 1) {
                         userStore.reduceQuantity(orderLine);
                         console.log(props.orderLine.quantity);
                       }
@@ -79,7 +79,7 @@ export const PizzaInBasket = observer((props: IOrderLineProps) => {
                 <Grid item xs={4} md={4}>
                   <IconButton
                     onClick={e => {
-                      if (orderLine.quantity < 4) {
+                      if (orderLine.quantity < 7) {
                         userStore.increaseQuantity(orderLine);
                         console.log(props.orderLine.quantity);
                       }
@@ -96,7 +96,7 @@ export const PizzaInBasket = observer((props: IOrderLineProps) => {
                 </Typography>
                 {pizzaVariation.pizza.discount !== 0 && (
                   <Typography variant="h6" component="h6">
-                    <s>{Number(price / pizzaVariation.pizza.discount).toFixed(3)}</s>
+                    <s>{Number(price / (1 - pizzaVariation.pizza.discount)).toFixed(3)}</s>
                   </Typography>
                 )}
                 <Typography variant="h6" component="h6">

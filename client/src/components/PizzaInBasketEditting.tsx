@@ -74,10 +74,14 @@ export const PizzaInBasketEditting = observer((props: IPizzaVariationProps) => {
                     setOpen(!open);
                   }}
                 >
-                  <Box>
-                    Сохранить. Текущая стоимость <s>{pizzaStore.price}</s>{' '}
-                    {Number(pizzaStore.price - pizzaStore.price * pizzaStore.pizza.discount).toFixed(3)} ₽
-                  </Box>
+                  {pizzaStore.pizza.discount !== 0 ? (
+                    <Box>
+                      Сохранить. Текущая стоимость <s>{pizzaStore.price}</s>{' '}
+                      {Number(pizzaStore.price - pizzaStore.price * pizzaStore.pizza.discount).toFixed(3)} ₽
+                    </Box>
+                  ) : (
+                    <Box>Сохранить. Текущая стоимость {pizzaStore.price} ₽</Box>
+                  )}
                 </Button>
               )}
             </Observer>
