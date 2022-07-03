@@ -34,7 +34,7 @@ export const IngredientForPizzaEditting = (props: IIngredientIsPickedProps) => {
         <CardMedia image={imageLink} className={media} title="Photo of ingredient" />
         <CardContent>
           <div className={ingredientName}>{name}</div>
-          <Observer>{() => <div>{`Price: ${price}`}</div>}</Observer>
+          <Observer>{() => <div>{`Цена: ${price}`}</div>}</Observer>
         </CardContent>
       </CardActionArea>
       {!isAvailable && (

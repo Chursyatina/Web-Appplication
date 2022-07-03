@@ -50,7 +50,7 @@ export const Pizza = (props: IPizzaProps) => {
         {userStore.role === 'admin' ? (
           <Grid container justify="flex-end">
             <Button className={button} onClick={() => menuStore.deletePizza(id)}>
-              Delete
+              Удалить
             </Button>
             <EdittingPizzaDialog pizza={pizza} />
           </Grid>

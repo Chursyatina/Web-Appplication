@@ -249,7 +249,7 @@ export const EdittingPizzaDialog = observer((props: IPizzaProps) => {
     <div>
       <div className={center}>
         <Button className={button} onClick={clickHandler}>
-          Edit
+          Редактировать
         </Button>
       </div>
       <Modal

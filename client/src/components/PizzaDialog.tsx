@@ -43,15 +43,15 @@ export const ButtonForEditting = (props: IPizzaProps) => {
             </Grid>
           </Grid>
           <div className={tab}>
-            <Typography variant="h6">Size</Typography>
+            <Typography variant="h6">Размер</Typography>
             <SizeTabs />
           </div>
           <div className={tab}>
-            <Typography variant="h6">Dough</Typography>
+            <Typography variant="h6">Тип теста</Typography>
             <DoughTabs />
           </div>
           <div>
-            <Typography variant="h6">Additional ingredients</Typography>
+            <Typography variant="h6">Дополнительно</Typography>
             <AdditionalIngredientsList />
           </div>
         </Grid>

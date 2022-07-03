@@ -34,7 +34,7 @@ export const AdditionalIngredient = (props: IAdditionalIngredientProps) => {
         <CardMedia image={imageLink} className={media} title="Photo of ingredient" />
         <CardContent>
           <div className={ingredientName}>{name}</div>
-          <Observer>{() => <div>{`Price: ${price * pizzaStore.size.priceMultiplier}`}</div>}</Observer>
+          <Observer>{() => <div>{`Цена: ${price * pizzaStore.size.priceMultiplier}`}</div>}</Observer>
         </CardContent>
       </CardActionArea>
     </Card>
