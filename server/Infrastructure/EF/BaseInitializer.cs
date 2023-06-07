@@ -1,6 +1,5 @@
 ﻿namespace Infrastructure.EF
 {
-    using System;
     using System.Collections.Generic;
     using Application.Services;
     using Domain.Models;
@@ -101,13 +100,13 @@
 
             var additionalIngredientsList = new List<AdditionalIngredient>()
             {
-                new AdditionalIngredient() { Name = "Моцарелла ", Price = 59, ImageLink = Convert.ToBase64String(Properties.Resources.mozarella), PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
+                new AdditionalIngredient() { Name = "Моцарелла ", Price = 59, ImageLink = "https://img.freepik.com/premium-photo/mozzarella-cheese-with-basil-on-white_392895-25331.jpg", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
                 new AdditionalIngredient() { Name = "Пепперони", Price = 48, ImageLink = "https://th.bing.com/th/id/OIP._qc-JyiqXuESTu4d2-Uv7wHaFn?pid=ImgDet&rs=1", PizzasVariations = new List<PizzaVariation>(), },
                 new AdditionalIngredient() { Name = "Чёрный перец", Price = 30, ImageLink = "https://th.bing.com/th/id/R.230f7f2997d8d4847bff0c8a9710284d?rik=4UxrVIIeEhI0eg&pid=ImgRaw", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
                 new AdditionalIngredient() { Name = "Ветчина", Price = 60, ImageLink = "https://calorizator.ru/sites/default/files/ImageLinkcache/product_512/product/ham-1.jpg", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
                 new AdditionalIngredient() { Name = "Укроп", Price = 25, ImageLink = "https://th.bing.com/th/id/R.2918e9aea1dc8d68cfd9d75d5515b337?rik=46txHXTQt8PpJg&pid=ImgRaw", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
                 new AdditionalIngredient() { Name = "Петрушка", Price = 24, ImageLink = "https://th.bing.com/th/id/OIP.PTkRgM4Ghx5ze1OLYsd0mAHaHa?pid=ImgDet&rs=1", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
-                new AdditionalIngredient() { Name = "Томат", Price = 34, ImageLink = Convert.ToBase64String(Properties.Resources.tomato), PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
+                new AdditionalIngredient() { Name = "Томат", Price = 34, ImageLink = "https://ros-test.info/images/article/5d3f1d0879b90.jpg", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
                 new AdditionalIngredient() { Name = "Лосось", Price = 54, ImageLink = "https://ImageLinks6.alphacoders.com/529/529319.jpg", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
                 new AdditionalIngredient() { Name = "Чеддер", Price = 45, ImageLink = "https://th.bing.com/th/id/R.3a0447f3ed4161f4a72d2e49a7e8312d?rik=BABv628NLdwREg&pid=ImgRaw", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
             };
