@@ -32,6 +32,17 @@
         public decimal Price { get; set; }
 
         [Required]
+        public bool IsAvailable { get; set; }
+
+        [Required]
+        [Range(0.1, 1)]
+        public double BonusCoef { get; set; }
+
+        [Required]
+        [Range(0.1, 1)]
+        public double Discount { get; set; }
+
+        [Required]
         public ICollection<Ingredient> Ingredients { get; set; }
 
         [Required]

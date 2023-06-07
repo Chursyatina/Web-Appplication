@@ -1,8 +1,8 @@
 ﻿namespace WebApi.Tests.IngredientController
 {
+    using Application.DTO.Request;
     using Application.DTO.Response;
     using Microsoft.AspNetCore.Mvc;
-    using WebAPI.MockFactory.Tests.Data;
     using WebApi.Tests.SharedData;
     using Xunit;
 
@@ -19,13 +19,34 @@
         [Fact]
         public void Get_IdentificatorIntegerArgument_IngredientDto()
         {
+            var newAdditionalIngredient = new IngredientCreateRequestDto()
+            {
+                Name = "New ingredient",
+                ImageLink = "New image",
+                Price = 101,
+            };
+
+            var expectedIngredient = new IngredientDto()
+            {
+                Name = "New ingredient",
+                ImageLink = "New image",
+                Price = 101,
+            };
+
             // Act
-            var result = _fixture.IngredientsController.Get(1);
+            var addingResult = _fixture.IngredientsController.Insert(newAdditionalIngredient);
+            var successedResult = addingResult.Result as CreatedResult;
+            var insertedIngredient = successedResult.Value as IngredientDto;
+
+            var result = _fixture.IngredientsController.Get(insertedIngredient.Id);
             var successResult = result.Result as OkObjectResult;
             var receivedIngredient = successResult.Value as IngredientDto;
 
             // Assert
-            Assert.True(IngredientEqualityChecker.IsDtoEqualsModel(receivedIngredient, TestIngredients.IngredientA));
+            Assert.True(IngredientEqualityChecker.IsDtoEqualsDto(receivedIngredient, expectedIngredient));
+
+            // Clear changes
+            _fixture.IngredientsController.Delete(insertedIngredient.Id);
         }
 
         [Fact]
@@ -35,7 +56,7 @@
             NotFoundResult expected = new NotFoundResult();
 
             // Act
-            var result = _fixture.IngredientsController.Get(20);
+            var result = _fixture.IngredientsController.Get("Non exisntent");
             var notFoundResult = result.Result as NotFoundResult;
 
             // Assert

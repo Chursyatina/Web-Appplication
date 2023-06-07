@@ -6,6 +6,7 @@
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
+    using Infrastructure.ExtensionMethods;
     using Microsoft.EntityFrameworkCore;
 
     public class OrderRepository : IOrderRepository
@@ -17,32 +18,97 @@
             _context = context;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            _context.Orders.Find(id).IsDeleted = true;
+            Order existingItem = _context.Orders.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
+        }
+
+        public IEnumerable<Order> GetOrdersForUserById(string id)
+        {
+            List<Order> orders = _context.Orders
+                .Include(s => s.OrderStatus)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Pizza)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Ingredients)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Dough)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Size)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Ingredients)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.AdditionalIngredients)
+                .Include(u => u.User)
+                .Select(o => new Order()
+                {
+                    Id = o.Id,
+                    IsDeleted = o.IsDeleted,
+                    OrderLines = o.OrderLines,
+                    Date = o.Date,
+                    OrderStatus = o.OrderStatus,
+                    Price = o.Price,
+                    User = o.User,
+                })
+                .Where(p => p.User.Id == id)
+                .AsNoTracking()
+                .ToList();
+
+            return orders;
         }
 
         public IEnumerable<Order> GetAll()
         {
-            return _context.Orders.AsNoTracking().Where(p => p.IsDeleted == false);
+            List<Order> orders = _context.Orders
+                .Include(s => s.OrderStatus)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Pizza)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Ingredients)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Dough)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Size)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Ingredients)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.AdditionalIngredients)
+                .Select(o => new Order()
+            {
+                Id = o.Id,
+                IsDeleted = o.IsDeleted,
+                OrderLines = o.OrderLines,
+                Date = o.Date,
+                OrderStatus = o.OrderStatus,
+                Price = o.Price,
+            })
+                .Where(p => p.IsDeleted == false)
+                .AsNoTracking()
+                .ToList();
+
+            return orders;
         }
 
-        public Order GetById(int id)
+        public Order GetById(string id)
         {
-            Order existingOrder = _context.Orders.AsNoTracking().FirstOrDefault(o => o.Id == id && o.IsDeleted == false);
+            Order existingOrder = _context.Orders
+                .Include(s => s.OrderStatus)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Pizza)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Ingredients)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Dough)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Size)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.Ingredients)
+                .Include(l => l.OrderLines).ThenInclude(m => m.PizzaVariation).ThenInclude(p => p.AdditionalIngredients)
+                .AsNoTracking()
+                .FirstOrDefault(o => o.Id == id && o.IsDeleted == false);
 
             return existingOrder;
         }
 
-        public Order Insert(Order item, IEnumerable<int> orderLinesIds)
+        public Order Insert(Order item, List<string> orderLinesIds)
         {
             item.OrderStatus = _context.OrderStatuses.FirstOrDefault(s => s.Name == "Готовится");
+            item.OrderLines = new List<OrderLine>();
 
-            foreach (int orderLineId in orderLinesIds)
+            if (orderLinesIds.Count != 0)
             {
-                OrderLine existingOrderLine = _context.OrderLines.Find(orderLineId);
-                item.OrderLines.Add(existingOrderLine);
+                item = ChangeOrderLines(item, orderLinesIds);
+                item.Price = PriceCountingService.GetPriceForOrder(item);
+            }
+            else
+            {
+                item.OrderLines = new List<OrderLine>();
             }
 
             item.Date = System.DateTime.Now;
@@ -53,14 +119,44 @@
             return entity.Entity;
         }
 
-        public Order Patch(int id, Order item, IEnumerable<int> orderLinesIds)
+        public Order Insert(Order item, List<string> orderLinesIds, User user)
+        {
+            item.OrderStatus = _context.OrderStatuses.FirstOrDefault(s => s.Name == "Готовится");
+            item.OrderLines = new List<OrderLine>();
+
+            if (orderLinesIds.Count != 0)
+            {
+                item = ChangeOrderLines(item, orderLinesIds);
+                item.Price = PriceCountingService.GetPriceForOrder(item);
+            }
+            else
+            {
+                item.OrderLines = new List<OrderLine>();
+            }
+
+            item.User = user;
+            item.Date = System.DateTime.Now;
+            item.Price = PriceCountingService.GetPriceForOrder(item);
+            item.User.Coins += CoinCountingService.GetCoins(item);
+
+            var entity = _context.Add(item);
+            _context.SaveChanges();
+            return entity.Entity;
+        }
+
+        public Order Patch(string id, Order item, IEnumerable<string> orderLinesIds)
         {
             var existingItem = _context.Orders
                 .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(ai => ai.AdditionalIngredients)
+                .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(i => i.Ingredients)
+                .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(p => p.Pizza).ThenInclude(ing => ing.Ingredients)
                 .Include(o => o.OrderStatus)
                 .FirstOrDefault(o => o.Id == id && o.IsDeleted == false);
 
-            if (item.OrderStatus != null && item.OrderStatus != existingItem.OrderStatus)
+            if (item.OrderStatus.Name != null && item.OrderStatus != existingItem.OrderStatus)
             {
                 existingItem.OrderStatus = item.OrderStatus;
             }
@@ -71,16 +167,23 @@
                 existingItem.Price = PriceCountingService.GetPriceForOrder(existingItem);
             }
 
+            existingItem.Price = PriceCountingService.GetPriceForOrder(existingItem);
+
             var entity = _context.Update(existingItem);
             _context.SaveChanges();
 
             return entity.Entity;
         }
 
-        public Order Update(int id, Order item, List<int> orderLinesIds)
+        public Order Update(string id, Order item, List<string> orderLinesIds)
         {
             var existingItem = _context.Orders
                 .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(ai => ai.AdditionalIngredients)
+                .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(i => i.Ingredients)
+                .Include(o => o.OrderLines)
+                .ThenInclude(pv => pv.PizzaVariation).ThenInclude(p => p.Pizza).ThenInclude(ing => ing.Ingredients)
                 .Include(o => o.OrderStatus)
                 .FirstOrDefault(p => p.Id == id && p.IsDeleted == false);
 
@@ -97,28 +200,32 @@
                 existingItem.OrderLines = new List<OrderLine>();
             }
 
+            existingItem.Price = PriceCountingService.GetPriceForOrder(existingItem);
+
             var entity = _context.Update(existingItem);
             _context.SaveChanges();
 
             return entity.Entity;
         }
 
-        private Order ChangeOrderLines(Order existingItem, IEnumerable<int> orderLinesIds)
+        public IEnumerable<string> GetIdentificators()
         {
-            IEnumerable<int> existingItemOrderLines = existingItem.OrderLines.Select(line => line.Id);
+            return _context.Orders.AsNoTracking().Select(l => l.Id);
+        }
 
-            IEnumerable<int> remains = existingItemOrderLines.Intersect(orderLinesIds);
+        private Order ChangeOrderLines(Order existingItem, IEnumerable<string> orderLinesIds)
+        {
+            List<string> existingItemOrderLines = existingItem.OrderLines.Select(line => line.Id).ToList();
 
-            IEnumerable<int> toRemove = existingItemOrderLines.Except(remains);
+            List<string> remains = existingItemOrderLines.Intersect(orderLinesIds).ToList();
 
-            IEnumerable<int> toAdd = existingItemOrderLines.Except(remains);
+            List<string> toRemove = existingItemOrderLines.Except(remains).ToList();
+
+            List<string> toAdd = orderLinesIds.Except(remains).ToList();
 
             existingItem.OrderLines = existingItem.OrderLines.Where(l => !toRemove.Contains(l.Id)).ToList();
 
-            foreach (int id in toAdd)
-            {
-                existingItem.OrderLines.Add(_context.OrderLines.FirstOrDefault(line => line.Id == id));
-            }
+            existingItem.OrderLines.AddRange(_context.OrderLines.Include(p => p.PizzaVariation).Where(line => toAdd.Contains(line.Id)));
 
             return existingItem;
         }

@@ -6,6 +6,7 @@
     using Application.DTO.Request.OrderRequestDtos;
     using Application.DTO.Response;
     using Application.Interfaces.ServicesInterfaces;
+    using Domain.Models;
     using Domain.Repository;
 
     public class OrderService : IOrderService
@@ -17,7 +18,7 @@
             _orderRepository = orderRepository;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _orderRepository.Delete(id);
         }
@@ -27,7 +28,7 @@
             return _orderRepository.GetAll().Select(x => x.ToViewModel()).ToList();
         }
 
-        public OrderDto GetById(int id)
+        public OrderDto GetById(string id)
         {
             var existingOrder = _orderRepository.GetById(id);
 
@@ -39,17 +40,33 @@
             return null;
         }
 
-        public OrderDto Insert(OrderCreateRequestDto item)
+        public IEnumerable<OrderDto> GetOrdersForUserById(string id)
         {
-            return _orderRepository.Insert(item.ToModel(), item.OrderLinesIds).ToViewModel();
+            return _orderRepository.GetOrdersForUserById(id).Select(x => x.ToViewModel()).ToList();
         }
 
-        public OrderDto Patch(int id, OrderPatchRequestDto item)
+        public IEnumerable<string> GetIdentificators()
+        {
+            return _orderRepository.GetIdentificators();
+        }
+
+        public OrderDto Insert(OrderCreateRequestDto item)
+        {
+            // return _orderRepository.Insert(item.ToModel(), item.OrderLinesIds.ToList()).ToViewModel();
+            return null;
+        }
+
+        public OrderDto Insert(OrderCreateRequestDto item, User user, List<string> orderLinesIds)
+        {
+            return _orderRepository.Insert(item.ToModel(), orderLinesIds, user).ToViewModel();
+        }
+
+        public OrderDto Patch(string id, OrderPatchRequestDto item)
         {
             return _orderRepository.Patch(id, item.ToModel(), item.OrderLinesIds).ToViewModel();
         }
 
-        public OrderDto Update(int id, OrderUpdateRequestDto item)
+        public OrderDto Update(string id, OrderUpdateRequestDto item)
         {
             return _orderRepository.Update(id, item.ToModel(), item.OrderLinesIds.ToList()).ToViewModel();
         }

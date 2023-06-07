@@ -7,7 +7,7 @@
     public class PizzaDto : IResponseDto
     {
         [Required]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 1)]
@@ -22,6 +22,18 @@
 
         [Required]
         public decimal Price { get; set; }
+
+        [Required]
+        public bool IsDeleted { get; set; }
+
+        [Required]
+        public double Discount { get; set; }
+
+        [Required]
+        public double BonusCoef { get; set; }
+
+        [Required]
+        public bool IsAvailable { get; set; }
 
         [Required]
         public string SingleItemImageLink { get; set; }

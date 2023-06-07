@@ -23,10 +23,14 @@
 
             PizzasController = ControllerFactory.CreatePizzasController();
 
+            IngredientsController = ControllerFactory.CreateIngredientsController();
+
             InitializeDatabase(TestPizzas.AllPizzas);
         }
 
         public PizzaController PizzasController { get; private set; }
+
+        public IngredientController IngredientsController { get; private set; }
 
         public IDatabaseInitializer DatabaseInitializer { get; private set; }
 

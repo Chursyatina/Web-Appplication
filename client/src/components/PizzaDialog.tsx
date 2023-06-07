@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Button, Modal } from '@material-ui/core';
+import { Grid, Typography, Button, Modal, Box } from '@material-ui/core';
 import { Observer } from 'mobx-react-lite';
 
 import { IPizzaProps } from 'src/interfaces/pizza';
@@ -8,6 +8,7 @@ import { DoughTabs } from 'src/components/DoughTabs';
 import { AdditionalIngredientsList } from 'src/components/AdditionalIngredientsList';
 import { pizzaDialogStyles } from 'src/componentsStyles/pizzaDialogStyles';
 import { pizzaStore } from 'src/store/currentPizza';
+import { userStore } from 'src/store/currentUser';
 
 import { IngredientListWithDeleteButton } from './IngredientListWithDeleteButton';
 
@@ -42,15 +43,15 @@ export const ButtonForEditting = (props: IPizzaProps) => {
             </Grid>
           </Grid>
           <div className={tab}>
-            <Typography variant="h6">Size</Typography>
+            <Typography variant="h6">Размер</Typography>
             <SizeTabs />
           </div>
           <div className={tab}>
-            <Typography variant="h6">Dough</Typography>
+            <Typography variant="h6">Тип теста</Typography>
             <DoughTabs />
           </div>
           <div>
-            <Typography variant="h6">Additional ingredients</Typography>
+            <Typography variant="h6">Дополнительно</Typography>
             <AdditionalIngredientsList />
           </div>
         </Grid>
@@ -58,8 +59,23 @@ export const ButtonForEditting = (props: IPizzaProps) => {
           <Grid container justify="flex-end">
             <Observer>
               {() => (
-                <Button variant="contained" color="primary" className={buyButton}>
-                  {`Buy for ${pizzaStore.price} $`}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={buyButton}
+                  onClick={() => {
+                    userStore.addCurrentPizzaToBasket();
+                    setOpen(!open);
+                  }}
+                >
+                  {pizzaStore.pizza.discount !== 0 ? (
+                    <Box>
+                      Купить за <s>{pizzaStore.price}</s>{' '}
+                      {Number(pizzaStore.price - pizzaStore.price * pizzaStore.pizza.discount).toFixed(3)} ₽
+                    </Box>
+                  ) : (
+                    <Box>Купить за {pizzaStore.price} ₽</Box>
+                  )}
                 </Button>
               )}
             </Observer>
@@ -73,7 +89,7 @@ export const ButtonForEditting = (props: IPizzaProps) => {
     <div>
       <div className={center}>
         <Button className={button} onClick={clickHandler}>
-          Buy
+          Купить
         </Button>
       </div>
       <Modal

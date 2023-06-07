@@ -27,6 +27,7 @@
                 Description = "TestPizzaDescription",
                 ImageLink = "TestPizzaImageLink",
                 SingleItemImageLink = "SomeSingleItemTestImageLink",
+                Ingredients = new System.Collections.Generic.List<string>(),
             };
 
             var expectedPizza = new PizzaDto()
@@ -43,7 +44,7 @@
             var successResult = result.Result as CreatedResult;
             var resultPizza = successResult.Value as PizzaDto;
 
-            var resultOfGettingNewPizza = _fixture.PizzasController.Get(4);
+            var resultOfGettingNewPizza = _fixture.PizzasController.Get(resultPizza.Id);
             var successResultOfGettingNewPizza = resultOfGettingNewPizza.Result as OkObjectResult;
             var inBasePizza = successResultOfGettingNewPizza.Value as PizzaDto;
 
@@ -51,7 +52,7 @@
             Assert.True(PizzaEqualityChecker.IsDtoEqualsDto(resultPizza, expectedPizza) && PizzaEqualityChecker.IsDtoEqualsDto(expectedPizza, inBasePizza));
 
             // Clear changes
-            _fixture.PizzasController.Delete(4);
+            _fixture.PizzasController.Delete(resultPizza.Id);
         }
 
         [Fact]
@@ -64,6 +65,7 @@
                 Description = "TestPizzaDescription",
                 ImageLink = "TestPizzaImageLink",
                 SingleItemImageLink = "TestPizzaSingleImageLink",
+                Ingredients = new System.Collections.Generic.List<string>(),
             };
 
             JsonResult expectedJsonResult = new JsonResult("Enity with such name already exists") { StatusCode = 400, };

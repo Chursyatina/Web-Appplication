@@ -25,6 +25,24 @@
             return true;
         }
 
+        public static bool IsListOfDtosEqualsListOfDtos(List<PizzaDto> listDtos, List<PizzaDto> listModels)
+        {
+            if (listDtos.Count != listModels.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < listDtos.Count; i++)
+            {
+                if (!IsDtoEqualsDto(listDtos[i], listModels[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public static bool IsDtoEqualsDto(PizzaDto firstDto, PizzaDto secondDto)
         {
             return firstDto.ImageLink == secondDto.ImageLink && firstDto.Name == secondDto.Name && firstDto.Description == secondDto.Description && IngredientEqualityChecker.IsListOfDtosEqualsListOfDtos(firstDto.Ingredients.ToList(), secondDto.Ingredients.ToList());

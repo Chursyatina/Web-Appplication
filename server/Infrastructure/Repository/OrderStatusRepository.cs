@@ -16,13 +16,15 @@
             _context = context;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            _context.OrderStatuses.Find(id).IsDeleted = true;
+            OrderStatus existingItem = _context.OrderStatuses.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 
-        public OrderStatus GetById(int id)
+        public OrderStatus GetById(string id)
         {
             return _context.OrderStatuses.AsNoTracking().FirstOrDefault(d => d.Id == id && d.IsDeleted == false);
         }
@@ -39,7 +41,7 @@
             return entity.Entity;
         }
 
-        public OrderStatus Update(int id, OrderStatus item)
+        public OrderStatus Update(string id, OrderStatus item)
         {
             var existingItem = _context.OrderStatuses.Find(id);
 
@@ -50,7 +52,7 @@
             return entity.Entity;
         }
 
-        public OrderStatus Patch(int id, OrderStatus item)
+        public OrderStatus Patch(string id, OrderStatus item)
         {
             var existingItem = _context.OrderStatuses.Find(id);
 
@@ -69,7 +71,7 @@
             return _context.OrderStatuses.AsNoTracking().FirstOrDefault(o => o.Name == name && o.IsDeleted == false);
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _context.OrderStatuses.AsNoTracking().Select(ing => ing.Id);
         }

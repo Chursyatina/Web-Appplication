@@ -17,7 +17,7 @@
             _doughRepository = doughRepository;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _doughRepository.Delete(id);
         }
@@ -34,7 +34,7 @@
             return null;
         }
 
-        public DoughDto GetById(int id)
+        public DoughDto GetById(string id)
         {
             var existingDough = _doughRepository.GetById(id);
 
@@ -56,17 +56,17 @@
             return _doughRepository.Insert(item.ToModel()).ToViewModel();
         }
 
-        public DoughDto Update(int id, DoughUpdateRequestDto item)
+        public DoughDto Update(string id, DoughUpdateRequestDto item)
         {
             return _doughRepository.Update(id, item.ToModel()).ToViewModel();
         }
 
-        public DoughDto Patch(int id, DoughPatchRequestDto dough)
+        public DoughDto Patch(string id, DoughPatchRequestDto dough)
         {
             return _doughRepository.Patch(id, dough.ToModel()).ToViewModel();
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _doughRepository.GetIdentificators();
         }

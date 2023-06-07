@@ -12,7 +12,10 @@
 
             foreach (Ingredient ingredient in pizza.Ingredients)
             {
-                price += ingredient.Price;
+                if (!ingredient.IsDeleted)
+                {
+                    price += ingredient.Price;
+                }
             }
 
             return price;
@@ -26,15 +29,23 @@
 
             foreach (Ingredient ingredient in pizzaVariation.Ingredients)
             {
-                price += ingredient.Price;
+                if (!ingredient.IsDeleted)
+                {
+                    price += ingredient.Price;
+                }
             }
 
             foreach (AdditionalIngredient additionalIngredient in pizzaVariation.AdditionalIngredients)
             {
-                price += additionalIngredient.Price;
+                if (!additionalIngredient.IsDeleted)
+                {
+                    price += additionalIngredient.Price;
+                }
             }
 
             price *= pizzaVariation.Size.PriceMultiplier;
+
+            price = price - (price * (decimal)pizzaVariation.Pizza.Discount);
 
             return price;
         }
@@ -50,7 +61,25 @@
 
             foreach (OrderLine orderLine in order.OrderLines)
             {
-                price += orderLine.Price;
+                if (!orderLine.IsDeleted)
+                {
+                    price += orderLine.Price;
+                }
+            }
+
+            return price;
+        }
+
+        public static decimal GetPriceForBasket(Basket basket)
+        {
+            decimal price = 0;
+
+            foreach (OrderLine basketLine in basket.OrderLines)
+            {
+                if (basketLine.IsDeleted)
+                {
+                    price += basketLine.Price;
+                }
             }
 
             return price;

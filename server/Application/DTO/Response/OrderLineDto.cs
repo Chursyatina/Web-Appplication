@@ -6,14 +6,14 @@
     public class OrderLineDto : IResponseDto
     {
         [Required]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         public PizzaVariationDto PizzaVariation { get; set; }
 
         [Required]
         [Range(0.1, 100000)]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         [Required]
         [Range(0, 10)]

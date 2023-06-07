@@ -6,6 +6,6 @@
 
     public interface IOrderStatusService : IService<OrderStatusDto, OrderStatusCreateRequestDto, OrderStatusUpdateRequestDto, OrderStatusPatchRequestDto>, INamedEntityService<OrderStatusDto>
     {
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
     }
 }

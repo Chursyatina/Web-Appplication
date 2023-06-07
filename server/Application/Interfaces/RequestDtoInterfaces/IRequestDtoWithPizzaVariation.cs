@@ -2,6 +2,6 @@
 {
     public interface IRequestDtoWithPizzaVariation : IRequestDto
     {
-        public int? PizzaVariationId { get; set; }
+        public string PizzaVariationId { get; set; }
     }
 }

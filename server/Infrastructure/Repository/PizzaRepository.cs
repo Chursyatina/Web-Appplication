@@ -24,6 +24,23 @@
             return entity.Entity;
         }
 
+        public Pizza Insert(Pizza item, List<string> ingredientsIds)
+        {
+            item.Ingredients = new List<Ingredient>();
+
+            foreach (string id in ingredientsIds)
+            {
+                item.Ingredients.Add(_context.Ingredients.FirstOrDefault(ing => ing.Id == id));
+            }
+
+            item.Price = PriceCountingService.GetStartingPriceForPizza(item);
+            item.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(item);
+
+            var entity = _context.Add(item);
+            _context.SaveChanges();
+            return entity.Entity;
+        }
+
         public IEnumerable<Pizza> GetAll()
         {
             IEnumerable<Pizza> pizzas = new List<Pizza>(_context.Pizzas
@@ -38,6 +55,9 @@
                   SingleItemImageLink = p.SingleItemImageLink,
                   Ingredients = p.Ingredients,
                   Price = p.Price,
+                  IsAvailable = p.IsAvailable,
+                  Discount = p.Discount,
+                  BonusCoef = p.BonusCoef,
               }))
                 .Where(p => p.IsDeleted == false)
                 .AsQueryable()
@@ -46,7 +66,7 @@
             return pizzas;
         }
 
-        public Pizza GetById(int id)
+        public Pizza GetById(string id)
         {
             Pizza pizza = _context.Pizzas
                 .Include(pi => pi.Ingredients)
@@ -66,7 +86,7 @@
             return pizza;
         }
 
-        public Pizza Update(int id, Pizza item, List<int> ingredientsIds)
+        public Pizza Update(string id, Pizza item, List<string> ingredientsIds)
         {
             var existingItem = _context.Pizzas
                .Include(pi => pi.Ingredients)
@@ -75,16 +95,20 @@
             existingItem.Description = item.Description;
             existingItem.ImageLink = item.ImageLink;
             existingItem.SingleItemImageLink = item.SingleItemImageLink;
+            existingItem.Discount = item.Discount;
+            existingItem.BonusCoef = item.BonusCoef;
 
             if (ingredientsIds.Count != 0)
             {
                 existingItem = ChangeIngredients(existingItem, ingredientsIds);
                 existingItem.Price = PriceCountingService.GetStartingPriceForPizza(existingItem);
+                existingItem.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(existingItem);
             }
             else
             {
                 existingItem.Ingredients = new List<Ingredient>();
                 existingItem.Price = PriceCountingService.GetStartingPriceForPizza(existingItem);
+                existingItem.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(existingItem);
             }
 
             var entity = _context.Update(existingItem);
@@ -93,7 +117,7 @@
             return entity.Entity;
         }
 
-        public Pizza Patch(int id, Pizza item, List<int> ingredientsIds)
+        public Pizza Patch(string id, Pizza item, List<string> ingredientsIds)
         {
             var existingItem = _context.Pizzas
                .Include(pi => pi.Ingredients)
@@ -123,9 +147,11 @@
             {
                 existingItem = ChangeIngredients(existingItem, ingredientsIds);
                 existingItem.Price = PriceCountingService.GetStartingPriceForPizza(existingItem);
+                existingItem.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(existingItem);
             }
 
             existingItem.Price = PriceCountingService.GetStartingPriceForPizza(existingItem);
+            existingItem.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(existingItem);
 
             var entity = _context.Update(existingItem);
             _context.SaveChanges();
@@ -133,30 +159,32 @@
             return entity.Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            _context.Pizzas.Find(id).IsDeleted = true;
+            Pizza existingItem = _context.Pizzas.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _context.Pizzas.AsNoTracking().Select(p => p.Id);
         }
 
-        private Pizza ChangeIngredients(Pizza existingItem, List<int> ingredientsIds)
+        private Pizza ChangeIngredients(Pizza existingItem, List<string> ingredientsIds)
         {
-            List<int> existingItemIngredients = existingItem.Ingredients.Select(ing => ing.Id).ToList();
+            List<string> existingItemIngredients = existingItem.Ingredients.Select(ing => ing.Id).ToList();
 
-            IEnumerable<int> remains = existingItemIngredients.Intersect(ingredientsIds);
+            IEnumerable<string> remains = existingItemIngredients.Intersect(ingredientsIds);
 
-            IEnumerable<int> toRemove = existingItemIngredients.Except(remains);
+            IEnumerable<string> toRemove = existingItemIngredients.Except(remains);
 
-            IEnumerable<int> toAdd = ingredientsIds.Except(remains);
+            IEnumerable<string> toAdd = ingredientsIds.Except(remains);
 
             existingItem.Ingredients = existingItem.Ingredients.Where(i => !toRemove.Contains(i.Id)).ToList();
 
-            foreach (int id in toAdd)
+            foreach (string id in toAdd)
             {
                 existingItem.Ingredients.Add(_context.Ingredients.FirstOrDefault(ing => ing.Id == id));
             }

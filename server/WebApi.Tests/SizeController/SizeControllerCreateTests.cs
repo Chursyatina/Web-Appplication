@@ -38,7 +38,7 @@
             var successResult = result.Result as CreatedResult;
             var resultSize = successResult.Value as SizeDto;
 
-            var resultOfGettingNewSize = _fixture.SizesController.Get(4);
+            var resultOfGettingNewSize = _fixture.SizesController.Get(resultSize.Id);
             var successResultOfGettingNewSize = resultOfGettingNewSize.Result as OkObjectResult;
             var inBaseSize = successResultOfGettingNewSize.Value as SizeDto;
 
@@ -46,7 +46,7 @@
             Assert.True(SizeEqualityChecker.IsDtoEqualsDto(resultSize, expectedSize) && SizeEqualityChecker.IsDtoEqualsDto(expectedSize, inBaseSize));
 
             // Clear changes
-            _fixture.SizesController.Delete(4);
+            _fixture.SizesController.Delete(resultSize.Id);
         }
 
         [Fact]
@@ -120,7 +120,7 @@
                 Name = "TestSize",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0.1 and 7.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0,1 and 7.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.SizesController.Insert(testSize);
@@ -141,7 +141,7 @@
                 PriceMultiplier = 8,
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0.1 and 7.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0,1 and 7.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.SizesController.Insert(testSize);
@@ -162,7 +162,7 @@
                 PriceMultiplier = 0.01m,
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0.1 and 7.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field PriceMultiplier must be between 0,1 and 7.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.SizesController.Insert(testSize);

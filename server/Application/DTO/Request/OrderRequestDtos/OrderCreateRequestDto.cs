@@ -4,12 +4,11 @@
     using System.ComponentModel.DataAnnotations;
     using Application.Interfaces.RequestDtoInterfaces;
 
-    public class OrderCreateRequestDto : IOrderRequestDto
+    public class OrderCreateRequestDto : IRequestDtoWithOrderLines
     {
         [Required]
-        public int? OrderStatusId { get; set; }
+        public IEnumerable<OrderLineCreateRequestDto> OrderLines { get; set; }
 
-        [Required]
-        public IEnumerable<int> OrderLinesIds { get; set; }
+        public IEnumerable<string> OrderLinesIds { get; set; }
     }
 }

@@ -4,6 +4,6 @@
 
     public interface IPizzaWithIngredients
     {
-        public IEnumerable<int> Ingredients { get; set; }
+        public IEnumerable<string> Ingredients { get; set; }
     }
 }

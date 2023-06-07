@@ -1,5 +1,6 @@
 ﻿namespace Infrastructure.EF
 {
+    using System;
     using System.Collections.Generic;
     using Application.Services;
     using Domain.Models;
@@ -17,128 +18,151 @@
             {
                 new Ingredient()
                 {
-                    Name = "Mozzarella ",
+                    Name = "Моцарелла",
                     Price = 59,
                     ImageLink = "https://nemagaz.ru/wa-data/public/shop/products/16/19/1916/ImageLinks/1259/1259.970.jpg",
                     Pizzas = new List<Pizza>(),
+                    IsAvailable = true,
+                    IsObligatory = true,
                 },
                 new Ingredient()
                 {
-                    Name = "Pepperoni",
+                    Name = "Пепперони",
                     Price = 48,
                     ImageLink = "https://th.bing.com/th/id/OIP._qc-JyiqXuESTu4d2-Uv7wHaFn?pid=ImgDet&rs=1",
                     Pizzas = new List<Pizza>(),
+                    IsAvailable = true,
+                    IsObligatory = true,
                 },
                 new Ingredient()
                 {
-                    Name = "Black pepper",
+                    Name = "Чёрный перец",
                     Price = 30,
                     ImageLink = "https://th.bing.com/th/id/R.230f7f2997d8d4847bff0c8a9710284d?rik=4UxrVIIeEhI0eg&pid=ImgRaw",
                     Pizzas = new List<Pizza>(),
+                    IsAvailable = true,
+                    IsObligatory = false,
                 },
                 new Ingredient()
                 {
-                    Name = "Ham",
+                    Name = "Ветчина",
                     Price = 60,
                     ImageLink = "https://calorizator.ru/sites/default/files/ImageLinkcache/product_512/product/ham-1.jpg",
                     Pizzas = new List<Pizza>(),
+                    IsAvailable = true,
+                    IsObligatory = true,
                 },
                 new Ingredient()
                 {
-                    Name = "Dill",
+                    Name = "Укроп",
                     Price = 25,
                     ImageLink = "https://th.bing.com/th/id/R.2918e9aea1dc8d68cfd9d75d5515b337?rik=46txHXTQt8PpJg&pid=ImgRaw",
                     Pizzas = new List<Pizza>(),
+                    IsAvailable = true,
+                    IsObligatory = false,
                 },
                 new Ingredient()
                 {
-                    Name = "Parsley",
+                    Name = "Петрушка",
                     Price = 24,
                     ImageLink = "https://th.bing.com/th/id/OIP.PTkRgM4Ghx5ze1OLYsd0mAHaHa?pid=ImgDet&rs=1",
                     Pizzas = new List<Pizza>(),
+                    IsAvailable = true,
+                    IsObligatory = false,
                 },
                 new Ingredient()
                 {
-                    Name = "Tomato",
+                    Name = "Томаты",
                     Price = 34,
                     ImageLink = "https://th.bing.com/th/id/R.5f07433624fd630965f7b163824c78de?rik=dG2Xx1ovNKGZFg&pid=ImgRaw",
                     Pizzas = new List<Pizza>(),
+                    IsAvailable = true,
+                    IsObligatory = false,
                 },
                 new Ingredient()
                 {
-                    Name = "Fish",
+                    Name = "Лосось",
                     Price = 54,
                     ImageLink = "https://ImageLinks6.alphacoders.com/529/529319.jpg",
                     Pizzas = new List<Pizza>(),
+                    IsAvailable = true,
+                    IsObligatory = true,
                 },
                 new Ingredient()
                 {
-                    Name = "Cheddar",
+                    Name = "Чеддер",
                     Price = 45,
                     ImageLink = "https://th.bing.com/th/id/R.3a0447f3ed4161f4a72d2e49a7e8312d?rik=BABv628NLdwREg&pid=ImgRaw",
                     Pizzas = new List<Pizza>(),
+                    IsAvailable = true,
+                    IsObligatory = false,
                 },
             };
 
             var additionalIngredientsList = new List<AdditionalIngredient>()
             {
-                new AdditionalIngredient() { Name = "Mozzarella ", Price = 59, ImageLink = "https://nemagaz.ru/wa-data/public/shop/products/16/19/1916/ImageLinks/1259/1259.970.jpg", PizzasVariations = new List<PizzaVariation>(), },
-                new AdditionalIngredient() { Name = "Pepperoni", Price = 48, ImageLink = "https://th.bing.com/th/id/OIP._qc-JyiqXuESTu4d2-Uv7wHaFn?pid=ImgDet&rs=1", PizzasVariations = new List<PizzaVariation>(), },
-                new AdditionalIngredient() { Name = "Black pepper", Price = 30, ImageLink = "https://th.bing.com/th/id/R.230f7f2997d8d4847bff0c8a9710284d?rik=4UxrVIIeEhI0eg&pid=ImgRaw", PizzasVariations = new List<PizzaVariation>(), },
-                new AdditionalIngredient() { Name = "Ham", Price = 60, ImageLink = "https://calorizator.ru/sites/default/files/ImageLinkcache/product_512/product/ham-1.jpg", PizzasVariations = new List<PizzaVariation>(), },
-                new AdditionalIngredient() { Name = "Dill", Price = 25, ImageLink = "https://th.bing.com/th/id/R.2918e9aea1dc8d68cfd9d75d5515b337?rik=46txHXTQt8PpJg&pid=ImgRaw", PizzasVariations = new List<PizzaVariation>(), },
-                new AdditionalIngredient() { Name = "Parsley", Price = 24, ImageLink = "https://th.bing.com/th/id/OIP.PTkRgM4Ghx5ze1OLYsd0mAHaHa?pid=ImgDet&rs=1", PizzasVariations = new List<PizzaVariation>(), },
-                new AdditionalIngredient() { Name = "Tomato", Price = 34, ImageLink = "https://th.bing.com/th/id/R.5f07433624fd630965f7b163824c78de?rik=dG2Xx1ovNKGZFg&pid=ImgRaw", PizzasVariations = new List<PizzaVariation>(), },
-                new AdditionalIngredient() { Name = "Fish", Price = 54, ImageLink = "https://ImageLinks6.alphacoders.com/529/529319.jpg", PizzasVariations = new List<PizzaVariation>(), },
-                new AdditionalIngredient() { Name = "Cheddar", Price = 45, ImageLink = "https://th.bing.com/th/id/R.3a0447f3ed4161f4a72d2e49a7e8312d?rik=BABv628NLdwREg&pid=ImgRaw", PizzasVariations = new List<PizzaVariation>(), },
+                new AdditionalIngredient() { Name = "Моцарелла ", Price = 59, ImageLink = Convert.ToBase64String(Properties.Resources.mozarella), PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
+                new AdditionalIngredient() { Name = "Пепперони", Price = 48, ImageLink = "https://th.bing.com/th/id/OIP._qc-JyiqXuESTu4d2-Uv7wHaFn?pid=ImgDet&rs=1", PizzasVariations = new List<PizzaVariation>(), },
+                new AdditionalIngredient() { Name = "Чёрный перец", Price = 30, ImageLink = "https://th.bing.com/th/id/R.230f7f2997d8d4847bff0c8a9710284d?rik=4UxrVIIeEhI0eg&pid=ImgRaw", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
+                new AdditionalIngredient() { Name = "Ветчина", Price = 60, ImageLink = "https://calorizator.ru/sites/default/files/ImageLinkcache/product_512/product/ham-1.jpg", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
+                new AdditionalIngredient() { Name = "Укроп", Price = 25, ImageLink = "https://th.bing.com/th/id/R.2918e9aea1dc8d68cfd9d75d5515b337?rik=46txHXTQt8PpJg&pid=ImgRaw", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
+                new AdditionalIngredient() { Name = "Петрушка", Price = 24, ImageLink = "https://th.bing.com/th/id/OIP.PTkRgM4Ghx5ze1OLYsd0mAHaHa?pid=ImgDet&rs=1", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
+                new AdditionalIngredient() { Name = "Томат", Price = 34, ImageLink = Convert.ToBase64String(Properties.Resources.tomato), PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
+                new AdditionalIngredient() { Name = "Лосось", Price = 54, ImageLink = "https://ImageLinks6.alphacoders.com/529/529319.jpg", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
+                new AdditionalIngredient() { Name = "Чеддер", Price = 45, ImageLink = "https://th.bing.com/th/id/R.3a0447f3ed4161f4a72d2e49a7e8312d?rik=BABv628NLdwREg&pid=ImgRaw", PizzasVariations = new List<PizzaVariation>(), IsAvailable = true, },
             };
 
             var pizzaList = new List<Pizza>()
             {
                 new Pizza()
                 {
-                    Name = "Pepperoni",
-                    Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum ut lacus in egestas. Phasellus scelerisque sem molestie nulla sodales con",
+                    Name = "Пепперони",
+                    Description = "Классическая немного пикантная пепперони, для тех кто не хочет ничего выдумывать и вообще всего уже навидался, просто 'Дайте две''",
                     Price = 0,
                     ImageLink = "https://th.bing.com/th/id/OIP.N9N9nxAB6IOE2vxuXMYMTwHaGI?pid=ImgDet&rs=1",
                     SingleItemImageLink = "https://th.bing.com/th/id/R.ade692772b8449f1a020671445e983d9?rik=FTaAAumCQE8W0w&pid=ImgRaw",
                     Ingredients = new List<Ingredient>() { ingredientList[0],  ingredientList[1],  ingredientList[2], },
+                    IsAvailable = true,
                 },
                 new Pizza()
                 {
-                    Name = "4 cheese ",
-                    Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condim",
+                    Name = "4 сыра",
+                    Description = "Ультра сырная пицца для особых любителей сливочно-сырного вкуса, моцарелла, российский сыр, чеддер и пармезан",
                     Price = 0,
                     SingleItemImageLink = "https://th.bing.com/th/id/OIP.-s22GLfbUmwlIg7dfbjNJAHaHa?pid=ImgDet&rs=1",
                     ImageLink = "https://th.bing.com/th/id/OIP.lU5tM2RWjQqWk6eWTo_GJAHaE8?pid=ImgDet&rs=1",
                     Ingredients = new List<Ingredient>() { ingredientList[0],  ingredientList[1],  ingredientList[2], ingredientList[6],  ingredientList[5], },
+                    IsAvailable = true,
                 },
                 new Pizza()
                 {
-                    Name = "Meat",
-                    Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condim",
+                    Name = "Мясная",
+                    Description = "Мясная пицца для тех кто очень любит мясо, колбаса, пепперони, ветчина и всё что только можно себе представить",
                     Price = 0,
                     SingleItemImageLink = "https://static8.depositphotos.com/1177973/861/i/450/depositphotos_8618524-stock-photo-delicious-pizza-with-seafood-on.jpg",
                     ImageLink = "https://th.bing.com/th/id/OIP.dm43n9JtXyiC09PsFrza7gHaGh?pid=ImgDet&rs=1",
                     Ingredients = new List<Ingredient>() { ingredientList[0],  ingredientList[1],  ingredientList[2], },
+                    IsAvailable = true,
                 },
                 new Pizza()
                 {
-                    Name = "Fish",
-                    Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum ut lacus in egestas. Phasellus scelerisque sem molestie nulla sodales con",
+                    Name = "Рыбная",
+                    Description = "Пицца с рыбой, для особых ценителей свежевыловленного лосося, на вкус напоминает роллы",
                     Ingredients = new List<Ingredient>() { ingredientList[1],  ingredientList[2],  ingredientList[3], ingredientList[8],  ingredientList[7], },
                     SingleItemImageLink = "https://th.bing.com/th/id/OIP.CF-HAAvaG4TJm_dddWzwRAHaGm?pid=ImgDet&rs=1",
                     ImageLink = "https://fb.ru/misc/i/gallery/38575/3146765.jpg",
                     Price = 0,
+                    IsAvailable = true,
                 },
                 new Pizza()
                 {
-                    Name = "All inclusive",
-                    Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum ut lacus in egestas. Phasellus scelerisque sem molestie nulla sodales con",
+                    Name = "Домашняя",
+                    Description = "Отличная домашняя пицца, которая обязательно порадует вас своим многогранным вкусом",
                     Ingredients = new List<Ingredient>() { ingredientList[1],  ingredientList[2],  ingredientList[3], ingredientList[4], ingredientList[5], ingredientList[6], ingredientList[8],  ingredientList[7], },
                     ImageLink = "https://fb.ru/misc/i/gallery/38575/3146765.jpg",
                     SingleItemImageLink = "https://st2.depositphotos.com/1177973/9738/i/950/depositphotos_97385780-stock-photo-tasty-pizza-decorated-with-mushrooms.jpg",
                     Price = 0,
+                    IsAvailable = true,
                 },
             };
 

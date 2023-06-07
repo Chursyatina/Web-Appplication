@@ -6,6 +6,7 @@
     using Application.DTO.Request;
     using Application.DTO.Response;
     using Application.Interfaces;
+    using Domain.Models;
     using Domain.Repository;
 
     public class OrderLineService : IOrderLineService
@@ -17,7 +18,7 @@
             _orderLineRepository = orderLineRepository;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _orderLineRepository.Delete(id);
         }
@@ -27,7 +28,7 @@
             return _orderLineRepository.GetAll().Select(x => x.ToViewModel());
         }
 
-        public OrderLineDto GetById(int id)
+        public OrderLineDto GetById(string id)
         {
             var existingOrderLine = _orderLineRepository.GetById(id);
 
@@ -39,28 +40,49 @@
             return null;
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public OrderLine GetModelById(string id)
+        {
+            var existingOrderLine = _orderLineRepository.GetById(id);
+
+            if (existingOrderLine != null)
+            {
+                return existingOrderLine;
+            }
+
+            return null;
+        }
+
+        public IEnumerable<string> GetIdentificators()
         {
             return _orderLineRepository.GetIdentificators();
         }
 
         public OrderLineDto Insert(OrderLineCreateRequestDto item)
         {
-            int pizzaVariationId = (int)item.PizzaVariationId;
+            string pizzaVariationId = item.PizzaVariationId;
+            string orderId = item.OrderId;
 
-            return _orderLineRepository.Insert(item.ToModel(), pizzaVariationId).ToViewModel();
+            return _orderLineRepository.Insert(item.ToModel(), pizzaVariationId, orderId).ToViewModel();
         }
 
-        public OrderLineDto Patch(int id, OrderLinePatchRequestDto item)
+        public OrderLineDto InsertToBasket(OrderLineCreateRequestDto item)
         {
-            int? pizzaVariationId = item.PizzaVariationId;
+            string pizzaVariationId = item.PizzaVariationId;
+            string basketId = item.OrderId;
+
+            return _orderLineRepository.InsertToBasket(item.ToModel(), pizzaVariationId, basketId).ToViewModel();
+        }
+
+        public OrderLineDto Patch(string id, OrderLinePatchRequestDto item)
+        {
+            string pizzaVariationId = item.PizzaVariationId;
 
             return _orderLineRepository.Patch(id, item.ToModel(), pizzaVariationId).ToViewModel();
         }
 
-        public OrderLineDto Update(int id, OrderLineUpdateRequestDto item)
+        public OrderLineDto Update(string id, OrderLineUpdateRequestDto item)
         {
-            int pizzaVariationId = (int)item.PizzaVariationId;
+            string pizzaVariationId = item.PizzaVariationId;
 
             return _orderLineRepository.Update(id, item.ToModel(), pizzaVariationId).ToViewModel();
         }

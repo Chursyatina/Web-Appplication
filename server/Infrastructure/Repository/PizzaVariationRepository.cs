@@ -29,13 +29,15 @@
                 .Where(l => !l.IsDeleted);
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            _context.PizzasVariations.Find(id).IsDeleted = true;
+            PizzaVariation existingItem = _context.PizzasVariations.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 
-        public PizzaVariation GetById(int id)
+        public PizzaVariation GetById(string id)
         {
             return _query.FirstOrDefault(p => p.Id == id);
         }
@@ -58,7 +60,7 @@
                 .AsNoTracking();
         }
 
-        public PizzaVariation Insert(PizzaVariation item, int pizzaId, int sizeId, int doughId)
+        public PizzaVariation Insert(PizzaVariation item, string pizzaId, string sizeId, string doughId)
         {
             item.Pizza = _context.Pizzas
                 .Include(pi => pi.Ingredients)
@@ -66,13 +68,14 @@
             item.Size = _context.Sizes.FirstOrDefault(p => p.Id == sizeId && !p.IsDeleted);
             item.Dough = _context.Doughs.FirstOrDefault(p => p.Id == doughId && !p.IsDeleted);
             item.Ingredients.AddRange(item.Pizza.Ingredients);
+            item.Price = PriceCountingService.GetPriceForPizzaVariation(item);
 
             var entity = _context.Add(item);
             _context.SaveChanges();
             return entity.Entity;
         }
 
-        public PizzaVariation Patch(int id, PizzaVariation item, int? pizzaId, int? doughId, int? sizeId, List<int> ingredientsIds, List<int> additionalIngredientsIds)
+        public PizzaVariation Patch(string id, PizzaVariation item, string pizzaId, string doughId, string sizeId, List<string> ingredientsIds, List<string> additionalIngredientsIds)
         {
             PizzaVariation pizzaVariation = _query
                 .FirstOrDefault(p => p.Id == id);
@@ -106,13 +109,15 @@
                 pizzaVariation = ChangeAdditionalIngredients(pizzaVariation, additionalIngredientsIds.ToList());
             }
 
+            pizzaVariation.Price = PriceCountingService.GetPriceForPizzaVariation(pizzaVariation);
+
             var entity = _context.Update(pizzaVariation);
             _context.SaveChanges();
 
             return entity.Entity;
         }
 
-        public PizzaVariation Update(int id, PizzaVariation item, int pizzaId, int doughId, int sizeId, List<int> ingredientsIds, List<int> additionalIngredientsIds)
+        public PizzaVariation Update(string id, PizzaVariation item, string pizzaId, string doughId, string sizeId, List<string> ingredientsIds, List<string> additionalIngredientsIds)
         {
             PizzaVariation pizzaVariation = _query
                 .FirstOrDefault(p => p.Id == id);
@@ -141,41 +146,64 @@
             return entity.Entity;
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public PizzaVariation Insert(PizzaVariation item, string pizzaId, string sizeId, string doughId, List<string> ingredientsIds, List<string> additionalIngredientsIds)
+        {
+            item.Pizza = _context.Pizzas
+                .Include(pi => pi.Ingredients)
+                .FirstOrDefault(p => p.Id == pizzaId && !p.IsDeleted);
+            item.Size = _context.Sizes.FirstOrDefault(p => p.Id == sizeId && !p.IsDeleted);
+            item.Dough = _context.Doughs.FirstOrDefault(p => p.Id == doughId && !p.IsDeleted);
+            item.Ingredients.AddRange(item.Pizza.Ingredients);
+
+            if (ingredientsIds.Count != 0)
+            {
+                item = ChangeIngredients(item, ingredientsIds);
+            }
+
+            item = ChangeAdditionalIngredients(item, additionalIngredientsIds);
+
+            item.Price = PriceCountingService.GetPriceForPizzaVariation(item);
+
+            var entity = _context.Add(item);
+            _context.SaveChanges();
+            return entity.Entity;
+        }
+
+        public IEnumerable<string> GetIdentificators()
         {
             return _context.PizzasVariations.AsNoTracking().Select(pv => pv.Id);
         }
 
-        private PizzaVariation ChangeIngredients(PizzaVariation existingItem, List<int> ingredientsIds)
+        private PizzaVariation ChangeIngredients(PizzaVariation existingItem, List<string> ingredientsIds)
         {
-            List<int> existingItemIngredients = existingItem.Ingredients.Select(ing => ing.Id).ToList();
+            List<string> existingItemIngredients = existingItem.Ingredients.Select(ing => ing.Id).ToList();
 
-            IEnumerable<int> remains = existingItemIngredients.Intersect(ingredientsIds);
+            List<string> remains = existingItemIngredients.Intersect(ingredientsIds).ToList();
 
-            IEnumerable<int> toRemove = existingItemIngredients.Except(remains);
+            List<string> toRemove = existingItemIngredients.Except(remains).ToList();
 
-            IEnumerable<int> toAdd = ingredientsIds.Except(remains);
+            List<string> toAdd = ingredientsIds.Except(remains).ToList();
 
             existingItem.Ingredients = existingItem.Ingredients.Where(i => !toRemove.Contains(i.Id)).ToList();
 
-            existingItem.Ingredients.AddRange((ICollection<Ingredient>)_context.Ingredients.Select(ing => toAdd.Contains(ing.Id)));
+            existingItem.Ingredients.AddRange(_context.Ingredients.Where(ing => toAdd.Contains(ing.Id)));
 
             return existingItem;
         }
 
-        private PizzaVariation ChangeAdditionalIngredients(PizzaVariation existingItem, List<int> ingredientsIds)
+        private PizzaVariation ChangeAdditionalIngredients(PizzaVariation existingItem, List<string> ingredientsIds)
         {
-            List<int> existingItemIngredients = existingItem.AdditionalIngredients.Select(ing => ing.Id).ToList();
+            List<string> existingItemIngredients = existingItem.AdditionalIngredients.Select(ing => ing.Id).ToList();
 
-            IEnumerable<int> remains = existingItemIngredients.Intersect(ingredientsIds);
+            List<string> remains = existingItemIngredients.Intersect(ingredientsIds).ToList();
 
-            IEnumerable<int> toRemove = existingItemIngredients.Except(remains);
+            List<string> toRemove = existingItemIngredients.Except(remains).ToList();
 
-            IEnumerable<int> toAdd = ingredientsIds.Except(remains);
+            List<string> toAdd = ingredientsIds.Except(remains).ToList();
 
             existingItem.AdditionalIngredients = existingItem.AdditionalIngredients.Where(i => !toRemove.Contains(i.Id)).ToList();
 
-            existingItem.Ingredients.AddRange((ICollection<Ingredient>)_context.Ingredients.Select(ing => toAdd.Contains(ing.Id)));
+            existingItem.AdditionalIngredients.AddRange(_context.AdditionalIngredients.Where(ing => toAdd.Contains(ing.Id)));
 
             return existingItem;
         }

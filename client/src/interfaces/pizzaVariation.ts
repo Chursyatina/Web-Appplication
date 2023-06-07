@@ -6,7 +6,7 @@ import { IAdditionalIngredient } from './additionalIngredient';
 import { IIngredient } from './ingredient';
 
 export interface IPizzaVariation {
-  id: number;
+  id: string;
   pizza: IPizza;
   size: IPizzaSize;
   dough: IPizzaDough;
@@ -16,5 +16,10 @@ export interface IPizzaVariation {
 }
 
 export interface IPizzaVariationProps {
+  pizzaVariation: IPizzaVariation;
+}
+
+export interface IPizzaVariationDialogProps {
+  isOpen: boolean;
   pizzaVariation: IPizzaVariation;
 }

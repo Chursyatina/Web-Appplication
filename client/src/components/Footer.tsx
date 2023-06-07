@@ -10,6 +10,7 @@ export const Footer = () => {
   return (
     <Grid container alignContent="center" className={root}>
       <Grid item className={content}>
+        Follow{' '}
         <IconButton>
           <Twitter />
         </IconButton>
@@ -19,7 +20,7 @@ export const Footer = () => {
         <IconButton>
           <Mail />
         </IconButton>
-        <div>2021-2021 Компания Yo-Yo Pizza.</div>
+        <div>2021-2022 Компания Yo-Yo Pizza.</div>
       </Grid>
     </Grid>
   );

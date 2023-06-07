@@ -28,12 +28,12 @@
             return _context.Sizes.AsNoTracking().Where(p => p.IsDeleted == false);
         }
 
-        public Size GetById(int id)
+        public Size GetById(string id)
         {
             return _context.Sizes.AsNoTracking().FirstOrDefault(d => d.Id == id && d.IsDeleted == false);
         }
 
-        public Size Update(int id, Size item)
+        public Size Update(string id, Size item)
         {
             var existingItem = _context.Sizes.Find(id);
 
@@ -45,9 +45,11 @@
             return entity.Entity;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            _context.Sizes.Find(id).IsDeleted = true;
+            Size existingItem = _context.Sizes.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 
@@ -56,7 +58,7 @@
             return _context.Sizes.AsNoTracking().FirstOrDefault(p => p.Name == name && p.IsDeleted == false);
         }
 
-        public Size Patch(int id, Size item)
+        public Size Patch(string id, Size item)
         {
             var existingItem = _context.Sizes.Find(id);
 
@@ -75,7 +77,7 @@
             return entity.Entity;
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _context.Sizes.AsNoTracking().Select(ing => ing.Id);
         }

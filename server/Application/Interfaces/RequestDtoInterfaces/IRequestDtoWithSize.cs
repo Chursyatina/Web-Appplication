@@ -2,6 +2,6 @@
 {
     public interface IRequestDtoWithSize : IRequestDto
     {
-        public int? SizeId { get; set; }
+        public string SizeId { get; set; }
     }
 }

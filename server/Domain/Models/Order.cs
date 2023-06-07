@@ -21,6 +21,9 @@
         public DateTime Date { get; set; }
 
         [Required]
+        public User User { get; set; }
+
+        [Required]
         public OrderStatus OrderStatus { get; set; }
     }
 }

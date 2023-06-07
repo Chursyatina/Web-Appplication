@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { makeAutoObservable } from 'mobx';
 
 import { IIngredient } from 'src/interfaces/ingredient';
@@ -5,32 +7,54 @@ import { IPizza } from 'src/interfaces/pizza';
 import { IPizzaDough } from 'src/interfaces/pizzaDough';
 import { IPizzaSize } from 'src/interfaces/pizzaSize';
 import { IAdditionalIngredient } from 'src/interfaces/additionalIngredient';
+import { menuStore } from './currentMenu';
 
 class PizzaStore {
   basicPizzaPrice = 200;
 
   pizza: IPizza = {
-    id: -1,
+    id: '-1',
     imageLink: ' ',
     singleItemImageLink: ' ',
     name: ' ',
     description: ' ',
     price: 0,
+    discount: 0,
+    bonusCoef: 0,
     ingredients: [],
+    isAvailable: true,
   };
-  size: IPizzaSize = { id: -1, name: ' ', priceMultiplier: -1, image: ' ' };
-  dough: IPizzaDough = { id: -1, name: ' ', priceMultiplier: -1, image: ' ' };
+  size: IPizzaSize = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ', isDeleted: false };
+  dough: IPizzaDough = { id: '-1', name: ' ', priceMultiplier: -1, image: ' ', isDeleted: false };
   ingredients: IIngredient[] = [];
   additionalIngredients: IAdditionalIngredient[] = [];
-  price = 0;
+  price = this.basicPizzaPrice;
 
   constructor() {
     makeAutoObservable(this);
   }
 
+  removePizza(){
+    this.pizza = {
+      id: '-1',
+    imageLink: ' ',
+    singleItemImageLink: ' ',
+    name: ' ',
+    description: ' ',
+    price: 0,
+    bonusCoef: 0,
+    discount: 0,
+    ingredients: [],
+    isAvailable: true,
+    };
+  }
+
   setPizza(pizza: IPizza) {
     this.pizza = pizza;
+    this.setSize(menuStore.sizes[0]);
+    this.setDough(menuStore.doughs[0]);
     this.setIngredients(pizza.ingredients);
+    this.clearAdditionalIngredients();
   }
 
   setSize(size: IPizzaSize) {
@@ -44,7 +68,12 @@ class PizzaStore {
   }
 
   setIngredients(ingredients: IIngredient[]) {
-    this.ingredients = ingredients;
+    this.ingredients = [...ingredients];
+    this.recalculatePrice();
+  }
+
+  setAdditionalIngredients(additionalIngredients: IAdditionalIngredient[]) {
+    this.additionalIngredients = [...additionalIngredients];
     this.recalculatePrice();
   }
 
@@ -72,12 +101,16 @@ class PizzaStore {
     this.recalculatePrice();
   }
 
+  clearAdditionalIngredients() {
+    this.additionalIngredients = [];
+  }
+
   recalculatePrice() {
     this.price = this.basicPizzaPrice;
 
     this.price *= this.dough.priceMultiplier;
 
-    if (this.pizza.id !== -1 && this.size.id !== -1 && this.dough.id !== -1) {
+    if (this.pizza.id !== '-1' && this.size.id !== '-1' && this.dough.id !== '-1') {
       this.ingredients.forEach(ingredient => {
         this.price += ingredient.price;
       });

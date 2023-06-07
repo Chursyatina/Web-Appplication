@@ -7,7 +7,7 @@
     public class PizzaVariationDto : IResponseDto
     {
         [Required]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         public PizzaDto Pizza { get; set; }

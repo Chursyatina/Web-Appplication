@@ -21,6 +21,13 @@
         public void Update_IdentificatorAndIngredientUpdateRequestDto_IngredientDto()
         {
             // Arrange
+            var newIngredient = new IngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testIngredient = new IngredientUpdateRequestDto()
             {
                 Name = "New name",
@@ -36,7 +43,11 @@
             };
 
             // Act
-            var result = _fixture.IngredientsController.Update(2, testIngredient);
+            var insertResult = _fixture.IngredientsController.Insert(newIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingIngredient = successedResult.Value as IngredientDto;
+
+            var result = _fixture.IngredientsController.Update(resultOfInsertingIngredient.Id, testIngredient);
             var successResult = result.Result as OkObjectResult;
             var resultIngredient = successResult.Value as IngredientDto;
 
@@ -44,14 +55,7 @@
             Assert.True(IngredientEqualityChecker.IsDtoEqualsDto(resultIngredient, expectedIngredient));
 
             // Clear changes
-            var initializedIngredient = new IngredientUpdateRequestDto()
-            {
-                Name = TestIngredients.IngredientB.Name,
-                Price = TestIngredients.IngredientB.Price,
-                ImageLink = TestIngredients.IngredientB.ImageLink,
-            };
-
-            _fixture.IngredientsController.Update(2, initializedIngredient);
+            _fixture.IngredientsController.Delete(resultOfInsertingIngredient.Id);
         }
 
         [Fact]
@@ -68,7 +72,7 @@
             NotFoundResult expected = new NotFoundResult();
 
             // Act
-            var result = _fixture.IngredientsController.Update(20, testIngredient);
+            var result = _fixture.IngredientsController.Update("Non existent", testIngredient);
             var notFoundResult = result.Result as NotFoundResult;
 
             // Assert
@@ -79,6 +83,13 @@
         public void Update_IdentificatorAndIngredientUpdateRequestDtoWithNullName_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newIngredient = new IngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testIngredient = new IngredientUpdateRequestDto()
             {
                 Name = null,
@@ -89,18 +100,32 @@
             JsonResult expectedJsonResult = new JsonResult("The Name field is required.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.IngredientsController.Update(2, testIngredient);
+            var insertResult = _fixture.IngredientsController.Insert(newIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingIngredient = successedResult.Value as IngredientDto;
+
+            var result = _fixture.IngredientsController.Update(resultOfInsertingIngredient.Id, testIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.IngredientsController.Delete(resultOfInsertingIngredient.Id);
         }
 
         [Fact]
         public void Update_IdentificatorAndIngredientUpdateRequestDtoWithNameLengthMoreThan20_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newIngredient = new IngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testIngredient = new IngredientUpdateRequestDto()
             {
                 Name = "There are more then twenty symbols",
@@ -111,18 +136,32 @@
             JsonResult expectedJsonResult = new JsonResult("The field Name must be a string with a minimum length of 1 and a maximum length of 20.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.IngredientsController.Update(2, testIngredient);
+            var insertResult = _fixture.IngredientsController.Insert(newIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingIngredient = successedResult.Value as IngredientDto;
+
+            var result = _fixture.IngredientsController.Update(resultOfInsertingIngredient.Id, testIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.IngredientsController.Delete(resultOfInsertingIngredient.Id);
         }
 
         [Fact]
         public void Update_IdentificatorAndIngredientUpdateRequestDtoWithNotUniqueName_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newIngredient = new IngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testIngredient = new IngredientUpdateRequestDto()
             {
                 Name = TestIngredients.IngredientA.Name,
@@ -133,39 +172,67 @@
             JsonResult expectedJsonResult = new JsonResult("Enity with such name already exists") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.IngredientsController.Update(2, testIngredient);
+            var insertResult = _fixture.IngredientsController.Insert(newIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingIngredient = successedResult.Value as IngredientDto;
+
+            var result = _fixture.IngredientsController.Update(resultOfInsertingIngredient.Id, testIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.IngredientsController.Delete(resultOfInsertingIngredient.Id);
         }
 
         [Fact]
         public void Update_IdentificatorAndIngredientUpdateRequestDtoWithNullPrice_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newIngredient = new IngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testIngredient = new IngredientUpdateRequestDto()
             {
                 Name = "New ingredient",
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.IngredientsController.Update(2, testIngredient);
+            var insertResult = _fixture.IngredientsController.Insert(newIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingIngredient = successedResult.Value as IngredientDto;
+
+            var result = _fixture.IngredientsController.Update(resultOfInsertingIngredient.Id, testIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.IngredientsController.Delete(resultOfInsertingIngredient.Id);
         }
 
         [Fact]
         public void Update_IdentificatorAndIngredientUpdateRequestDtoWithPriceMoreThan1000_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newIngredient = new IngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testIngredient = new IngredientUpdateRequestDto()
             {
                 Name = "New name",
@@ -173,21 +240,35 @@
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.IngredientsController.Update(2, testIngredient);
+            var insertResult = _fixture.IngredientsController.Insert(newIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingIngredient = successedResult.Value as IngredientDto;
+
+            var result = _fixture.IngredientsController.Update(resultOfInsertingIngredient.Id, testIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.IngredientsController.Delete(resultOfInsertingIngredient.Id);
         }
 
         [Fact]
         public void Update_IdentificatorAndIngredientUpdateRequestDtoWithPriceLessThanOneTenth_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newIngredient = new IngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testIngredient = new IngredientUpdateRequestDto()
             {
                 Name = "New name",
@@ -195,21 +276,35 @@
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.IngredientsController.Update(2, testIngredient);
+            var insertResult = _fixture.IngredientsController.Insert(newIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingIngredient = successedResult.Value as IngredientDto;
+
+            var result = _fixture.IngredientsController.Update(resultOfInsertingIngredient.Id, testIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.IngredientsController.Delete(resultOfInsertingIngredient.Id);
         }
 
         [Fact]
         public void Update_IdentificatorAndIngredientUpdateRequestDtoWithNullImage_Error400WithCorrectResponseBody()
         {
             // Arrange
+            var newIngredient = new IngredientCreateRequestDto()
+            {
+                Name = "Ingredient",
+                ImageLink = "Image",
+                Price = 101,
+            };
+
             var testIngredient = new IngredientUpdateRequestDto()
             {
                 Name = "New ingredient",
@@ -220,12 +315,19 @@
             JsonResult expectedJsonResult = new JsonResult("The ImageLink field is required.") { StatusCode = 400, };
 
             // Act
-            var result = _fixture.IngredientsController.Update(2, testIngredient);
+            var insertResult = _fixture.IngredientsController.Insert(newIngredient);
+            var successedResult = insertResult.Result as CreatedResult;
+            var resultOfInsertingIngredient = successedResult.Value as IngredientDto;
+
+            var result = _fixture.IngredientsController.Update(resultOfInsertingIngredient.Id, testIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+
+            // Clear changes
+            _fixture.IngredientsController.Delete(resultOfInsertingIngredient.Id);
         }
     }
 }

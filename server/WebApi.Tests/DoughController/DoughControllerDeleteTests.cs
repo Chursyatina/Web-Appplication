@@ -47,7 +47,7 @@
             NotFoundResult expected = new NotFoundResult();
 
             // Act
-            var result = _fixture.DoughsController.Delete(12);
+            var result = _fixture.DoughsController.Delete("fdvjbkjdhfbv");
             var notFoundResult = result as NotFoundResult;
 
             // Assert

@@ -2,6 +2,6 @@
 {
     public interface IRequestDtoWithDough : IRequestDto
     {
-        public int? DoughId { get; set; }
+        public string DoughId { get; set; }
     }
 }

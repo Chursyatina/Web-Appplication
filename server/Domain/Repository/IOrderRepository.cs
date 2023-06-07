@@ -5,10 +5,16 @@
 
     public interface IOrderRepository : IRepository<Order>
     {
-        public Order Insert(Order item, IEnumerable<int> orderLinesIds);
+        public IEnumerable<string> GetIdentificators();
 
-        public Order Patch(int id, Order item, IEnumerable<int> orderLinesIds);
+        public Order Insert(Order item, List<string> orderLinesIds);
 
-        public Order Update(int id, Order item, List<int> orderLinesIds);
+        public Order Patch(string id, Order item, IEnumerable<string> orderLinesIds);
+
+        public Order Update(string id, Order item, List<string> orderLinesIds);
+
+        public Order Insert(Order item, List<string> orderLinesIds, User user);
+
+        public IEnumerable<Order> GetOrdersForUserById(string id);
     }
 }

@@ -11,7 +11,7 @@
             _sizeService = sizeService;
         }
 
-        public ValidationResult Validate(INamedRequestDto entity, int? id = null)
+        public ValidationResult Validate(INamedRequestDto entity, string id = null)
         {
             ValidationResult annotationsValidationResult = ValidateAnnotations(entity);
             if (!annotationsValidationResult.IsValid)

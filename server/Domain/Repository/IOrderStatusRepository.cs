@@ -7,12 +7,12 @@
     {
         public OrderStatus GetByName(string name);
 
-        public OrderStatus Patch(int id, OrderStatus item);
+        public OrderStatus Patch(string id, OrderStatus item);
 
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
 
         public OrderStatus Insert(OrderStatus item);
 
-        public OrderStatus Update(int id, OrderStatus item);
+        public OrderStatus Update(string id, OrderStatus item);
     }
 }

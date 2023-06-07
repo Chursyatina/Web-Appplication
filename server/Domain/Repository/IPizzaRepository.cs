@@ -7,12 +7,12 @@
     {
         public Pizza GetByName(string name);
 
-        public Pizza Update(int id, Pizza item, List<int> ingredientsIds);
+        public Pizza Update(string id, Pizza item, List<string> ingredientsIds);
 
-        public Pizza Patch(int id, Pizza item, List<int> ingredientsIds);
+        public Pizza Patch(string id, Pizza item, List<string> ingredientsIds);
 
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
 
-        public Pizza Insert(Pizza item);
+        public Pizza Insert(Pizza item, List<string> ingredientsIds);
     }
 }

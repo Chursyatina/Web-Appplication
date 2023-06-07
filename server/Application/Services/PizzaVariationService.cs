@@ -23,7 +23,7 @@
             return _pizzaVariationRepository.GetAll().Select(x => x.ToViewModel());
         }
 
-        public PizzaVariationDto GetById(int id)
+        public PizzaVariationDto GetById(string id)
         {
             var existingPizzaVariation = _pizzaVariationRepository.GetById(id);
 
@@ -35,26 +35,26 @@
             return null;
         }
 
-        public PizzaVariationDto Update(int id, PizzaVariationUpdateRequestDto pizzaVariation)
+        public PizzaVariationDto Update(string id, PizzaVariationUpdateRequestDto pizzaVariation)
         {
-            int pizzaId = (int)pizzaVariation.PizzaId;
-            int doughId = (int)pizzaVariation.DoughId;
-            int sizeId = (int)pizzaVariation.SizeId;
-            IEnumerable<int> ingredientsIds = pizzaVariation.Ingredients;
-            IEnumerable<int> additionalIds = pizzaVariation.AdditionalIngredients;
+            string pizzaId = pizzaVariation.PizzaId;
+            string doughId = pizzaVariation.DoughId;
+            string sizeId = pizzaVariation.SizeId;
+            IEnumerable<string> ingredientsIds = pizzaVariation.Ingredients;
+            IEnumerable<string> additionalIds = pizzaVariation.AdditionalIngredients;
 
             PizzaVariation pizzaVariationModel = pizzaVariation.ToModel();
 
             return _pizzaVariationRepository.Update(id, pizzaVariationModel, pizzaId, doughId, sizeId, ingredientsIds.ToList(), additionalIds.ToList()).ToViewModel();
         }
 
-        public PizzaVariationDto Patch(int id, PizzaVariationPatchRequestDto pizzaVariation)
+        public PizzaVariationDto Patch(string id, PizzaVariationPatchRequestDto pizzaVariation)
         {
-            int? pizzaId = pizzaVariation.PizzaId;
-            int? doughId = pizzaVariation.DoughId;
-            int? sizeId = pizzaVariation.SizeId;
-            IEnumerable<int> ingredientsIds = pizzaVariation.Ingredients;
-            IEnumerable<int> additionalIds = pizzaVariation.AdditionalIngredients;
+            string pizzaId = pizzaVariation.PizzaId;
+            string doughId = pizzaVariation.DoughId;
+            string sizeId = pizzaVariation.SizeId;
+            IEnumerable<string> ingredientsIds = pizzaVariation.Ingredients;
+            IEnumerable<string> additionalIds = pizzaVariation.AdditionalIngredients;
 
             PizzaVariation pizzaVariationModel = pizzaVariation.ToModel();
 
@@ -63,17 +63,32 @@
 
         public PizzaVariationDto Insert(PizzaVariationCreateRequestDto pizzaVariation)
         {
-            return _pizzaVariationRepository.Insert(pizzaVariation.ToModel(), (int)pizzaVariation.PizzaId, (int)pizzaVariation.SizeId, (int)pizzaVariation.DoughId).ToViewModel();
+            IEnumerable<string> ingredientsIds = pizzaVariation.Ingredients;
+            IEnumerable<string> additionalIds = pizzaVariation.AdditionalIngredients;
+            return _pizzaVariationRepository.Insert(pizzaVariation.ToModel(), pizzaVariation.PizzaId, pizzaVariation.SizeId, pizzaVariation.DoughId, ingredientsIds.ToList(), additionalIds.ToList()).ToViewModel();
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _pizzaVariationRepository.Delete(id);
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _pizzaVariationRepository.GetIdentificators();
+        }
+
+        public PizzaVariationDto FullInsert(PizzaVariationUpdateRequestDto item)
+        {
+            string pizzaId = item.PizzaId;
+            string doughId = item.DoughId;
+            string sizeId = item.SizeId;
+            IEnumerable<string> ingredientsIds = item.Ingredients;
+            IEnumerable<string> additionalIds = item.AdditionalIngredients;
+
+            PizzaVariation pizzaVariationModel = item.ToModel();
+
+            return _pizzaVariationRepository.Insert(pizzaVariationModel, pizzaId, sizeId, doughId, ingredientsIds.ToList(), additionalIds.ToList()).ToViewModel();
         }
     }
 }

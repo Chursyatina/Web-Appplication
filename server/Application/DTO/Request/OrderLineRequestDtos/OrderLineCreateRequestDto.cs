@@ -3,9 +3,14 @@
     using System.ComponentModel.DataAnnotations;
     using Application.Interfaces.RequestDtoInterfaces;
 
-    public class OrderLineCreateRequestDto : IRequestDtoWithPizzaVariation
+    public class OrderLineCreateRequestDto : IOrderLineWithPizzaVariationAndOrder
     {
         [Required]
-        public int? PizzaVariationId { get; set; }
+        public string PizzaVariationId { get; set; }
+
+        public string OrderId { get; set; }
+
+        [Required]
+        public int Quantity { get; set; }
     }
 }

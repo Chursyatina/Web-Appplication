@@ -7,6 +7,6 @@
 
     public interface IPizzaService : IService<PizzaDto, PizzaCreateRequestDto, PizzaUpdateRequestDto, PizzaPatchRequestDto>, INamedEntityService<PizzaDto>
     {
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
     }
 }

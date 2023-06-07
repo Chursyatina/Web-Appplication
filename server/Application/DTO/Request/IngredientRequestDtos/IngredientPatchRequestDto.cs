@@ -13,5 +13,9 @@
         public decimal? Price { get; set; }
 
         public string ImageLink { get; set; }
+
+        public bool IsAvailable { get; set; }
+
+        public bool IsObligatory { get; set; }
     }
 }

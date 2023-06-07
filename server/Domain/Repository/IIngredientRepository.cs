@@ -8,14 +8,14 @@
     {
         public Ingredient GetByName(string name);
 
-        public List<int> GetIdentificators();
+        public List<string> GetIdentificators();
 
-        public IQueryable<Ingredient> GetIngredientsById(List<int> identificators);
+        public IQueryable<Ingredient> GetIngredientsById(List<string> identificators);
 
-        public Ingredient Patch(int id, Ingredient item);
+        public Ingredient Patch(string id, Ingredient item);
 
         public Ingredient Insert(Ingredient item);
 
-        public Ingredient Update(int id, Ingredient item);
+        public Ingredient Update(string id, Ingredient item);
     }
 }

@@ -21,6 +21,14 @@
         public string SingleItemImageLink { get; set; }
 
         [Required]
-        public IEnumerable<int> Ingredients { get; set; }
+        [Range(0, 1)]
+        public double Discount { get; set; }
+
+        [Required]
+        [Range(0, 1)]
+        public double BonusCoef { get; set; }
+
+        [Required]
+        public IEnumerable<string> Ingredients { get; set; }
     }
 }

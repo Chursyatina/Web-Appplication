@@ -7,6 +7,7 @@ export const primaryAppBarStyles = makeStyles((theme: Theme) =>
     },
     menuButton: {
       marginRight: theme.spacing(2),
+      size: 'large',
     },
     title: {
       flexGrow: 1,
@@ -52,6 +53,10 @@ export const primaryAppBarStyles = makeStyles((theme: Theme) =>
           width: '20ch',
         },
       },
+    },
+    userName: {
+      marginTop: 7,
+      marginLeft: 7,
     },
   }),
 );

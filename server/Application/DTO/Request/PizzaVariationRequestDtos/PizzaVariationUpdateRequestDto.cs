@@ -7,18 +7,18 @@
     public class PizzaVariationUpdateRequestDto : IPizzaVariationWithBothIngredientsTypes
     {
         [Required]
-        public int? PizzaId { get; set; }
+        public string PizzaId { get; set; }
 
         [Required]
-        public int? SizeId { get; set; }
+        public string SizeId { get; set; }
 
         [Required]
-        public int? DoughId { get; set; }
+        public string DoughId { get; set; }
 
         [Required]
-        public IEnumerable<int> AdditionalIngredients { get; set; }
+        public IEnumerable<string> AdditionalIngredients { get; set; }
 
         [Required]
-        public IEnumerable<int> Ingredients { get; set; }
+        public IEnumerable<string> Ingredients { get; set; }
     }
 }

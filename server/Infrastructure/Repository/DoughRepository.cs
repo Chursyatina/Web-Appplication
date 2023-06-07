@@ -16,13 +16,15 @@
             _context = context;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            _context.Doughs.Find(id).IsDeleted = true;
+            Dough existingItem = _context.Doughs.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 
-        public Dough GetById(int id)
+        public Dough GetById(string id)
         {
             return _context.Doughs.AsNoTracking().FirstOrDefault(d => d.Id == id && d.IsDeleted == false);
         }
@@ -44,7 +46,7 @@
             return entity.Entity;
         }
 
-        public Dough Update(int id, Dough item)
+        public Dough Update(string id, Dough item)
         {
             var existingItem = _context.Doughs.Find(id);
 
@@ -56,7 +58,7 @@
             return entity.Entity;
         }
 
-        public Dough Patch(int id, Dough item)
+        public Dough Patch(string id, Dough item)
         {
             var existingItem = _context.Doughs.Find(id);
 
@@ -75,7 +77,7 @@
             return entity.Entity;
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _context.Doughs.AsNoTracking().Select(ing => ing.Id);
         }

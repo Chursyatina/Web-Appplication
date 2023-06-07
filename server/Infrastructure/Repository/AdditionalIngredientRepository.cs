@@ -16,28 +16,30 @@
             _context = context;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            _context.AdditionalIngredients.Find(id).IsDeleted = true;
+            AdditionalIngredient existingItem = _context.AdditionalIngredients.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+
             _context.SaveChanges();
         }
 
-        public AdditionalIngredient GetById(int id)
+        public AdditionalIngredient GetById(string id)
         {
-            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Id == id && p.IsDeleted == false);
+            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Id == id && !p.IsDeleted);
         }
 
         public AdditionalIngredient GetByName(string name)
         {
-            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Name == name && p.IsDeleted == false);
+            return _context.AdditionalIngredients.AsNoTracking().FirstOrDefault(p => p.Name == name && !p.IsDeleted);
         }
 
         public IEnumerable<AdditionalIngredient> GetAll()
         {
-            return _context.AdditionalIngredients.AsNoTracking().Where(p => p.IsDeleted == false);
+            return _context.AdditionalIngredients.Where(p => p.IsDeleted == false).AsNoTracking();
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _context.AdditionalIngredients.AsNoTracking().Select(ing => ing.Id);
         }
@@ -49,20 +51,21 @@
             return entity.Entity;
         }
 
-        public AdditionalIngredient Update(int id, AdditionalIngredient item)
+        public AdditionalIngredient Update(string id, AdditionalIngredient item)
         {
             var existingItem = _context.AdditionalIngredients.Find(id);
 
             existingItem.Name = item.Name;
             existingItem.ImageLink = item.ImageLink;
             existingItem.Price = item.Price;
+            existingItem.IsAvailable = item.IsAvailable;
 
             var entity = _context.Update(existingItem);
             _context.SaveChanges();
             return entity.Entity;
         }
 
-        public AdditionalIngredient Patch(int id, AdditionalIngredient item)
+        public AdditionalIngredient Patch(string id, AdditionalIngredient item)
         {
             var existingItem = _context.AdditionalIngredients.Find(id);
 

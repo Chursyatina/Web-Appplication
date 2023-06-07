@@ -6,6 +6,8 @@
 
     public interface IPizzaVariationService : IService<PizzaVariationDto, PizzaVariationCreateRequestDto, PizzaVariationUpdateRequestDto, PizzaVariationPatchRequestDto>
     {
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
+
+        public PizzaVariationDto FullInsert(PizzaVariationUpdateRequestDto item);
     }
 }

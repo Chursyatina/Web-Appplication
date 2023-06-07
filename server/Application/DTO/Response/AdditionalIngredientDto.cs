@@ -6,7 +6,7 @@
     public class AdditionalIngredientDto : IResponseDto
     {
         [Required]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 1)]
@@ -14,6 +14,12 @@
 
         [Required]
         public string ImageLink { get; set; }
+
+        [Required]
+        public bool IsDeleted { get; set; }
+
+        [Required]
+        public bool IsAvailable { get; set; }
 
         [Required]
         [Range(0.1, 100)]

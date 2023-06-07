@@ -40,7 +40,7 @@
             var successResult = result.Result as CreatedResult;
             var resultIngredient = successResult.Value as IngredientDto;
 
-            var resultOfGettingNewIngredient = _fixture.IngredientsController.Get(4);
+            var resultOfGettingNewIngredient = _fixture.IngredientsController.Get(resultIngredient.Id);
             var successResultOfGettingNewIngredient = resultOfGettingNewIngredient.Result as OkObjectResult;
             var existingIngredient = successResultOfGettingNewIngredient.Value as IngredientDto;
 
@@ -48,7 +48,7 @@
             Assert.True(IngredientEqualityChecker.IsDtoEqualsDto(resultIngredient, expectedIngredient) && IngredientEqualityChecker.IsDtoEqualsDto(expectedIngredient, existingIngredient));
 
             // Clear changes
-            _fixture.IngredientsController.Delete(4);
+            _fixture.IngredientsController.Delete(existingIngredient.Id);
         }
 
         [Fact]
@@ -127,7 +127,7 @@
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.IngredientsController.Insert(testIngredient);
@@ -149,7 +149,7 @@
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.IngredientsController.Insert(testIngredient);
@@ -171,7 +171,7 @@
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.IngredientsController.Insert(testIngredient);
@@ -179,7 +179,7 @@
             var jsonResult = badRequestResult.Value as JsonResult;
 
             // Assert
-            Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+            Assert.True(string.Equals(expectedJsonResult.Value.ToString(), jsonResult.Value.ToString()));
         }
 
         [Fact]

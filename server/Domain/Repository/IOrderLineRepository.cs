@@ -5,12 +5,14 @@
 
     public interface IOrderLineRepository : IRepository<OrderLine>
     {
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
 
-        public OrderLine Insert(OrderLine item, int pizzaVariationId);
+        public OrderLine Insert(OrderLine item, string pizzaVariationId, string orderId);
 
-        public OrderLine Patch(int id, OrderLine item, int? pizzaVariationId);
+        public OrderLine InsertToBasket(OrderLine item, string pizzaVariationId, string basketId);
 
-        public OrderLine Update(int id, OrderLine item, int pizzaVariationId);
+        public OrderLine Patch(string id, OrderLine item, string pizzaVariationId);
+
+        public OrderLine Update(string id, OrderLine item, string pizzaVariationId);
     }
 }

@@ -7,6 +7,6 @@
 
     public interface ISizeService : IService<SizeDto, SizeCreateRequestDto, SizeUpdateRequestDto, SizePatchRequestDto>, INamedEntityService<SizeDto>
     {
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
     }
 }

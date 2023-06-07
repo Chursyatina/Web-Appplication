@@ -26,6 +26,7 @@
                 Description = "TestPizzaDescription",
                 ImageLink = "TestPizzaImage",
                 SingleItemImageLink = "SomeSingleItemTestImage",
+                Ingredients = new System.Collections.Generic.List<string>(),
             };
 
             NoContentResult expected = new NoContentResult();
@@ -49,7 +50,7 @@
             NotFoundResult expected = new NotFoundResult();
 
             // Act
-            var result = _fixture.PizzasController.Delete(12);
+            var result = _fixture.PizzasController.Delete("Non existent");
             var notFoundResult = result as NotFoundResult;
 
             // Assert

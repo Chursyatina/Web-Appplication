@@ -40,7 +40,7 @@
             var successResult = result.Result as CreatedResult;
             var resultAdditionalIngredient = successResult.Value as AdditionalIngredientDto;
 
-            var resultOfGettingNewAdditionalIngredient = _fixture.AdditionalIngredientsController.Get(4);
+            var resultOfGettingNewAdditionalIngredient = _fixture.AdditionalIngredientsController.Get(resultAdditionalIngredient.Id);
             var successResultOfGettingNewAdditionalIngredient = resultOfGettingNewAdditionalIngredient.Result as OkObjectResult;
             var existingAdditionalIngredient = successResultOfGettingNewAdditionalIngredient.Value as AdditionalIngredientDto;
 
@@ -48,7 +48,7 @@
             Assert.True(AdditionalIngredientEqualityChecker.IsDtoEqualsDto(resultAdditionalIngredient, expectedAdditionalIngredient) && AdditionalIngredientEqualityChecker.IsDtoEqualsDto(expectedAdditionalIngredient, existingAdditionalIngredient));
 
             // Clear changes
-            _fixture.AdditionalIngredientsController.Delete(4);
+            _fixture.AdditionalIngredientsController.Delete(resultAdditionalIngredient.Id);
         }
 
         [Fact]
@@ -127,15 +127,17 @@
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.AdditionalIngredientsController.Insert(testAdditionalIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
 
+            string some = jsonResult.Value.ToString();
+
             // Assert
-            Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());
+            Assert.True(string.Equals(expectedJsonResult.Value.ToString(), jsonResult.Value.ToString()));
         }
 
         [Fact]
@@ -149,7 +151,7 @@
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.AdditionalIngredientsController.Insert(testAdditionalIngredient);
@@ -171,12 +173,15 @@
                 ImageLink = "New image",
             };
 
-            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0.1 and 1000.") { StatusCode = 400, };
+            JsonResult expectedJsonResult = new JsonResult("The field Price must be between 0,1 and 1000.") { StatusCode = 400, };
 
             // Act
             var result = _fixture.AdditionalIngredientsController.Insert(testAdditionalIngredient);
             var badRequestResult = result.Result as BadRequestObjectResult;
             var jsonResult = badRequestResult.Value as JsonResult;
+
+            string first = expectedJsonResult.Value.ToString();
+            string second = jsonResult.Value.ToString();
 
             // Assert
             Assert.True(expectedJsonResult.Value.ToString() == jsonResult.Value.ToString());

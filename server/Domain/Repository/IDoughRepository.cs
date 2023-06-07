@@ -7,12 +7,12 @@
     {
         public Dough GetByName(string name);
 
-        public Dough Patch(int id, Dough item);
+        public Dough Patch(string id, Dough item);
 
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
 
         public Dough Insert(Dough item);
 
-        public Dough Update(int id, Dough item);
+        public Dough Update(string id, Dough item);
     }
 }

@@ -7,12 +7,12 @@
     {
         public Size GetByName(string name);
 
-        public Size Patch(int id, Size item);
+        public Size Patch(string id, Size item);
 
-        public IEnumerable<int> GetIdentificators();
+        public IEnumerable<string> GetIdentificators();
 
         public Size Insert(Size item);
 
-        public Size Update(int id, Size item);
+        public Size Update(string id, Size item);
     }
 }

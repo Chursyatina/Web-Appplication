@@ -104,7 +104,8 @@
             {
                 getPizzaDto = new MapperConfiguration(cfg => cfg.CreateMap<Pizza, PizzaDto>()
                 .ForMember(dest => dest.Ingredients, opts => opts.Ignore()));
-                getPizzaFromCreateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaCreateRequestDto, Pizza>());
+                getPizzaFromCreateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaCreateRequestDto, Pizza>()
+                .ForMember(dest => dest.Ingredients, opts => opts.Ignore()));
                 getPizzaFromUpdateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaUpdateRequestDto, Pizza>()
                 .ForMember(dest => dest.Ingredients, opts => opts.Ignore()));
                 getPizzaFromPartialUpdateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaPatchRequestDto, Pizza>()
@@ -119,7 +120,9 @@
                 getPizzaVariationFromCreateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaVariationCreateRequestDto, PizzaVariation>()
                 .ForMember(dest => dest.Pizza, opts => opts.Ignore())
                 .ForMember(dest => dest.Size, opts => opts.Ignore())
-                .ForMember(dest => dest.Dough, opts => opts.Ignore()));
+                .ForMember(dest => dest.Dough, opts => opts.Ignore())
+                .ForMember(dest => dest.Ingredients, opts => opts.Ignore())
+                .ForMember(dest => dest.AdditionalIngredients, opts => opts.Ignore()));
                 getPizzaVariationFromUpdateRequestDto = new MapperConfiguration(cfg => cfg.CreateMap<PizzaVariationUpdateRequestDto, PizzaVariation>()
                 .ForMember(dest => dest.Pizza, opts => opts.Ignore())
                 .ForMember(dest => dest.Size, opts => opts.Ignore())
@@ -372,6 +375,7 @@
             orderDto.OrderLines = new List<OrderLineDto>();
             orderDto.OrderLines = order.OrderLines.Select(line => line.ToViewModel()).ToList();
             orderDto.OrderStatus = order.OrderStatus.ToViewModel();
+            orderDto.Date = order.Date;
 
             return orderDto;
         }
@@ -406,7 +410,10 @@
         public static OrderLineDto ToViewModel(this OrderLine orderLine)
         {
             OrderLineDto orderLineDto = new Mapper(getOrderLineDto).Map<OrderLineDto>(orderLine);
-            orderLineDto.PizzaVariation = new PizzaVariationDto();
+            if (orderLine.PizzaVariation != null)
+            {
+                orderLineDto.PizzaVariation = orderLine.PizzaVariation.ToViewModel();
+            }
 
             return orderLineDto;
         }

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Application.Services;
     using Domain.Models;
     using Domain.Repository;
     using Infrastructure.EF;
@@ -16,33 +17,39 @@
             _context = context;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            _context.Ingredients.Find(id).IsDeleted = true;
+            Ingredient existingItem = _context.Ingredients.Find(id);
+            existingItem.IsDeleted = !existingItem.IsDeleted;
+            foreach (Pizza pizza in _context.Pizzas.Include(i => i.Ingredients))
+            {
+                pizza.Price = PriceCountingService.GetStartingPriceForPizza(pizza);
+            }
+
             _context.SaveChanges();
         }
 
-        public Ingredient GetById(int id)
+        public Ingredient GetById(string id)
         {
-            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Id == id && p.IsDeleted == false);
+            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Id == id && !p.IsDeleted);
         }
 
         public Ingredient GetByName(string name)
         {
-            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Name == name && p.IsDeleted == false);
+            return _context.Ingredients.AsNoTracking().FirstOrDefault(p => p.Name == name && !p.IsDeleted);
         }
 
         public IEnumerable<Ingredient> GetAll()
         {
-            return _context.Ingredients.AsNoTracking().Where(p => p.IsDeleted == false);
+            return _context.Ingredients.Where(p => p.IsDeleted == false).AsNoTracking();
         }
 
-        public IQueryable<Ingredient> GetIngredientsById(List<int> identificators)
+        public IQueryable<Ingredient> GetIngredientsById(List<string> identificators)
         {
             return _context.Ingredients.AsNoTracking().Where(ing => identificators.Contains(ing.Id));
         }
 
-        public List<int> GetIdentificators()
+        public List<string> GetIdentificators()
         {
             return _context.Ingredients.AsNoTracking().Select(ing => ing.Id).ToList();
         }
@@ -54,20 +61,33 @@
             return entity.Entity;
         }
 
-        public Ingredient Update(int id, Ingredient item)
+        public Ingredient Update(string id, Ingredient item)
         {
             var existingItem = _context.Ingredients.Find(id);
 
             existingItem.Name = item.Name;
             existingItem.ImageLink = item.ImageLink;
             existingItem.Price = item.Price;
+            existingItem.IsDeleted = item.IsDeleted;
+            existingItem.IsAvailable = item.IsAvailable;
+            existingItem.IsObligatory = item.IsObligatory;
 
             var entity = _context.Update(existingItem);
+
+            foreach (Pizza pizza in _context.Pizzas.Include(i => i.Ingredients))
+            {
+                if (pizza.Ingredients.Contains(existingItem))
+                {
+                    pizza.Price = PriceCountingService.GetStartingPriceForPizza(pizza);
+                    pizza.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(pizza);
+                }
+            }
+
             _context.SaveChanges();
             return entity.Entity;
         }
 
-        public Ingredient Patch(int id, Ingredient item)
+        public Ingredient Patch(string id, Ingredient item)
         {
             var existingItem = _context.Ingredients.Find(id);
 
@@ -87,6 +107,15 @@
             }
 
             var entity = _context.Update(existingItem);
+            foreach (Pizza pizza in _context.Pizzas.Include(i => i.Ingredients))
+            {
+                if (pizza.Ingredients.Contains(existingItem))
+                {
+                    pizza.Price = PriceCountingService.GetStartingPriceForPizza(pizza);
+                    pizza.IsAvailable = AvailabnessCheckingService.GetAvialebnessForPizza(pizza);
+                }
+            }
+
             _context.SaveChanges();
             return entity.Entity;
         }

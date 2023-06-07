@@ -17,12 +17,12 @@
             _ingredientRepository = ingredientRepository;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             _ingredientRepository.Delete(id);
         }
 
-        public IngredientDto GetById(int id)
+        public IngredientDto GetById(string id)
         {
             var existingIngredient = _ingredientRepository.GetById(id);
 
@@ -51,7 +51,7 @@
             return _ingredientRepository.GetAll().Select(x => x.ToViewModel()).ToList();
         }
 
-        public IEnumerable<int> GetIdentificators()
+        public IEnumerable<string> GetIdentificators()
         {
             return _ingredientRepository.GetIdentificators();
         }
@@ -61,12 +61,12 @@
             return _ingredientRepository.Insert(ingredient.ToModel()).ToViewModel();
         }
 
-        public IngredientDto Update(int id, IngredientUpdateRequestDto ingredient)
+        public IngredientDto Update(string id, IngredientUpdateRequestDto ingredient)
         {
             return _ingredientRepository.Update(id, ingredient.ToModel()).ToViewModel();
         }
 
-        public IngredientDto Patch(int id, IngredientPatchRequestDto ingredient)
+        public IngredientDto Patch(string id, IngredientPatchRequestDto ingredient)
         {
             return _ingredientRepository.Patch(id, ingredient.ToModel()).ToViewModel();
         }
